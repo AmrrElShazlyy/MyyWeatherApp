@@ -6,7 +6,7 @@ import com.example.myweatherapp.model.weather_data_model.WeatherDataModel
 class WeatherClient private constructor() : RemoteSource{
 
     override suspend fun fetchWeatherDataFromNetwork(lat : Double , lon : Double , units : String,
-                                                    lang : String , exclude : String): WeatherDataModel {
+                                                     lang : String , exclude : String): WeatherDataModel {
         var fetchedWeatherData : WeatherDataModel = WeatherDataModel()
         val weatherService = RetrofitHelper.getInstance().create(WeatherService::class.java)
         val response = weatherService.fetchWeatherData(lat,lon, Constants.API_KEY,units,lang,exclude)
@@ -16,10 +16,10 @@ class WeatherClient private constructor() : RemoteSource{
         return fetchedWeatherData
     }
 
-    override suspend fun fetchWeatherDataFromNetwork(lat: Double, lon: Double): WeatherDataModel {
+    override suspend fun fetchWeatherDataFromNetwork(lat: Double, lon: Double,exclude: String): WeatherDataModel {
         var fetchedWeatherData : WeatherDataModel = WeatherDataModel()
         val weatherService = RetrofitHelper.getInstance().create(WeatherService::class.java)
-        val response = weatherService.fetchWeatherData(lat,lon, Constants.API_KEY)
+        val response = weatherService.fetchWeatherData(lat,lon, Constants.API_KEY,exclude)
         if (response.isSuccessful){
             fetchedWeatherData = response.body()!!
         }
