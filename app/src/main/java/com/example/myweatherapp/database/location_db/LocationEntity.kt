@@ -1,16 +1,13 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.location_db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
-@Entity(tableName = "weatherEntity")
-class WeatherEntity : Serializable {
-
+@Entity(tableName = "locationEntity")
+class LocationEntity {
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0
+    var id: Int = 0
     var title: String = ""
     var lat: Double = 0.0
     var lon: Double = 0.0
-
 }

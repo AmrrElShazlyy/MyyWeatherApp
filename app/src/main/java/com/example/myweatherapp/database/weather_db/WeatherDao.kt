@@ -1,8 +1,7 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.weather_db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.myweatherapp.model.weather_data_model.WeatherDataModel
 
 @Dao
 interface WeatherDao {
@@ -13,7 +12,7 @@ interface WeatherDao {
     @Delete
     fun deleteWeatherData(weatherEntity: WeatherEntity)
 
-    @Query("select * from weatherentity")
+    @Query("select * from weatherEntity")
     fun getWeatherData() : LiveData<List<WeatherEntity>>
 
 }

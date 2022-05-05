@@ -9,12 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
 import com.example.myweatherapp.database.ConcreteLocalSource
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.model.repo.RepoInterface
-import com.example.myweatherapp.model.weather_data_model.WeatherDataModel
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.WeatherClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     tv.text = it.toString()
                     //tv.text = it.current!!.weather!![0].description
                     //tv.text = it.current!!.weather!![0].main
-                    //.text = it.current?.weather?.get(0)?.description ?: ""
+                    //tv.text = it.current?.weather?.get(0)?.description ?: ""
                     //tv.text = it.current?.weather?.get(0)?.icon
 
                     //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)

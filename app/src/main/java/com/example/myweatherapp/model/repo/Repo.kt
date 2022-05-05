@@ -2,11 +2,11 @@ package com.example.myweatherapp.model.repo
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.myweatherapp.database.AlertEntity
+import com.example.myweatherapp.database.alert_db.AlertEntity
 import com.example.myweatherapp.database.LocalSource
-import com.example.myweatherapp.database.WeatherEntity
-import com.example.myweatherapp.model.weather_data_model.Alert
-import com.example.myweatherapp.model.weather_data_model.WeatherDataModel
+import com.example.myweatherapp.database.location_db.LocationEntity
+import com.example.myweatherapp.database.weather_db.WeatherEntity
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.RemoteSource
 
 class Repo private constructor(var context: Context , var remoteSource: RemoteSource , var localSource: LocalSource) : RepoInterface{
@@ -63,4 +63,15 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     override val allStoredWeatherAlerts: LiveData<List<AlertEntity>>
         get() = localSource.allStoredWeatherAlerts
+
+    override fun insertLocationData(locationEntity: LocationEntity) {
+        localSource.insertLocationData(locationEntity)
+    }
+
+    override fun deleteLocationData(locationEntity: LocationEntity) {
+        localSource.deleteLocationData(locationEntity)
+    }
+
+    override val allStoredLocations: LiveData<List<LocationEntity>>
+        get() = localSource.allStoredLocations
 }

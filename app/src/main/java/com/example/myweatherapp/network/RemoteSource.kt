@@ -1,6 +1,6 @@
 package com.example.myweatherapp.network
 
-import com.example.myweatherapp.model.weather_data_model.WeatherDataModel
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 
 interface RemoteSource {
 

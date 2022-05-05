@@ -1,8 +1,7 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.alert_db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.myweatherapp.model.weather_data_model.Alert
 
 @Dao
 interface AlertDao {

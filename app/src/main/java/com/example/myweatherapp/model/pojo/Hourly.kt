@@ -1,7 +1,12 @@
-package com.example.myweatherapp.model.weather_data_model
+package com.example.myweatherapp.model.pojo
 
+import androidx.room.TypeConverters
+import com.example.myweatherapp.database.converters.CurrentTypeConverter
+import com.example.myweatherapp.database.converters.HourlyTypeConverter
 import com.google.gson.annotations.SerializedName
 
+
+@TypeConverters(HourlyTypeConverter::class)
 data class Hourly(@SerializedName("dt")  var dt: Int?,
                   @SerializedName("temp")  var temp: Double?,
                   @SerializedName("feels_like")  var feelsLike: Double?,

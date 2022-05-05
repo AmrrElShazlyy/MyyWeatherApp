@@ -1,7 +1,12 @@
-package com.example.myweatherapp.model.weather_data_model
+package com.example.myweatherapp.model.pojo
 
+import androidx.room.TypeConverters
+import com.example.myweatherapp.database.converters.CurrentTypeConverter
+import com.example.myweatherapp.database.converters.DailyTypeConverter
 import com.google.gson.annotations.SerializedName
 
+
+@TypeConverters(DailyTypeConverter::class)
 data class Daily (@SerializedName("dt")  var dt: Int?,
                   @SerializedName("sunrise")  var sunrise: Int?,
                   @SerializedName("sunset")  var sunset: Int?,
