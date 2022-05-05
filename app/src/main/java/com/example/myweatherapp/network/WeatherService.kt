@@ -9,17 +9,16 @@ interface WeatherService {
 
     @GET("data/2.5/onecall?")
     suspend fun fetchWeatherData(@Query("lat")lat:Double,
-                               @Query("lon")lon:Double,
-                               @Query("appid")appid:String,
-                               @Query("units")units:String,
-                               @Query("lang")lang:String,
-                               @Query("exclude")exclude:String )
+                                 @Query("lon")lon:Double,
+                                 @Query("appid")appid:String,
+                                 @Query("units")units:String,
+                                 @Query("lang")lang:String,
+                                 @Query("exclude")exclude:String )
             : Response<WeatherDataModel>
 
     @GET("data/2.5/onecall?")
     suspend fun fetchWeatherData(@Query("lat")lat:Double,
                                  @Query("lon")lon:Double,
-                                 @Query("appid")appid:String,
-                                 )
+                                 @Query("appid")appid:String,@Query("exclude")exclude:String )
             : Response<WeatherDataModel>
 }
