@@ -9,6 +9,20 @@ import com.google.gson.annotations.SerializedName
 @TypeConverters(HourlyTypeConverter::class)
 data class Hourly(@SerializedName("dt")  var dt: Int?,
                   @SerializedName("temp")  var temp: Double?,
+                  @SerializedName("pressure")  var pressure: Int?,
+                  @SerializedName("humidity")  var humidity: Int?,
+                  @SerializedName("wind_speed")  var windSpeed: Double?,
+                  @SerializedName("weather")  var weather: List<Weather>?    )
+
+
+
+
+
+
+
+/*
+data class Hourly(@SerializedName("dt")  var dt: Int?,
+                  @SerializedName("temp")  var temp: Double?,
                   @SerializedName("feels_like")  var feelsLike: Double?,
                   @SerializedName("pressure")  var pressure: Int?,
                   @SerializedName("humidity")  var humidity: Int?,
@@ -22,3 +36,4 @@ data class Hourly(@SerializedName("dt")  var dt: Int?,
                   @SerializedName("rain")  var rain: Rain?,
                   @SerializedName("snow")  var snow: Snow?,
                   @SerializedName("weather")  var weather: List<Weather>?    )
+ */

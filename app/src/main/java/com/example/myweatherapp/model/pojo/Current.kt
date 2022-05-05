@@ -7,6 +7,18 @@ import com.google.gson.annotations.SerializedName
 
 @TypeConverters(CurrentTypeConverter::class)
 data class Current (@SerializedName("dt")  var dt: Int?,
+                    @SerializedName("temp")  var temp: Double?,
+                    @SerializedName("pressure")  var pressure: Int?,
+                    @SerializedName("humidity")  var humidity: Int?,
+                    @SerializedName("weather")  var weather: List<Weather>? )
+
+
+
+
+
+
+/*
+data class Current (@SerializedName("dt")  var dt: Int?,
                     @SerializedName("sunrise")  var sunrise: Int?,
                     @SerializedName("sunset")  var sunset: Int?,
                     @SerializedName("temp")  var temp: Double?,
@@ -21,3 +33,4 @@ data class Current (@SerializedName("dt")  var dt: Int?,
                     @SerializedName("wind_gust")  var windGust: Double?,
                     @SerializedName("wind_deg")  var windDeg: Int?,
                     @SerializedName("weather")  var weather: List<Weather>? )
+ */

@@ -8,6 +8,19 @@ import com.google.gson.annotations.SerializedName
 
 @TypeConverters(DailyTypeConverter::class)
 data class Daily (@SerializedName("dt")  var dt: Int?,
+                  @SerializedName("temp")  var temp: Temp?,
+                  @SerializedName("pressure")  var pressure: Int?,
+                  @SerializedName("humidity")  var humidity: Int?,
+                  @SerializedName("wind_speed")  var windSpeed: Double?,
+                  @SerializedName("weather")  var weather: List<Weather>? )
+
+
+
+
+
+/*
+
+data class Daily (@SerializedName("dt")  var dt: Int?,
                   @SerializedName("sunrise")  var sunrise: Int?,
                   @SerializedName("sunset")  var sunset: Int?,
                   @SerializedName("moonrise")  var moonrise: Int?,
@@ -24,3 +37,4 @@ data class Daily (@SerializedName("dt")  var dt: Int?,
                   @SerializedName("pop")  var pop: Double?,
                   @SerializedName("rain")  var rain: Double?,
                   @SerializedName("uvi")  var uvi: Double? )
+ */
