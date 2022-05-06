@@ -1,5 +1,6 @@
 package com.example.myweatherapp.dummy_test_activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myweatherapp.R
 import com.example.myweatherapp.database.ConcreteLocalSource
 import com.example.myweatherapp.database.weather_db.WeatherEntity
+import com.example.myweatherapp.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.model.repo.RepoInterface
 import com.example.myweatherapp.model.pojo.WeatherDataModel
@@ -28,7 +30,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         Log.e("TAG", "onCreate: git test ", )
+        Log.e("***", "onCreate: main activityyyyy", )
+        startActivity(Intent(this@MainActivity , HomeActivity::class.java))
+
+        /*
 
         tv = findViewById(R.id.testTextView)
         imageView = findViewById(R.id.testImageView)
@@ -36,8 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
         var weatherData : LiveData<WeatherDataModel> = _weatherData
-
-
 
         //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
 
@@ -49,18 +54,24 @@ class MainActivity : AppCompatActivity() {
             withContext(Dispatchers.Main){
                 weatherData.observe(this@MainActivity, Observer {
                     //tv.text = it.toString()
-                    //tv.text = it.current!!.weather!![0].description
-                    tv.text = it.current!!.weather!![0].main
+                    tv.text = it.current!!.weather!![0].description
+                    //tv.text = it.current!!.weather!![0].main
                     //tv.text = it.current?.weather?.get(0)?.description ?: ""
                     //tv.text = it.current?.weather?.get(0)?.icon
 
-                    //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
+                    // need casting or replace weather entity
+
+                    //var weatherEntity : WeatherEntity = it
+
+                //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
                     //Glide.with(imageView.context).load(it.current?.weather?.get(0)?.icon).into(imageView)
 
                 })
             }
 
         }
+
+        */
 
     }
 }

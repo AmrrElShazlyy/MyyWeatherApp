@@ -11,6 +11,7 @@ data class Hourly(@SerializedName("dt")  var dt: Int?,
                   @SerializedName("temp")  var temp: Double?,
                   @SerializedName("pressure")  var pressure: Int?,
                   @SerializedName("humidity")  var humidity: Int?,
+                  @SerializedName("clouds")  var clouds: Int?,
                   @SerializedName("wind_speed")  var windSpeed: Double?,
                   @SerializedName("weather")  var weather: List<Weather>?    )
 

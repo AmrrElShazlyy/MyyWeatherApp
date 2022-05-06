@@ -5,4 +5,6 @@
     <string name="fav_str">Favourites</string>
     <string name="alerts_str">Alerts</string>
     <string name="settings_str">Settings</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
