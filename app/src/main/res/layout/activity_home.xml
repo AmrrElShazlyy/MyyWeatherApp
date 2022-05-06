@@ -124,6 +124,15 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hourlyRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyRecyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -132,14 +141,86 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/hourlyRecyclerView" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/hourlyRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="24dp"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bottomCardView"
+                    android:layout_width="268dp"
+                    android:layout_height="147dp"
+                    android:background="@color/cardview_light_background"
+                    android:backgroundTint="@color/underLine"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                    app:layout_constraintTop_toBottomOf="@+id/dailyRecyclerview">
+
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:id="@+id/homeTextViewCurrentPressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="24dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Pressure \n 2000 hpa"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/homeTextViewCurrentHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginEnd="24dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Humidity \n 77 %"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/homeTextViewCurrentClouds"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginBottom="24dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Clouds \n 77 %"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/homeTextViewCurrentWindSpeed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginBottom="24dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Wind Speed \n  20 m/s"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
