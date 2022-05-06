@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.adapters.DailyAdapter
 import com.example.myweatherapp.adapters.HourlyAdapter
 import com.example.myweatherapp.dummy_test_activity.MainActivity
 import com.google.android.material.navigation.NavigationView
@@ -20,7 +21,11 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var hourlyRecyclerView: RecyclerView
     lateinit var hourlyAdapter: HourlyAdapter
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var hourlyLayoutManager: LinearLayoutManager
+
+    lateinit var dailyRecyclerView: RecyclerView
+    lateinit var dailyAdapter: DailyAdapter
+    lateinit var dailyLayoutManager: LinearLayoutManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
 
         initNavDrawer()
         initHourlyRecyclerView()
+        initDailyRecyclerView()
 
     }
 
@@ -68,9 +74,18 @@ class HomeActivity : AppCompatActivity() {
 
         hourlyRecyclerView = findViewById(R.id.hourlyRecyclerView)
         hourlyAdapter = HourlyAdapter()
-        layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
-        hourlyRecyclerView.layoutManager = layoutManager
+        hourlyLayoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
+        hourlyRecyclerView.layoutManager = hourlyLayoutManager
         hourlyRecyclerView.adapter = hourlyAdapter
+    }
+
+    fun initDailyRecyclerView(){
+
+        dailyRecyclerView = findViewById(R.id.dailyRecyclerview)
+        dailyAdapter = DailyAdapter()
+        dailyLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        dailyRecyclerView.layoutManager = dailyLayoutManager
+        dailyRecyclerView.adapter = dailyAdapter
     }
 
 }

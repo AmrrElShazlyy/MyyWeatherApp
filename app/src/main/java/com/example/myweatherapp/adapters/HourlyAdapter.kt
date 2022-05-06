@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
@@ -29,6 +30,7 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
         val hourlyTextViewTime : TextView = itemView.findViewById(R.id.hourlyTextViewTime)
         val hourlyTextViewTemp : TextView = itemView.findViewById(R.id.hourlyTextViewTemp)
         val hourlyImageViewIcon : ImageView = itemView.findViewById(R.id.hourlyImageViewIcon)
+        val hourlyConstraintLayout : ConstraintLayout = itemView.findViewById(R.id.hourlyRowConstarintLayout)
 
     }
 

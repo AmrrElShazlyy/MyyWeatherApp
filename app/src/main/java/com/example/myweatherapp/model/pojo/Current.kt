@@ -10,6 +10,7 @@ data class Current (@SerializedName("dt")  var dt: Int?,
                     @SerializedName("temp")  var temp: Double?,
                     @SerializedName("pressure")  var pressure: Int?,
                     @SerializedName("clouds")  var clouds: Int?,
+                    @SerializedName("wind_speed")  var windSpeed: Double?,
                     @SerializedName("humidity")  var humidity: Int?,
                     @SerializedName("weather")  var weather: List<Weather>? )
 

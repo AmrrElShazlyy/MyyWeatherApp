@@ -124,6 +124,15 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dailyRecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hourlyRecyclerView" />
+
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/hourlyRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
