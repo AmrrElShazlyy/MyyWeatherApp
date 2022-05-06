@@ -9,12 +9,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.adapters.DailyAdapter
 import com.example.myweatherapp.adapters.HourlyAdapter
+import com.example.myweatherapp.database.ConcreteLocalSource
 import com.example.myweatherapp.dummy_test_activity.MainActivity
+import com.example.myweatherapp.home_screen.view_model.HomeViewModel
+import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
+import com.example.myweatherapp.model.repo.Repo
+import com.example.myweatherapp.network.WeatherClient
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {
@@ -38,6 +45,8 @@ class HomeActivity : AppCompatActivity() {
     lateinit var dailyAdapter: DailyAdapter
     lateinit var dailyLayoutManager: LinearLayoutManager
 
+    lateinit var homeViewModel: HomeViewModel
+    lateinit var homeViewModelFactory: HomeViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +57,24 @@ class HomeActivity : AppCompatActivity() {
         initNavDrawer()
         initHourlyRecyclerView()
         initDailyRecyclerView()
+
+        homeViewModelFactory = HomeViewModelFactory(
+            Repo.getInstance(this,
+                WeatherClient.getInstance(),
+                ConcreteLocalSource(this)
+            ))
+        homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel.getWeatherDataModelFromNetwork()
+        homeViewModel.weatherData.observe(this , Observer {
+
+
+
+            hourlyAdapter.hourlyList = it.hourly!!
+            hourlyAdapter.notifyDataSetChanged()
+            dailyAdapter.dailyList = it.daily!!
+            dailyAdapter.notifyDataSetChanged()
+
+        })
 
     }
 
