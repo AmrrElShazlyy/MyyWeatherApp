@@ -7,7 +7,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.adapters.HourlyAdapter
 import com.example.myweatherapp.dummy_test_activity.MainActivity
 import com.google.android.material.navigation.NavigationView
 
@@ -15,12 +18,17 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
 
+    lateinit var hourlyRecyclerView: RecyclerView
+    lateinit var hourlyAdapter: HourlyAdapter
+    lateinit var layoutManager: LinearLayoutManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         initNavDrawer()
+        initHourlyRecyclerView()
 
     }
 
@@ -53,7 +61,17 @@ class HomeActivity : AppCompatActivity() {
         if (toggle.onOptionsItemSelected(item)){
             return true
         }
-
         return super.onOptionsItemSelected(item)
     }
+
+    fun initHourlyRecyclerView(){
+
+        hourlyRecyclerView = findViewById(R.id.hourlyRecyclerView)
+        hourlyAdapter = HourlyAdapter()
+        layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
+        hourlyRecyclerView.layoutManager = layoutManager
+        hourlyRecyclerView.adapter = hourlyAdapter
+    }
+
 }
+
