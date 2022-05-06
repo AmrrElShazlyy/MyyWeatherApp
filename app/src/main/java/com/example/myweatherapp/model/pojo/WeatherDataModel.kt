@@ -9,7 +9,8 @@ data class WeatherDataModel (@SerializedName("lat")  var lat: Double?,
                              @SerializedName("current")  var current: Current?,
                              @SerializedName("hourly")  var hourly: List<Hourly>?,
                              @SerializedName("daily")  var daily: List<Daily>?,
-                             @SerializedName("alerts")  var alert: List<Alert>?     ){
+                             @SerializedName("alerts")  var alert: List<Alert>?,
+                                var isFavourite : Boolean = false){
 
     constructor() : this(0.0,0.0,"",0,null,emptyList(), emptyList(), emptyList())
 

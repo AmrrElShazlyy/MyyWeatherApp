@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.myweatherapp.R
 import com.example.myweatherapp.database.ConcreteLocalSource
+import com.example.myweatherapp.database.weather_db.WeatherEntity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.model.repo.RepoInterface
 import com.example.myweatherapp.model.pojo.WeatherDataModel
@@ -36,16 +37,20 @@ class MainActivity : AppCompatActivity() {
         var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
         var weatherData : LiveData<WeatherDataModel> = _weatherData
 
+
+
         //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
+
         lifecycleScope.launch(Dispatchers.IO){
             _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
             //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
+
             weatherData = _weatherData
             withContext(Dispatchers.Main){
                 weatherData.observe(this@MainActivity, Observer {
-                    tv.text = it.toString()
+                    //tv.text = it.toString()
                     //tv.text = it.current!!.weather!![0].description
-                    //tv.text = it.current!!.weather!![0].main
+                    tv.text = it.current!!.weather!![0].main
                     //tv.text = it.current?.weather?.get(0)?.description ?: ""
                     //tv.text = it.current?.weather?.get(0)?.icon
 

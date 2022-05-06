@@ -19,6 +19,7 @@ class HourlyTypeConverter {
         }
 
         @TypeConverter
+        @JvmStatic
         fun fromStringToHourlyList(hourlyListString: String): MutableList<Hourly> {
 
             val gson = Gson()

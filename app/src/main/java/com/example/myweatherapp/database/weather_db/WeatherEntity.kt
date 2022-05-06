@@ -11,15 +11,29 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 @Entity(tableName = "weatherEntity")
-class WeatherEntity : Serializable {
+data class WeatherEntity (  @PrimaryKey(autoGenerate = true) var weatherEntityId : Int? ,
+                            @ColumnInfo(name = "lat")  var lat: Double?,
+                            @ColumnInfo(name ="lon")  var lon: Double?,
+                            @ColumnInfo(name ="timezone")  var timezone: String?,
+                            @ColumnInfo(name ="timezone_offset") var timezoneOffset: Int?,
+                            @ColumnInfo(name ="current")  var current: Current?,
+                            @ColumnInfo(name ="hourly")  var hourly: List<Hourly>?,
+                            @ColumnInfo(name ="daily")  var daily: List<Daily>?,
+                            @ColumnInfo(name ="alerts")  var alert: List<Alert>?     )
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-    var title: String = ""
-    var lat: Double = 0.0
-    var lon: Double = 0.0
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

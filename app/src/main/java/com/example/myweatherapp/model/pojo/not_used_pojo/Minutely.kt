@@ -1,4 +1,4 @@
-package com.example.myweatherapp.model.pojo
+package com.example.myweatherapp.model.pojo.not_used_pojo
 
 import com.google.gson.annotations.SerializedName
 

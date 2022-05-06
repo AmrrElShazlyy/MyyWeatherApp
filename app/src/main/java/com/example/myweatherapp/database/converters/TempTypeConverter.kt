@@ -1,8 +1,6 @@
 package com.example.myweatherapp.database.converters
 
 import androidx.room.TypeConverter
-import com.example.myweatherapp.model.pojo.Current
-import com.example.myweatherapp.model.pojo.FeelsLike
 import com.example.myweatherapp.model.pojo.Temp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
