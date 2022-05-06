@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_home_screen"
+        android:icon="@drawable/ic_baseline_home_myicon_24"
+        android:title="@string/home_str" />
+
+    <item
+        android:id="@+id/nav_fav_screen"
+        android:icon="@drawable/ic_baseline_star_myicon_24"
+        android:title="@string/fav_str" />
+
+    <item
+        android:id="@+id/nav_alerts_screen"
+        android:icon="@drawable/ic_baseline_add_alert_2_myicon_4"
+        android:title="@string/alerts_str" />
+
+    <item
+        android:id="@+id/nav_settings_screen"
+        android:icon="@drawable/ic_baseline_settings_myicon_24"
+        android:title="@string/settings_str" />
+
+</menu>

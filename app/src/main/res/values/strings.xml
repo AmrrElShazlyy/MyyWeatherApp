@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyWeatherApp</string>
+    <string name="navigation_menu">Navigation Menu</string>
+    <string name="home_str">Home</string>
+    <string name="fav_str">Favourites</string>
+    <string name="alerts_str">Alerts</string>
+    <string name="settings_str">Settings</string>
 </resources>

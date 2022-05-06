@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_menu">قائمة التصفح</string>
+    <string name="home_str">الرئيسية</string>
+    <string name="fav_str">المفضلة</string>
+    <string name="alerts_str">التنبيهات</string>
+    <string name="settings_str">الاعدادات</string>
+</resources>
