@@ -5,4 +5,15 @@
     <string name="fav_str">المفضلة</string>
     <string name="alerts_str">التنبيهات</string>
     <string name="settings_str">الاعدادات</string>
+    <string name="location">الموقع</string>
+    <string name="app_name">تطبيق المناخ</string>
+    <string name="temprature">Temprature</string>
+    <string name="gps">GPS</string>
+    <string name="another_location">Another Location</string>
+    <string name="calvin">Calvin</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="meter_per_second">متر / ثانية</string>
+    <string name="mile_per_hour">ميل / الساعة</string>
 </resources>

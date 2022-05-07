@@ -7,4 +7,14 @@
     <string name="settings_str">Settings</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="location">Location</string>
+    <string name="temprature">Temprature</string>
+    <string name="gps">GPS</string>
+    <string name="another_location">Another Location</string>
+    <string name="calvin">Calvin</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="meter_per_second">Meter/Second</string>
+    <string name="mile_per_hour">Mile/Hour</string>
 </resources>
