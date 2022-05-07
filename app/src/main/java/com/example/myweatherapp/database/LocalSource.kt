@@ -5,23 +5,23 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.myweatherapp.database.alert_db.AlertEntity
 import com.example.myweatherapp.database.location_db.LocationEntity
-import com.example.myweatherapp.database.weather_db.WeatherEntity
+import com.example.myweatherapp.model.pojo.Alert
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 
 interface LocalSource {
 
     // weather
 
-    fun insertWeatherData(weatherEntity: WeatherEntity)
-    fun deleteWeatherData(weatherEntity: WeatherEntity)
-    val allStoredWeatherDataModel: LiveData<List<WeatherEntity>>
+    fun insertWeatherData(weatherDataModel: WeatherDataModel)
+    fun deleteWeatherData(weatherDataModel: WeatherDataModel)
+    val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
 
     // alert
 
-    fun insertAlert(alertEntity : AlertEntity)
-    fun deleteAlert(alertEntity: AlertEntity)
-    val allStoredWeatherAlerts: LiveData<List<AlertEntity>>
+    fun insertAlert(alert : Alert)
+    fun deleteAlert(alert: Alert)
+    val allStoredWeatherAlerts: LiveData<List<Alert>>
 
     // location
 

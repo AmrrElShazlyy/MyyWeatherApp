@@ -17,12 +17,8 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
 
     var weather1 = Weather(11,"clear sky" , "cleaaar sky" , "01x")
     var hourly1 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
-    var hourly2 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
-    var hourly3 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
-    var hourly4 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
-    var hourly5 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
 
-    var hourlyList : List<Hourly> = arrayListOf(hourly1,hourly2,hourly3,hourly4,hourly5)
+    var hourlyList : List<Hourly> = arrayListOf()
 
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){

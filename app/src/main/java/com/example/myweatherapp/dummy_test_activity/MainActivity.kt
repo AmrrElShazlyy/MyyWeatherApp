@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.myweatherapp.R
 import com.example.myweatherapp.database.ConcreteLocalSource
-import com.example.myweatherapp.database.weather_db.WeatherEntity
 import com.example.myweatherapp.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.model.repo.RepoInterface

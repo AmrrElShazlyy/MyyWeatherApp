@@ -3,11 +3,11 @@ package com.example.myweatherapp.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.example.myweatherapp.database.alert_db.AlertDao
-import com.example.myweatherapp.database.alert_db.AlertEntity
 import com.example.myweatherapp.database.location_db.LocationDao
 import com.example.myweatherapp.database.location_db.LocationEntity
 import com.example.myweatherapp.database.weather_db.WeatherDao
-import com.example.myweatherapp.database.weather_db.WeatherEntity
+import com.example.myweatherapp.model.pojo.Alert
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 
 class ConcreteLocalSource(context: Context) : LocalSource {
 
@@ -18,15 +18,15 @@ class ConcreteLocalSource(context: Context) : LocalSource {
 
     // weather
 
-    override fun insertWeatherData(weatherEntity: WeatherEntity) {
-        weatherDao?.insertWeatherData(weatherEntity)
+    override fun insertWeatherData(weatherDataModel: WeatherDataModel) {
+        weatherDao?.insertWeatherData(weatherDataModel)
     }
 
-    override fun deleteWeatherData(weatherEntity: WeatherEntity) {
-        weatherDao?.deleteWeatherData(weatherEntity)
+    override fun deleteWeatherData(weatherDataModel: WeatherDataModel) {
+        weatherDao?.deleteWeatherData(weatherDataModel)
     }
 
-    override val allStoredWeatherDataModel: LiveData<List<WeatherEntity>>
+    override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
     init {
         val dataBase = AppDataBase.getInstance(context)
         weatherDao = dataBase?.weatherDao()
@@ -36,15 +36,15 @@ class ConcreteLocalSource(context: Context) : LocalSource {
 
     // alert
 
-    override fun insertAlert(alertEntity: AlertEntity) {
-        alertDao?.insertAlert(alertEntity)
+    override fun insertAlert(alert: Alert) {
+        alertDao?.insertAlert(alert)
     }
 
-    override fun deleteAlert(alertEntity: AlertEntity) {
-        alertDao?.deleteAlert(alertEntity)
+    override fun deleteAlert(alert: Alert) {
+        alertDao?.deleteAlert(alert)
     }
 
-    override val allStoredWeatherAlerts: LiveData<List<AlertEntity>>
+    override val allStoredWeatherAlerts: LiveData<List<Alert>>
     init {
         val dataBase = AppDataBase.getInstance(context)
         alertDao = dataBase?.alertDao()

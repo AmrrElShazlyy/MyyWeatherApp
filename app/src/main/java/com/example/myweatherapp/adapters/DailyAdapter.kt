@@ -20,7 +20,7 @@ class DailyAdapter() : RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
     var temp1 = Temp(33.33,33.33,33.33,33.33,33.33,33.33)
     var daily1 = Daily(22,temp1,44,44,33,22.33, listOf(weather1))
 
-    var dailyList : List<Daily> = arrayListOf(daily1,daily1,daily1,daily1,daily1)
+    var dailyList : List<Daily> = arrayListOf()
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 

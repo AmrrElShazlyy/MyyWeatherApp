@@ -2,10 +2,9 @@ package com.example.myweatherapp.model.repo
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.myweatherapp.database.alert_db.AlertEntity
 import com.example.myweatherapp.database.LocalSource
 import com.example.myweatherapp.database.location_db.LocationEntity
-import com.example.myweatherapp.database.weather_db.WeatherEntity
+import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.RemoteSource
 
@@ -39,29 +38,29 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     // weather
 
-    override fun insertWeatherData(weatherEntity: WeatherEntity) {
-        localSource.insertWeatherData(weatherEntity)
+    override fun insertWeatherData(weatherDataModel: WeatherDataModel) {
+        localSource.insertWeatherData(weatherDataModel)
     }
 
-    override fun deleteWeatherData(weatherEntity: WeatherEntity) {
-        localSource.deleteWeatherData(weatherEntity)
+    override fun deleteWeatherData(weatherDataModel: WeatherDataModel) {
+        localSource.deleteWeatherData(weatherDataModel)
     }
 
-    override val allStoredWeatherDataModel: LiveData<List<WeatherEntity>>
+    override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
         get() = localSource.allStoredWeatherDataModel
 
 
     // alerts
 
-    override fun insertAlert(alertEntity: AlertEntity) {
-        localSource.insertAlert(alertEntity)
+    override fun insertAlert(alert: Alert) {
+        localSource.insertAlert(alert)
     }
 
-    override fun deleteAlert(alertEntity: AlertEntity) {
-        localSource.deleteAlert(alertEntity)
+    override fun deleteAlert(alert: Alert) {
+        localSource.deleteAlert(alert)
     }
 
-    override val allStoredWeatherAlerts: LiveData<List<AlertEntity>>
+    override val allStoredWeatherAlerts: LiveData<List<Alert>>
         get() = localSource.allStoredWeatherAlerts
 
     override fun insertLocationData(locationEntity: LocationEntity) {
