@@ -231,6 +231,14 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/settingsTestTextView"
+            android:layout_width="237dp"
+            android:layout_height="35dp"
+            android:text="***  Test ***"
+            tools:layout_editor_absoluteX="149dp"
+            tools:layout_editor_absoluteY="8dp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
