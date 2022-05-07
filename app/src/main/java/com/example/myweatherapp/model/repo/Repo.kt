@@ -2,8 +2,8 @@ package com.example.myweatherapp.model.repo
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.myweatherapp.database.LocalSource
-import com.example.myweatherapp.database.location_db.LocationEntity
+import com.example.myweatherapp.database.app_db_datasource.LocalSource
+import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.RemoteSource

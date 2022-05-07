@@ -1,7 +1,8 @@
-package com.example.myweatherapp.database.location_db
+package com.example.myweatherapp.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.myweatherapp.model.pojo.LocationEntity
 
 
 @Dao

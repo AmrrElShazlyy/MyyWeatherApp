@@ -1,11 +1,11 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.app_db_datasource
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.myweatherapp.database.alert_db.AlertDao
-import com.example.myweatherapp.database.location_db.LocationDao
-import com.example.myweatherapp.database.location_db.LocationEntity
-import com.example.myweatherapp.database.weather_db.WeatherDao
+import com.example.myweatherapp.database.dao.AlertDao
+import com.example.myweatherapp.database.dao.LocationDao
+import com.example.myweatherapp.model.pojo.LocationEntity
+import com.example.myweatherapp.database.dao.WeatherDao
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 

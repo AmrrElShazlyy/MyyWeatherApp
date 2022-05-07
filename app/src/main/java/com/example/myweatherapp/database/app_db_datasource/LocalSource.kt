@@ -1,11 +1,7 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.app_db_datasource
 
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.myweatherapp.database.location_db.LocationEntity
+import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 

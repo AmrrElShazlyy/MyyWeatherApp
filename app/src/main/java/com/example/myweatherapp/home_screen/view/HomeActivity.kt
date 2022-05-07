@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.adapters.DailyAdapter
 import com.example.myweatherapp.adapters.HourlyAdapter
-import com.example.myweatherapp.database.ConcreteLocalSource
+import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.dummy_test_activity.MainActivity
 import com.example.myweatherapp.home_screen.view_model.HomeViewModel
 import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
@@ -28,8 +28,8 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
 
-    lateinit var locationTv : TextView
-    lateinit var dateTv : TextView
+    lateinit var currentLocationTv : TextView
+    lateinit var currentDateTv : TextView
     lateinit var currentIconIv : ImageView
     lateinit var currentDescrTv : TextView
     lateinit var currentPressureTv : TextView
@@ -61,8 +61,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun initUI(){
-        locationTv = findViewById(R.id.homeTextViewLocation)
-        dateTv =  findViewById(R.id.homeTextViewDate)
+        currentLocationTv = findViewById(R.id.homeTextViewLocation)
+        currentDateTv =  findViewById(R.id.homeTextViewDate)
         currentIconIv = findViewById(R.id.homeImageViewCurrentIcon)
         currentDescrTv = findViewById(R.id.homeTextViewCurrentDescr)
         currentPressureTv = findViewById(R.id.homeTextViewCurrentPressure)
@@ -122,6 +122,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun getDataFromviewModel(){
+
         homeViewModelFactory = HomeViewModelFactory(
             Repo.getInstance(this,
                 WeatherClient.getInstance(),
@@ -137,7 +138,12 @@ class HomeActivity : AppCompatActivity() {
             dailyAdapter.dailyList = it.daily!!
             dailyAdapter.notifyDataSetChanged()
 
-            homeViewModel.insertWeatherDataModelIntoDB(it)
+            // ************ inserting in DB (need to change primary key) *************
+            //homeViewModel.insertWeatherDataModelIntoDB(it)
+            // ************************************************************
+
+            // setting current data in UI
+            currentLocationTv.text = it.timezone
 
         })
     }

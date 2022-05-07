@@ -1,15 +1,15 @@
-package com.example.myweatherapp.database
+package com.example.myweatherapp.database.app_db_datasource
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.myweatherapp.database.alert_db.AlertDao
+import com.example.myweatherapp.database.dao.AlertDao
 import com.example.myweatherapp.database.converters.*
-import com.example.myweatherapp.database.location_db.LocationDao
-import com.example.myweatherapp.database.location_db.LocationEntity
-import com.example.myweatherapp.database.weather_db.WeatherDao
+import com.example.myweatherapp.database.dao.LocationDao
+import com.example.myweatherapp.model.pojo.LocationEntity
+import com.example.myweatherapp.database.dao.WeatherDao
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 
@@ -29,7 +29,8 @@ abstract class AppDataBase : RoomDatabase(){
         @Synchronized
         fun getInstance(context: Context) : AppDataBase?{
             if (instance == null){
-                instance = Room.databaseBuilder(context.applicationContext,AppDataBase::class.java,"Weather_App_Database")
+                instance = Room.databaseBuilder(context.applicationContext,
+                    AppDataBase::class.java,"Weather_App_Database")
                     .build()
             }
             return instance

@@ -1,7 +1,7 @@
 package com.example.myweatherapp.model.repo
 
 import androidx.lifecycle.LiveData
-import com.example.myweatherapp.database.location_db.LocationEntity
+import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 
