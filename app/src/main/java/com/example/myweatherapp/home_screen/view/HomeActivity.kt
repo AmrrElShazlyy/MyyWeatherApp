@@ -52,29 +52,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
         initUI()
         initNavDrawer()
         initHourlyRecyclerView()
         initDailyRecyclerView()
-
-        homeViewModelFactory = HomeViewModelFactory(
-            Repo.getInstance(this,
-                WeatherClient.getInstance(),
-                ConcreteLocalSource(this)
-            ))
-        homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
-        homeViewModel.getWeatherDataModelFromNetwork()
-        homeViewModel.weatherData.observe(this , Observer {
-
-
-
-            hourlyAdapter.hourlyList = it.hourly!!
-            hourlyAdapter.notifyDataSetChanged()
-            dailyAdapter.dailyList = it.daily!!
-            dailyAdapter.notifyDataSetChanged()
-
-        })
+        getDataFromviewModel()
 
     }
 
@@ -137,6 +119,25 @@ class HomeActivity : AppCompatActivity() {
         dailyLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         dailyRecyclerView.layoutManager = dailyLayoutManager
         dailyRecyclerView.adapter = dailyAdapter
+    }
+
+    fun getDataFromviewModel(){
+        homeViewModelFactory = HomeViewModelFactory(
+            Repo.getInstance(this,
+                WeatherClient.getInstance(),
+                ConcreteLocalSource(this)
+            ))
+        homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel.getWeatherDataModelFromNetwork()
+        homeViewModel.weatherData.observe(this , Observer {
+
+            hourlyAdapter.hourlyList = it.hourly!!
+            hourlyAdapter.notifyDataSetChanged()
+
+            dailyAdapter.dailyList = it.daily!!
+            dailyAdapter.notifyDataSetChanged()
+
+        })
     }
 
 }
