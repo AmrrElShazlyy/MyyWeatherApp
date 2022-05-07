@@ -1,14 +1,18 @@
-package com.example.myweatherapp.adapters
+package com.example.myweatherapp.home_screen.view
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
+import com.example.myweatherapp.constants.Constants
+import com.example.myweatherapp.constants.MyLocalDateTime
 import com.example.myweatherapp.model.pojo.Hourly
 import com.example.myweatherapp.model.pojo.Weather
 
@@ -35,10 +39,17 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
         return ViewHolder((view))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(holder.hourlyImageViewIcon.context).load(hourlyList[position].weather?.get(0)?.icon).into(holder.hourlyImageViewIcon)
-        holder.hourlyTextViewTime.text = (hourlyList[position].dt).toString()
-        holder.hourlyTextViewTemp.text = (hourlyList[position].temp).toString()
+
+        var hourlyIcon : String = hourlyList[position].weather?.get(0)?.icon!!
+        var hourlyIconUrl : String = "${Constants.IMG_URL+hourlyIcon}.png"
+        Glide.with(holder.hourlyImageViewIcon.context).load(hourlyIconUrl).into(holder.hourlyImageViewIcon)
+
+        holder.hourlyTextViewTime.text = MyLocalDateTime.getTimeFromHourlyObj(hourlyList[position])
+
+        // *****************   add when temp get in C or K or F  *********************
+        holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} 'K"
 
     }
 

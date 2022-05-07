@@ -22,12 +22,6 @@ interface WeatherService {
                                  @Query("appid")appid:String,@Query("exclude")exclude:String )
             : Response<WeatherDataModel>
 
-    @GET("img/wn/10d.png")
-    //******************** change this method ******************
-    suspend fun fetchWeatherIcon(@Query("lat")lat:Double,
-                                 @Query("lon")lon:Double,
-                                 @Query("appid")appid:String,@Query("exclude")exclude:String )
-            : Response<WeatherDataModel>
 }
 
 

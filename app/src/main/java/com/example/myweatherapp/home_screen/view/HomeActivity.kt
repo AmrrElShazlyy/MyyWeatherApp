@@ -1,25 +1,29 @@
 package com.example.myweatherapp.home_screen.view
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.adapters.DailyAdapter
-import com.example.myweatherapp.adapters.HourlyAdapter
+import com.example.myweatherapp.constants.Constants
+import com.example.myweatherapp.constants.MyLocalDateTime
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.dummy_test_activity.MainActivity
 import com.example.myweatherapp.home_screen.view_model.HomeViewModel
 import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
+import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
 import com.google.android.material.navigation.NavigationView
@@ -32,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var currentDateTv : TextView
     lateinit var currentIconIv : ImageView
     lateinit var currentDescrTv : TextView
+    lateinit var currentTempTv : TextView
     lateinit var currentPressureTv : TextView
     lateinit var currentHumidityTv : TextView
     lateinit var currentCloudsTv : TextView
@@ -48,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeViewModel: HomeViewModel
     lateinit var homeViewModelFactory: HomeViewModelFactory
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -65,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
         currentDateTv =  findViewById(R.id.homeTextViewDate)
         currentIconIv = findViewById(R.id.homeImageViewCurrentIcon)
         currentDescrTv = findViewById(R.id.homeTextViewCurrentDescr)
+        currentTempTv = findViewById(R.id.homeTextViewCurrentTemp)
         currentPressureTv = findViewById(R.id.homeTextViewCurrentPressure)
         currentHumidityTv = findViewById(R.id.homeTextViewCurrentHumidity)
         currentCloudsTv = findViewById(R.id.homeTextViewCurrentClouds)
@@ -121,6 +128,8 @@ class HomeActivity : AppCompatActivity() {
         dailyRecyclerView.adapter = dailyAdapter
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getDataFromviewModel(){
 
         homeViewModelFactory = HomeViewModelFactory(
@@ -143,9 +152,35 @@ class HomeActivity : AppCompatActivity() {
             // ************************************************************
 
             // setting current data in UI
-            currentLocationTv.text = it.timezone
+            setCurrentDataInUi(it)
 
         })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setCurrentDataInUi(weatherDataModel: WeatherDataModel){
+
+        currentLocationTv.text = weatherDataModel.timezone
+
+        var dayyy : String = MyLocalDateTime.getDayAndDateFromWeatherDataObj(weatherDataModel).first
+        var datett : String = MyLocalDateTime.getDayAndDateFromWeatherDataObj(weatherDataModel).second
+        currentDateTv.text = "$dayyy - $datett"
+        currentDescrTv.text = weatherDataModel.current?.weather?.get(0)?.description ?: "emptyyy"
+
+        // *****************   add when temp get in C or K or F  *********************
+        currentTempTv.text = "${weatherDataModel.current?.temp.toString()} 'K "
+
+        var currentIcon : String = weatherDataModel.current?.weather?.get(0)?.icon!!
+        var currentIconUrl : String = "${Constants.IMG_URL+currentIcon}.png"
+        Glide.with(currentIconIv.context).load(currentIconUrl).into(currentIconIv)
+
+        currentPressureTv.text = "Pressure \n ${weatherDataModel.current?.pressure.toString()} hpa"
+        currentHumidityTv.text = "Humidity \n ${weatherDataModel.current?.humidity.toString()} %"
+        currentWindSpeedTv.text = "Clouds \n ${weatherDataModel.current?.windSpeed.toString()} %"
+
+        // *****************   add when temp get in m/s or mile/hour   *********************
+        currentCloudsTv.text = "Wind Speed \n ${weatherDataModel.current?.clouds.toString()} m/s"
+
     }
 
 }
