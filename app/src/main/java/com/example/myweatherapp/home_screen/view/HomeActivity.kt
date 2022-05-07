@@ -137,6 +137,8 @@ class HomeActivity : AppCompatActivity() {
             dailyAdapter.dailyList = it.daily!!
             dailyAdapter.notifyDataSetChanged()
 
+            homeViewModel.insertWeatherDataModelIntoDB(it)
+
         })
     }
 
