@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="underLine">#8D8888</color>
+    <color name="lightBlue">#ADD8E6</color>
 </resources>
