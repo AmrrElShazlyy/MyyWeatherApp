@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="56dp"
+            android:layout_height="36dp"
+             />
+
         <TextView
             android:id="@+id/settingsTextView"
             android:layout_width="wrap_content"
@@ -235,9 +242,11 @@
             android:id="@+id/settingsTestTextView"
             android:layout_width="237dp"
             android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="25dp"
             android:text="***  Test ***"
-            tools:layout_editor_absoluteX="149dp"
-            tools:layout_editor_absoluteY="8dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

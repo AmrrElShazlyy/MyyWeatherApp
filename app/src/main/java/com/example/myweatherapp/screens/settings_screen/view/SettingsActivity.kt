@@ -6,8 +6,11 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -28,7 +31,14 @@ import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewM
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.util.*
@@ -45,62 +55,32 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var settingsViewModel: SettingsViewModel
 
     lateinit var testTv : TextView
-
-    lateinit private var  fusedLocationProviderClient: FusedLocationProviderClient
-    lateinit var locationRequest: LocationRequest
     var lat : Double = 0.0
     var lon : Double = 0.0
 
+    private lateinit var  fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
+    lateinit var placesClient: PlacesClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         initUi()
         initNavDrawer()
         initLocationRadioGroup()
         initTempRadioGroup()
         initWindRadioGroup()
-        //getDataFromviewModel()
-
         // ********* fetching location from activity direct  ***********
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        //fetchLocation()
         //checkLocationPermission()
         // ********* fetching location from activity direct  ***********
 
-
-    }
-
-    fun fetchLocation() {
-
-        val task = fusedLocationProviderClient.lastLocation
-
-        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED )
-        {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
-            return
+        if (!Places.isInitialized()){
+            Places.initialize(applicationContext,Constants.PLACES_API_KEY)
         }
-
-        task.addOnSuccessListener {
-            if (it != null){
-                Toast.makeText(this,"lat : ${it.latitude} lon : ${it.longitude}",Toast.LENGTH_SHORT).show()
-                lat = it.latitude
-                lon = it.longitude
-                testTv.text = "lat = ${lat}  lon = ${lon}"
-                val sharedPreferences = this.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.apply(){
-                    putFloat(Constants.LAT_KEY , it.latitude.toFloat())
-                    putFloat(Constants.LON_KEY , it.longitude.toFloat())
-
-                }.apply()
-            }
-        }
+        initgooglePlaces()
 
     }
 
@@ -112,6 +92,10 @@ class SettingsActivity : AppCompatActivity() {
             == PackageManager.PERMISSION_GRANTED )
         {
             // permission is allowed
+            val locationManager: LocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
             checkGPSPermission()
         }else{
             // when permission is denied
@@ -131,9 +115,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val result = LocationServices.getSettingsClient(this.applicationContext)
             .checkLocationSettings(builder.build())
+        Log.e("***", "get gps: bara try", )
+
         result.addOnCompleteListener{ task ->
             try {
                 // when the gps is on
+                Log.e("***", "get gps: try gps", )
                 val response = task.getResult(ApiException::class.java)
                 getCurrentLocation()
 
@@ -156,23 +143,48 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(){
+        Log.e("***", "getCurrentLocation: outside", )
         fusedLocationProviderClient.lastLocation.addOnCompleteListener{ task ->
+            Log.e("***", "getCurrentLocation: inside", )
             val location = task.getResult()
+            Log.e("***", "getCurrentLocation: outside 22", )
             if (location != null){
                 try {
-
                     val geocoder = Geocoder(this, Locale.getDefault())
                     val add = geocoder.getFromLocation(location.latitude , location.longitude , 1)
-                    testTv.text = "lat = ${location.latitude.toString()} lon = ${location.longitude.toString()}"
-
+                    lat = location.latitude
+                    lon = location.longitude
+                    Log.e("***", "getCurrentLocation: lat = ${lat} lon - ${lon} ", )
+                    testTv.text = "lat = ${lat.toString()} lon = ${lon.toString()}"
                 }catch (e : IOException){
 
                 }
             }
         }
+    }
+
+    fun initgooglePlaces(){
+        placesClient = Places.createClient(this)
+
+        val autocompleteSupportFragment : AutocompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        // Specify the types of place data to return.
+        autocompleteSupportFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.LAT_LNG,Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                val latLng : LatLng = place.latLng
+                Log.i("***", "Place: ${place.latLng} ${place.name}, ${place.id}")
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i("***", "An error occurred: $status")
+            }
+        })
     }
 
     fun initUi(){
@@ -225,7 +237,9 @@ class SettingsActivity : AppCompatActivity() {
                     checkLocationPermission()
                     //getDataFromviewModel()
                 }
-                R.id.mapRadioButton -> {testTv.text = radioButton.text.toString()}
+                R.id.mapRadioButton -> {
+                    testTv.text = radioButton.text.toString()
+                }
             }
         }
     }
@@ -255,7 +269,56 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    fun getDataFromviewModel(){
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+fun fetchLocation() {
+
+        val task = fusedLocationProviderClient.lastLocation
+
+        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED )
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
+            return
+        }
+
+        task.addOnSuccessListener {
+            if (it != null){
+                Toast.makeText(this,"lat : ${it.latitude} lon : ${it.longitude}",Toast.LENGTH_SHORT).show()
+                lat = it.latitude
+                lon = it.longitude
+                testTv.text = "lat = ${lat}  lon = ${lon}"
+                val sharedPreferences = this.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.apply(){
+                    putFloat(Constants.LAT_KEY , it.latitude.toFloat())
+                    putFloat(Constants.LON_KEY , it.longitude.toFloat())
+
+                }.apply()
+            }
+        }
+
+    }
+ */
+
+/*
+fun getDataFromviewModel(){
 
         settingsViewModelFactory = SettingsViewModelFactory(Repo.getInstance(this, WeatherClient.getInstance(), ConcreteLocalSource(this)
         ),this,this)
@@ -272,6 +335,4 @@ class SettingsActivity : AppCompatActivity() {
 
         })
     }
-
-
-}
+ */

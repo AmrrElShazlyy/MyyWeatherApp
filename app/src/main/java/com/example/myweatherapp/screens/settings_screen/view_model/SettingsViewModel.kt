@@ -15,7 +15,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val repo: RepoInterface , private var context: Context , private var activity: Activity) : ViewModel() {
+class SettingsViewModel(private val repo: RepoInterface) : ViewModel() {
 
     private var _lat : MutableLiveData<Double> = MutableLiveData<Double>()
     var lat : LiveData<Double> = _lat
@@ -23,8 +23,20 @@ class SettingsViewModel(private val repo: RepoInterface , private var context: C
     private var _lon : MutableLiveData<Double> = MutableLiveData<Double>()
     var lon : LiveData<Double> = _lon
 
-    private lateinit var  fusedLocationProviderClient: FusedLocationProviderClient
 
+
+}
+
+
+
+
+
+
+
+
+// private lateinit var  fusedLocationProviderClient: FusedLocationProviderClient
+
+/*
     fun fetchLocation() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
@@ -61,9 +73,4 @@ class SettingsViewModel(private val repo: RepoInterface , private var context: C
         }
 
     }
-
-
-
-}
-
-
+     */
