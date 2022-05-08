@@ -1,4 +1,4 @@
-package com.example.myweatherapp.settings_screen.view_model
+package com.example.myweatherapp.screens.settings_screen.view_model
 
 import android.app.Activity
 import android.content.Context
@@ -9,8 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.repo.RepoInterface
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

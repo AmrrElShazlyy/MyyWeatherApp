@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.LiveData
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.home_screen.view.HomeActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 

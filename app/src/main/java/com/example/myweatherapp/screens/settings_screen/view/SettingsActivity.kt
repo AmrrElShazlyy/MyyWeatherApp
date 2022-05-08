@@ -1,4 +1,4 @@
-package com.example.myweatherapp.settings_screen.view
+package com.example.myweatherapp.screens.settings_screen.view
 
 import android.content.Context
 import android.content.Intent
@@ -16,18 +16,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
+import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
-import com.example.myweatherapp.dummy_test_activity.MainActivity
-import com.example.myweatherapp.home_screen.view_model.HomeViewModel
-import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
+import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
-import com.example.myweatherapp.settings_screen.view_model.SettingsViewModel
-import com.example.myweatherapp.settings_screen.view_model.SettingsViewModelFactory
-import com.example.myweatherapp.utilities.CurrentLocationServices
+import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModel
+import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.navigation.NavigationView
 
 class SettingsActivity : AppCompatActivity() {

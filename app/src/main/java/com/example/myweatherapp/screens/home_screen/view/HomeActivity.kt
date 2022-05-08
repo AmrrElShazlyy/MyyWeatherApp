@@ -1,4 +1,4 @@
-package com.example.myweatherapp.home_screen.view
+package com.example.myweatherapp.screens.home_screen.view
 
 import android.content.Intent
 import android.os.Build
@@ -17,16 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.constants.MyLocalDateTime
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
-import com.example.myweatherapp.dummy_test_activity.MainActivity
-import com.example.myweatherapp.home_screen.view_model.HomeViewModel
-import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
+import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
+import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModel
+import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModelFactory
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
-import com.example.myweatherapp.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {

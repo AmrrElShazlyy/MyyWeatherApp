@@ -1,6 +1,6 @@
 package com.example.myweatherapp.network
 
-import com.example.myweatherapp.constants.Constants
+import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 
 class WeatherClient private constructor() : RemoteSource{

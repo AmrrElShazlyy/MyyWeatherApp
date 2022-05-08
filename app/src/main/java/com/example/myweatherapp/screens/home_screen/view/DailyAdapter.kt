@@ -1,4 +1,4 @@
-package com.example.myweatherapp.home_screen.view
+package com.example.myweatherapp.screens.home_screen.view
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.constants.MyLocalDateTime
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.model.pojo.Daily
 import com.example.myweatherapp.model.pojo.Temp
 import com.example.myweatherapp.model.pojo.Weather

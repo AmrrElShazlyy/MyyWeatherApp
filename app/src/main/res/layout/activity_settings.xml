@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/settingsDrawerLayout"
-    tools:context=".settings_screen.view.SettingsActivity">
+    tools:context=".screens.settings_screen.view.SettingsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -15,13 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWeatherApp">
         <activity
-            android:name=".settings_screen.view.SettingsActivity"
+            android:name="com.example.myweatherapp.screens.settings_screen.view.SettingsActivity"
             android:exported="true" />
         <activity
-            android:name=".home_screen.view.HomeActivity"
+            android:name="com.example.myweatherapp.screens.home_screen.view.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".dummy_test_activity.MainActivity"
+            android:name="com.example.myweatherapp.screens.dummy_test_activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

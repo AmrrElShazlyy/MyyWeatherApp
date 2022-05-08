@@ -1,4 +1,4 @@
-package com.example.myweatherapp.dummy_test_activity
+package com.example.myweatherapp.screens.dummy_test_activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.myweatherapp.R
-import com.example.myweatherapp.home_screen.view.HomeActivity
+import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
 
 class MainActivity : AppCompatActivity() {

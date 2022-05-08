@@ -1,4 +1,4 @@
-package com.example.myweatherapp.constants
+package com.example.myweatherapp.utilities
 
 import android.os.Build
 import androidx.annotation.RequiresApi
