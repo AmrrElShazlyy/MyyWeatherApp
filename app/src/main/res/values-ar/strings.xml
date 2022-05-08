@@ -16,4 +16,5 @@
     <string name="wind_speed">سرعة الرياح</string>
     <string name="meter_per_second">متر / ثانية</string>
     <string name="mile_per_hour">ميل / الساعة</string>
+    <string name="kalvin">Kalvin</string>
 </resources>

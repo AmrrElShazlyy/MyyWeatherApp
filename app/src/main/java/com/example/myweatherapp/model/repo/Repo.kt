@@ -69,7 +69,11 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
     override val allStoredLocations: LiveData<List<LocationEntity>>
         get() = localSource.allStoredLocations
 
-    override fun saveSettingsInSharedPref() {
+
+}
+
+
+
 //        val sharedPreferences = activity?.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
 //        val editor = sharedPreferences.edit()
 //        editor.apply(){
@@ -77,11 +81,7 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 //            putFloat(Constants.LON_KEY , it.longitude.toFloat())
 //
 //        }.apply()
-    }
 
-    override fun getSettingsFromSharedPref() {
-        TODO("Not yet implemented")
-    }
 
 //    override fun initLanguage() {
 //        val config = context.resources.configuration
@@ -91,4 +91,3 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 //        context.createConfigurationContext(config)
 //        context.resources.updateConfiguration(config, context.resources.displayMetrics)
 //    }
-}

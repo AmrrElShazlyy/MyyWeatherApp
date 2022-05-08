@@ -36,8 +36,6 @@ interface RepoInterface {
 
     // shared pref
 
-    fun saveSettingsInSharedPref()
-    fun getSettingsFromSharedPref()
 
 
 

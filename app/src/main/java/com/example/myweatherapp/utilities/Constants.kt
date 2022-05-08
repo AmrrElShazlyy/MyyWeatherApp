@@ -6,6 +6,9 @@ object Constants {
     const val IMG_URL="https://openweathermap.org/img/wn/"
     const val PLACES_API_KEY="AIzaSyDpFUEhmlTxljP1YEMSMUPRBPFImK8wUGo"
     const val GPS_PERMISSION_CODE=100
+
     const val LAT_KEY="lat_key"
     const val LON_KEY="lon_key"
+    const val UNITS_KEY="units_key"
+
 }

@@ -2,6 +2,7 @@ package com.example.myweatherapp.screens.settings_screen.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -19,6 +20,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -31,6 +33,7 @@ import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModel
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
@@ -52,17 +55,18 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var locationRadioGroup: RadioGroup
     lateinit var tempRadioGroup: RadioGroup
     lateinit var windRadioGroup: RadioGroup
-
-    lateinit var settingsViewModelFactory: SettingsViewModelFactory
-    lateinit var settingsViewModel: SettingsViewModel
-
+    lateinit var autoCompleteConstarintLayout: ConstraintLayout
     lateinit var testTv : TextView
     var lat : Double = 0.0
     var lon : Double = 0.0
 
+    lateinit var settingsViewModelFactory: SettingsViewModelFactory
+    lateinit var settingsViewModel: SettingsViewModel
+
     private lateinit var  fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     lateinit var placesClient: PlacesClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,15 +79,108 @@ class SettingsActivity : AppCompatActivity() {
         initLocationRadioGroup()
         initTempRadioGroup()
         initWindRadioGroup()
-        // ********* fetching location from activity direct  ***********
-        //checkLocationPermission()
-        // ********* fetching location from activity direct  ***********
 
         if (!Places.isInitialized()){
             Places.initialize(applicationContext,Constants.PLACES_API_KEY)
         }
-        initgooglePlaces()
+        initGooglePlaces(this)
 
+    }
+
+    fun initUi(){
+        locationRadioGroup = findViewById(R.id.locationRadioGroup)
+        tempRadioGroup = findViewById(R.id.settingsTempRadioGroup)
+        windRadioGroup = findViewById(R.id.settingsWindRadioGroup)
+        autoCompleteConstarintLayout = findViewById(R.id.autocompleteConstraintFargment)
+
+        testTv = findViewById(R.id.settingsTestTextView)
+    }
+
+    fun initNavDrawer(){
+
+        val drawerLayout : DrawerLayout = findViewById(R.id.settingsDrawerLayout)
+        val navView : NavigationView = findViewById(R.id.nav_view)
+
+        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+
+                //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
+                R.id.nav_home_screen -> startActivity(Intent(this , MainActivity::class.java))
+                R.id.nav_fav_screen -> Toast.makeText(this,"fav clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
+
+            }
+            true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun initLocationRadioGroup(){
+        locationRadioGroup.setOnCheckedChangeListener{
+                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
+            when(radioButton.id){
+                R.id.gpsRadioButton -> {
+                    //testTv.text = radioButton.text.toString()
+                    checkLocationPermission()
+                }
+                R.id.mapRadioButton -> {
+
+                    testTv.text = radioButton.text.toString()
+                }
+            }
+        }
+    }
+
+    fun initTempRadioGroup(){
+        tempRadioGroup.setOnCheckedChangeListener{
+                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
+            when(radioButton.id){
+                R.id.calvinRadioButton -> {
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"standard",this)
+                    testTv.text = radioButton.text.toString()
+                }
+                R.id.celsiusRadioButton -> {
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"metric",this)
+                    testTv.text = radioButton.text.toString()
+                }
+                R.id.fahrenheitRadioButton -> {
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"imperial",this)
+                    testTv.text = radioButton.text.toString()
+                }
+            }
+        }
+    }
+
+    fun initWindRadioGroup(){
+        windRadioGroup.setOnCheckedChangeListener{
+                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
+            when(radioButton.id){
+
+                R.id.meterSecondRadioButton ->  {
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"metric",this)
+                    testTv.text = radioButton.text.toString()
+                }
+                R.id.mileHourRadioButton -> {
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"imperial",this)
+                    testTv.text = radioButton.text.toString()
+                    Toast.makeText(this, "here mile per hour ", Toast.LENGTH_SHORT).show()}
+
+            }
+
+        }
     }
 
     fun checkLocationPermission(){
@@ -158,8 +255,14 @@ class SettingsActivity : AppCompatActivity() {
                     val add = geocoder.getFromLocation(location.latitude , location.longitude , 1)
                     lat = location.latitude
                     lon = location.longitude
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
                     Log.e("***", "getCurrentLocation: lat = ${lat} lon - ${lon} ", )
-                    testTv.text = "lat = ${lat.toString()} lon = ${lon.toString()}"
+
+                    var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
+                    var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
+
+                    testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
                 }catch (e : IOException){
 
                 }
@@ -167,10 +270,10 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    fun initgooglePlaces(){
+    fun initGooglePlaces(activity : Activity){
         placesClient = Places.createClient(this)
 
-        val autocompleteSupportFragment : AutocompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        val autocompleteSupportFragment  = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
         autocompleteSupportFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.LAT_LNG,Place.Field.NAME))
 
@@ -179,6 +282,10 @@ class SettingsActivity : AppCompatActivity() {
             override fun onPlaceSelected(place: Place) {
                 // TODO: Get info about the selected place.
                 val latLng : LatLng = place.latLng
+                lat = latLng.latitude
+                lon = latLng.longitude
+                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),activity)
+                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),activity)
                 Log.i("***", "Place: ${place.latLng} ${place.name}, ${place.id}")
             }
 
@@ -189,87 +296,22 @@ class SettingsActivity : AppCompatActivity() {
         })
     }
 
-    fun initUi(){
-        locationRadioGroup = findViewById(R.id.locationRadioGroup)
-        tempRadioGroup = findViewById(R.id.settingsTempRadioGroup)
-        windRadioGroup = findViewById(R.id.settingsWindRadioGroup)
-
-        testTv = findViewById(R.id.settingsTestTextView)
-    }
-
-    fun initNavDrawer(){
-
-        val drawerLayout : DrawerLayout = findViewById(R.id.settingsDrawerLayout)
-        val navView : NavigationView = findViewById(R.id.nav_view)
-
-        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        navView.setNavigationItemSelectedListener {
-            when(it.itemId){
-
-                //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
-                R.id.nav_home_screen -> startActivity(Intent(this , MainActivity::class.java))
-                R.id.nav_fav_screen -> Toast.makeText(this,"fav clicked", Toast.LENGTH_SHORT).show()
-                R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked", Toast.LENGTH_SHORT).show()
-                R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
-
-            }
-            true
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        if (toggle.onOptionsItemSelected(item)){
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun initLocationRadioGroup(){
-        locationRadioGroup.setOnCheckedChangeListener{
-                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
-            when(radioButton.id){
-                R.id.gpsRadioButton -> {
-                    //testTv.text = radioButton.text.toString()
-                    checkLocationPermission()
-                }
-                R.id.mapRadioButton -> {
-                    testTv.text = radioButton.text.toString()
-                }
-            }
-        }
-    }
-
-    fun initTempRadioGroup(){
-        tempRadioGroup.setOnCheckedChangeListener{
-                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
-            when(radioButton.id){
-                R.id.calvinRadioButton -> testTv.text = radioButton.text.toString()
-                R.id.celsiusRadioButton -> {testTv.text = radioButton.text.toString()}
-                R.id.fahrenheitRadioButton -> {testTv.text = radioButton.text.toString()}
-            }
-        }
-    }
-
-    fun initWindRadioGroup(){
-        windRadioGroup.setOnCheckedChangeListener{
-                locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
-            when(radioButton.id){
-
-                R.id.meterSecondRadioButton -> testTv.text = radioButton.text.toString()
-                R.id.mileHourRadioButton -> {testTv.text = radioButton.text.toString()
-                    Toast.makeText(this, "here mile per hour ", Toast.LENGTH_SHORT).show()}
-
-            }
-
-        }
-    }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

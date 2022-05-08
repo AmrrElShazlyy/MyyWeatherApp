@@ -11,12 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="56dp"
-            android:layout_height="36dp"
-             />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/autocompleteConstraintFargment"
+            android:layout_width="62dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="56dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/settingsTextView"
@@ -28,7 +42,7 @@
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/autocompleteConstraintFargment" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/locationCardview"
@@ -153,7 +167,7 @@
                         android:id="@+id/calvinRadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/calvin"
+                        android:text="@string/kalvin"
                         android:textStyle="bold" />
 
                     <RadioButton
@@ -242,8 +256,8 @@
             android:id="@+id/settingsTestTextView"
             android:layout_width="237dp"
             android:layout_height="35dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginTop="620dp"
+            android:layout_marginEnd="96dp"
             android:text="***  Test ***"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
