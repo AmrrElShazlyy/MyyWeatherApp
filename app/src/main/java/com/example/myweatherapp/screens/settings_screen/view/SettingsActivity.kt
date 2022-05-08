@@ -1,8 +1,11 @@
 package com.example.myweatherapp.screens.settings_screen.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -23,8 +26,12 @@ import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModel
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
-import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.material.navigation.NavigationView
+import java.io.IOException
+import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -40,6 +47,7 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var testTv : TextView
 
     lateinit private var  fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
     var lat : Double = 0.0
     var lon : Double = 0.0
 
@@ -55,13 +63,12 @@ class SettingsActivity : AppCompatActivity() {
         initWindRadioGroup()
         //getDataFromviewModel()
 
+        // ********* fetching location from activity direct  ***********
 
-        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         //fetchLocation()
-
-//        val sharedPreferences = this.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
-//        lat = sharedPreferences.getFloat(Constants.LAT_KEY , 0.0F).toString()
-//        testTv.text = lat
+        //checkLocationPermission()
+        // ********* fetching location from activity direct  ***********
 
 
     }
@@ -82,9 +89,9 @@ class SettingsActivity : AppCompatActivity() {
         task.addOnSuccessListener {
             if (it != null){
                 Toast.makeText(this,"lat : ${it.latitude} lon : ${it.longitude}",Toast.LENGTH_SHORT).show()
-                //lat = it.latitude
-                //lon = it.longitude
-                //testTv.text = "lat = ${lat}  lon = ${lon}"
+                lat = it.latitude
+                lon = it.longitude
+                testTv.text = "lat = ${lat}  lon = ${lon}"
                 val sharedPreferences = this.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.apply(){
@@ -95,6 +102,77 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun checkLocationPermission(){
+
+        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED )
+        {
+            // permission is allowed
+            checkGPSPermission()
+        }else{
+            // when permission is denied
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
+            return
+        }
+    }
+
+    fun checkGPSPermission(){
+        locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 2000
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+
+        val result = LocationServices.getSettingsClient(this.applicationContext)
+            .checkLocationSettings(builder.build())
+        result.addOnCompleteListener{ task ->
+            try {
+                // when the gps is on
+                val response = task.getResult(ApiException::class.java)
+                getCurrentLocation()
+
+            }catch (e : ApiException){
+                // when the gps is off
+                e.printStackTrace()
+                when(e.statusCode){
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                        // send request to enable the gps
+                        val resolveApiException = e as ResolvableApiException
+                        resolveApiException.startResolutionForResult(this,200)
+                    }catch (sendIntentException : IntentSender.SendIntentException){
+
+                    }
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        // when the setting is unavailable
+                    }
+                }
+            }
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocation(){
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener{ task ->
+            val location = task.getResult()
+            if (location != null){
+                try {
+
+                    val geocoder = Geocoder(this, Locale.getDefault())
+                    val add = geocoder.getFromLocation(location.latitude , location.longitude , 1)
+                    testTv.text = "lat = ${location.latitude.toString()} lon = ${location.longitude.toString()}"
+
+                }catch (e : IOException){
+
+                }
+            }
+        }
     }
 
     fun initUi(){
@@ -144,7 +222,8 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.gpsRadioButton -> {
                     //testTv.text = radioButton.text.toString()
                     //fetchLocation()
-                    getDataFromviewModel()
+                    checkLocationPermission()
+                    //getDataFromviewModel()
                 }
                 R.id.mapRadioButton -> {testTv.text = radioButton.text.toString()}
             }
