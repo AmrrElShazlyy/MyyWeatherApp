@@ -2,6 +2,7 @@ package com.example.myweatherapp.model.repo
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.myweatherapp.constants.Constants
 import com.example.myweatherapp.database.app_db_datasource.LocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
@@ -73,4 +74,18 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     override val allStoredLocations: LiveData<List<LocationEntity>>
         get() = localSource.allStoredLocations
+
+    override fun saveSettingsInSharedPref() {
+//        val sharedPreferences = activity?.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.apply(){
+//            putFloat(Constants.LAT_KEY , it.latitude.toFloat())
+//            putFloat(Constants.LON_KEY , it.longitude.toFloat())
+//
+//        }.apply()
+    }
+
+    override fun getSettingsFromSharedPref() {
+        TODO("Not yet implemented")
+    }
 }

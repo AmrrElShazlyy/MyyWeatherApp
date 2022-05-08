@@ -34,4 +34,11 @@ interface RepoInterface {
     fun deleteLocationData(locationEntity: LocationEntity)
     val allStoredLocations : LiveData<List<LocationEntity>>
 
+    // shared pref
+
+    fun saveSettingsInSharedPref()
+    fun getSettingsFromSharedPref()
+
+
+
 }
