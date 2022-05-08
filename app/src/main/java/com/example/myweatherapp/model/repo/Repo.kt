@@ -19,13 +19,8 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     // from remote source
 
-    override suspend fun fetchWeatherDataFromNetwork(
-        lat: Double,
-        lon: Double,
-        units: String,
-        lang: String,
-        exclude: String
-    ): WeatherDataModel {
+    override suspend fun fetchWeatherDataFromNetwork(lat: Double, lon: Double, units: String, lang: String
+                                                     , exclude: String): WeatherDataModel {
 
         return remoteSource.fetchWeatherDataFromNetwork(lat,lon, units, lang, exclude)
     }
@@ -87,4 +82,13 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
     override fun getSettingsFromSharedPref() {
         TODO("Not yet implemented")
     }
+
+//    override fun initLanguage() {
+//        val config = context.resources.configuration
+//        val locale = Locale(language.string)
+//        Locale.setDefault(locale)
+//        config.setLocale(locale)
+//        context.createConfigurationContext(config)
+//        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+//    }
 }

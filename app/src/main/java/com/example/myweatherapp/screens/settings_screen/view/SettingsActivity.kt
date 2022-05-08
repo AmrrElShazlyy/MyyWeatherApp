@@ -1,5 +1,6 @@
 package com.example.myweatherapp.screens.settings_screen.view
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
@@ -233,9 +235,7 @@ class SettingsActivity : AppCompatActivity() {
             when(radioButton.id){
                 R.id.gpsRadioButton -> {
                     //testTv.text = radioButton.text.toString()
-                    //fetchLocation()
                     checkLocationPermission()
-                    //getDataFromviewModel()
                 }
                 R.id.mapRadioButton -> {
                     testTv.text = radioButton.text.toString()
@@ -282,6 +282,88 @@ class SettingsActivity : AppCompatActivity() {
 
 
 
+/*
+fun checkLocationPermission(){
+
+        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED )
+        {
+            // permission is allowed
+            val locationManager: LocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            checkGPSPermission()
+        }else{
+            // when permission is denied
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
+            return
+        }
+    }
+
+    fun checkGPSPermission(){
+        locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 2000
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+
+        val result = LocationServices.getSettingsClient(this.applicationContext)
+            .checkLocationSettings(builder.build())
+        Log.e("***", "get gps: bara try", )
+
+        result.addOnCompleteListener{ task ->
+            try {
+                // when the gps is on
+                Log.e("***", "get gps: try gps", )
+                val response = task.getResult(ApiException::class.java)
+                getCurrentLocation()
+
+            }catch (e : ApiException){
+                // when the gps is off
+                e.printStackTrace()
+                when(e.statusCode){
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                        // send request to enable the gps
+                        val resolveApiException = e as ResolvableApiException
+                        resolveApiException.startResolutionForResult(this,200)
+                    }catch (sendIntentException : IntentSender.SendIntentException){
+
+                    }
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        // when the setting is unavailable
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocation(){
+        Log.e("***", "getCurrentLocation: outside", )
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener{ task ->
+            Log.e("***", "getCurrentLocation: inside", )
+            val location = task.getResult()
+            Log.e("***", "getCurrentLocation: outside 22", )
+            if (location != null){
+                try {
+                    val geocoder = Geocoder(this, Locale.getDefault())
+                    val add = geocoder.getFromLocation(location.latitude , location.longitude , 1)
+                    lat = location.latitude
+                    lon = location.longitude
+                    Log.e("***", "getCurrentLocation: lat = ${lat} lon - ${lon} ", )
+                    testTv.text = "lat = ${lat.toString()} lon = ${lon.toString()}"
+                }catch (e : IOException){
+
+                }
+            }
+        }
+    }
+ */
 
 
 /*
@@ -334,5 +416,54 @@ fun getDataFromviewModel(){
             lon = it
 
         })
+    }
+ */
+
+/*
+fun handleGPS() {
+        if(!checkLocationPermitted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+                Constants.GPS_PERMISSION_CODE
+            )
+            //handleGPS()
+            return
+        }
+        val locationManager: LocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        }
+        getLocation()
+
+    }
+
+    private fun checkLocationPermitted(): Boolean {
+        return (
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED
+                )
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLocation() {
+        val client = LocationServices.getFusedLocationProviderClient(this)
+        val locationRequest = LocationRequest.create()
+        locationRequest.interval =1000
+        locationRequest.fastestInterval = 100
+        locationRequest.numUpdates = 1
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        val locationCallback = object: LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                Log.i("TAG", "onLocationResult: ${locationResult.lastLocation.latitude}, ${locationResult.lastLocation.longitude}")
+                lat = locationResult.lastLocation.latitude
+                lon = locationResult.lastLocation.longitude
+                testTv.text = "lat = ${lat.toString()}"
+            }
+        }
+        client.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper()!!)
     }
  */
