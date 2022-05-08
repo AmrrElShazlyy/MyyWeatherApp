@@ -55,6 +55,7 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var locationRadioGroup: RadioGroup
     lateinit var tempRadioGroup: RadioGroup
     lateinit var windRadioGroup: RadioGroup
+    lateinit var languageRadioGroup : RadioGroup
     lateinit var autoCompleteConstarintLayout: ConstraintLayout
     lateinit var testTv : TextView
     var lat : Double = 0.0
@@ -79,6 +80,7 @@ class SettingsActivity : AppCompatActivity() {
         initLocationRadioGroup()
         initTempRadioGroup()
         initWindRadioGroup()
+        initLanguageRadioGroup()
 
         if (!Places.isInitialized()){
             Places.initialize(applicationContext,Constants.PLACES_API_KEY)
@@ -91,6 +93,7 @@ class SettingsActivity : AppCompatActivity() {
         locationRadioGroup = findViewById(R.id.locationRadioGroup)
         tempRadioGroup = findViewById(R.id.settingsTempRadioGroup)
         windRadioGroup = findViewById(R.id.settingsWindRadioGroup)
+        languageRadioGroup = findViewById(R.id.settingsLanguageRadioGroup)
         autoCompleteConstarintLayout = findViewById(R.id.autocompleteConstraintFargment)
 
         testTv = findViewById(R.id.settingsTestTextView)
@@ -180,6 +183,22 @@ class SettingsActivity : AppCompatActivity() {
 
             }
 
+        }
+    }
+
+    fun initLanguageRadioGroup(){
+        languageRadioGroup.setOnCheckedChangeListener{
+                languageRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
+            when(radioButton.id){
+                R.id.englishRadioButton -> {
+                    testTv.text = radioButton.text.toString()
+
+                }
+                R.id.arabicRadioButton -> {
+
+                    testTv.text = radioButton.text.toString()
+                }
+            }
         }
     }
 

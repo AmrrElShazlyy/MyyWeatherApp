@@ -17,4 +17,7 @@
     <string name="meter_per_second">متر / ثانية</string>
     <string name="mile_per_hour">ميل / الساعة</string>
     <string name="kalvin">Kalvin</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
 </resources>
