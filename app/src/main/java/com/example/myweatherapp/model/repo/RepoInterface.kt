@@ -36,6 +36,9 @@ interface RepoInterface {
 
     // shared pref
 
+//    fun readLatAndLonFromSharedPref() : Pair<String,String>
+//    fun readUnitsFromSharedPref() : String
+//    fun readLanguageFromSahredPref() : String
 
 
 

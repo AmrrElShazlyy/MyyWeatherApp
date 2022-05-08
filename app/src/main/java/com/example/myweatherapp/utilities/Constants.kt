@@ -10,5 +10,6 @@ object Constants {
     const val LAT_KEY="lat_key"
     const val LON_KEY="lon_key"
     const val UNITS_KEY="units_key"
+    const val LANGUAGE_KEY="language_key"
 
 }

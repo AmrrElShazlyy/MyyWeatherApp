@@ -5,6 +5,8 @@ import com.example.myweatherapp.model.pojo.WeatherDataModel
 
 class WeatherClient private constructor() : RemoteSource{
 
+
+
     override suspend fun fetchWeatherDataFromNetwork(lat : Double , lon : Double , units : String,
                                                      lang : String , exclude : String): WeatherDataModel {
         var fetchedWeatherData : WeatherDataModel = WeatherDataModel()

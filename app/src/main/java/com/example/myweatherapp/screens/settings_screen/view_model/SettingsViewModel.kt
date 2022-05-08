@@ -17,11 +17,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val repo: RepoInterface) : ViewModel() {
 
-    private var _lat : MutableLiveData<Double> = MutableLiveData<Double>()
-    var lat : LiveData<Double> = _lat
 
-    private var _lon : MutableLiveData<Double> = MutableLiveData<Double>()
-    var lon : LiveData<Double> = _lon
 
 
 

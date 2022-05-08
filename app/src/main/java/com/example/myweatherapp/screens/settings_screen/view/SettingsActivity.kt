@@ -68,6 +68,11 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     lateinit var placesClient: PlacesClient
 
+    var myUnitMetric : String = "metric"
+    var myUnitImperial : String = "imperial"
+    var myLanguageEn : String = "en"
+    var myLanguageAr : String = "ar"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +80,7 @@ class SettingsActivity : AppCompatActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        initViewModel()
         initUi()
         initNavDrawer()
         initLocationRadioGroup()
@@ -87,6 +93,11 @@ class SettingsActivity : AppCompatActivity() {
         }
         initGooglePlaces(this)
 
+    }
+
+    fun initViewModel(){
+        settingsViewModelFactory = SettingsViewModelFactory(Repo.getInstance(this, WeatherClient.getInstance(), ConcreteLocalSource(this) ))
+        settingsViewModel = ViewModelProvider(this , settingsViewModelFactory).get(SettingsViewModel::class.java)
     }
 
     fun initUi(){
@@ -192,10 +203,12 @@ class SettingsActivity : AppCompatActivity() {
             when(radioButton.id){
                 R.id.englishRadioButton -> {
                     testTv.text = radioButton.text.toString()
-
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,myLanguageEn,this)
+                    setAppLanguage(myLanguageEn)
                 }
                 R.id.arabicRadioButton -> {
-
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,myLanguageAr,this)
+                    setAppLanguage(myLanguageAr)
                     testTv.text = radioButton.text.toString()
                 }
             }
@@ -313,6 +326,18 @@ class SettingsActivity : AppCompatActivity() {
                 Log.i("***", "An error occurred: $status")
             }
         })
+    }
+
+    fun setAppLanguage(language : String) {
+        val config = this.resources.configuration
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+        this.createConfigurationContext(config)
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
+
+        var refresh = Intent(this,SettingsActivity::class.java)
+        startActivity(refresh)
     }
 
 }
