@@ -15,6 +15,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -154,8 +155,8 @@ class SettingsActivity : AppCompatActivity() {
                     checkLocationPermission()
                 }
                 R.id.mapRadioButton -> {
-
                     testTv.text = radioButton.text.toString()
+                    autoCompleteConstarintLayout.visibility = View.VISIBLE
                 }
             }
         }
