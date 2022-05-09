@@ -4,5 +4,5 @@ import com.example.myweatherapp.model.pojo.LocationEntity
 
 interface FavLocationOnClickListener {
 
-    fun onItemClickListener(Location: LocationEntity)
+    fun onItemClickListener(locationEntity: LocationEntity)
 }

@@ -21,6 +21,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
+import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
 import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModel
 import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModelFactory
@@ -151,6 +152,14 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
 
         readFromSharedPref()
+        //var locationEntity = intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
+//        if (locationEntity !=null){
+//            var favLat  : Double = locationEntity.lat
+//            var favLon : Double = locationEntity.lon
+//            homeViewModel.getWeatherDataModelFromNetwork(favLat.toString(),favLon.toString(),homeUnits,homeLanguage)
+//        }else{
+            homeViewModel.getWeatherDataModelFromNetwork(homeLat,homeLon,homeUnits,homeLanguage)
+        //}
         homeViewModel.getWeatherDataModelFromNetwork(homeLat,homeLon,homeUnits,homeLanguage)
         homeViewModel.weatherData.observe(this , Observer {
 

@@ -14,7 +14,7 @@ import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnClickListener) : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
 
     var locationEntity = LocationEntity("cairoooooo",0.0,0.0)
-    var locationEntityListRecycler : ArrayList<LocationEntity> = arrayListOf()
+    var locationEntityListRecycler : List<LocationEntity> = arrayListOf()
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 

@@ -18,4 +18,9 @@ object Constants {
     const val myLanguageEn : String = "en"
     const val myLanguageAr : String = "ar"
 
+    const val INTENT_FROM_FAV_KEY = "intent_from_fav"
+    const val FAV_FLAG = "fav_flag"
+
+    const val INTENT_GOOGLE_PLACES_KEY = "intent_from_googleP"
+
 }

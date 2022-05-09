@@ -11,13 +11,23 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
+import com.example.myweatherapp.model.repo.Repo
+import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModel
+import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModelFactory
+import com.example.myweatherapp.screens.google_places_screen.googlePlacesActivity
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModel
+import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
 import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.gms.common.api.Status
@@ -29,8 +39,12 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import java.io.Serializable
 
-class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
+class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Serializable{
+
+    lateinit var favouritesViewModelFactory: FavouritesViewModelFactory
+    lateinit var favouritesViewModel: FavouritesViewModel
 
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var floatingActionButton: FloatingActionButton
@@ -44,6 +58,7 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     var lat : Double = 0.0
     var lon : Double = 0.0
+    var cityName : String = ""
     var locationEntityList : ArrayList<LocationEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +66,23 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
         setContentView(R.layout.activity_favourites)
 
         initUI()
+        initViewModel()
         initRecyclerView()
         initNavDrawer()
         if (!Places.isInitialized()){
             Places.initialize(applicationContext,Constants.PLACES_API_KEY)
         }
+        getLocationsListFromDb()
 //        initGooglePlaces(this)
         floatingActionButton.setOnClickListener { setFloatingButtonAction() }
 
     }
 
+
+    fun initViewModel(){
+        favouritesViewModelFactory = FavouritesViewModelFactory(Repo.getInstance(this, WeatherClient.getInstance(), ConcreteLocalSource(this) ))
+        favouritesViewModel = ViewModelProvider(this , favouritesViewModelFactory).get(FavouritesViewModel::class.java)
+    }
 
     fun initUI(){
         floatingActionButton = findViewById(R.id.floatingActionButton)
@@ -73,7 +95,6 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
         favouritesLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         favouritesRecyclerView.layoutManager = favouritesLayoutManager
         favouritesRecyclerView.adapter = favouritesAdapter
-
     }
 
     fun initNavDrawer(){
@@ -110,13 +131,37 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     fun setFloatingButtonAction(){
         Toast.makeText(this,"floaaating" ,Toast.LENGTH_SHORT).show()
+
         initGooglePlaces(this)
-       favAutoCompleteConstraintLayout.visibility = View.VISIBLE
+        favAutoCompleteConstraintLayout.visibility = View.VISIBLE
+
+
+        /*
+
+        var googlePlacesIntent = Intent(this , googlePlacesActivity::class.java)
+        googlePlacesIntent.putExtra(Constants.INTENT_FROM_FAV_KEY,Constants.FAV_FLAG)
+        startActivity(googlePlacesIntent)
+
+        var locationEntity = intent.getSerializableExtra(Constants.INTENT_GOOGLE_PLACES_KEY) as LocationEntity
+        locationEntityList.add(locationEntity)
+        Log.e("favAct**", "setFloatingButtonAction: ${locationEntity.cityName}")
+        favouritesAdapter.locationEntityListRecycler = locationEntityList
+        favouritesAdapter.notifyDataSetChanged()
+
+        */
+
     }
 
-    override fun onItemClickListener(Location: LocationEntity) {
+    override fun onItemClickListener(locationEntity: LocationEntity) {
         
         Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
+        Log.e("favAct*", "onItemClickListener:  159", )
+        var intentToHome = Intent(this,HomeActivity::class.java)
+        Log.e("favAct*", "onItemClickListener:  161", )
+        intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
+        Log.e("favAct*", "onItemClickListener:  163", )
+        startActivity(intentToHome)
+        Log.e("favAct*", "onItemClickListener:  165", )
 
     }
 
@@ -137,17 +182,17 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
                 val latLng : LatLng = place.latLng
                 lat = latLng.latitude
                 lon = latLng.longitude
+                cityName = place.name
                 //SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),activity)
                 //SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),activity)
                 Log.e("***", "Place: ${place.latLng} ${place.name}, ${place.id}")
                 Log.e("***", "lat fav : ${lat} lon fav  ${lon}")
 
-                var locationEntity = LocationEntity(place.name,place.latLng.latitude,place.latLng.longitude)
+                var locationEntity = LocationEntity(cityName,lat,lon)
                 locationEntityList.add(locationEntity)
                 favouritesAdapter.locationEntityListRecycler = locationEntityList
                 favouritesAdapter.notifyDataSetChanged()
-
-
+                favouritesViewModel.insertLocationEntityIntoDb(locationEntity)
 
             }
             override fun onError(status: Status) {
@@ -158,4 +203,26 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     }
 
+    private fun getLocationsListFromDb(){
+        favouritesViewModel.getLocationsListFromDb().observe(this, Observer {
+            if (it != null){
+                favouritesAdapter.locationEntityListRecycler = it
+                favouritesAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+
+
 }
+
+/*
+ private fun getMoviesFromDb(){
+        favMovieViewModel.getStoredMovies().observe(this , Observer {
+            if (it != null){
+                favMoviesAdapter.favMovieList = it
+                favMoviesAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+ */
