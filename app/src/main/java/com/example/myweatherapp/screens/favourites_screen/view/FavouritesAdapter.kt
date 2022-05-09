@@ -1,5 +1,6 @@
 package com.example.myweatherapp.screens.favourites_screen.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 
-class FavouritesAdapter : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
+class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnClickListener) : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
 
     var locationEntity = LocationEntity("cairoooooo",0.0,0.0)
     var locationEntityList : List<LocationEntity> = arrayListOf(locationEntity,locationEntity,locationEntity,
@@ -30,6 +31,10 @@ class FavouritesAdapter : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.favouritesTextViewCity.text = locationEntityList[position].cityName
+        holder.favouritesConstraintLayout.setOnClickListener {
+            Log.e("****", "onBindViewHolder:click on constraaaint ", )
+            favLocationOnClickListener.onItemClickListener(locationEntityList[position])
+        }
     }
 
     override fun getItemCount(): Int = locationEntityList.size

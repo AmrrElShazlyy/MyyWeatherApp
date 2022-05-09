@@ -291,12 +291,15 @@ class SettingsActivity : AppCompatActivity() {
                     lon = location.longitude
                     SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
                     SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
-                    Log.e("***", "getCurrentLocation: lat = ${lat} lon - ${lon} ", )
+                    Log.e("***", "getCurrentLocation: lat = ${lat.toString()} lon - ${lon.toString()} ", )
 
                     var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
                     var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
 
+                    // ****************** fe 7aga ghalat rag3a men shared pref ****************
                     testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
+                    // ****************** fe 7aga ghalat rag3a men shared pref ****************
+
                 }catch (e : IOException){
 
                 }

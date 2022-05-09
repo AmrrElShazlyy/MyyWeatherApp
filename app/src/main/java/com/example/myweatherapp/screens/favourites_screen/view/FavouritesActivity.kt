@@ -11,13 +11,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
-class FavouritesActivity : AppCompatActivity() {
+class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var floatingActionButton: FloatingActionButton
@@ -43,7 +44,7 @@ class FavouritesActivity : AppCompatActivity() {
         floatingActionButton = findViewById(R.id.floatingActionButton)
 
         favouritesRecyclerView = findViewById(R.id.favouritesRecyclerView)
-        favouritesAdapter = FavouritesAdapter()
+        favouritesAdapter = FavouritesAdapter(this)
         favouritesLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         favouritesRecyclerView.layoutManager = favouritesLayoutManager
         favouritesRecyclerView.adapter = favouritesAdapter
@@ -83,6 +84,12 @@ class FavouritesActivity : AppCompatActivity() {
 
     fun setFloatingButtonAction(){
         Toast.makeText(this,"floaaating" ,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClickListener(Location: LocationEntity) {
+        
+        Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
+
     }
 
 }
