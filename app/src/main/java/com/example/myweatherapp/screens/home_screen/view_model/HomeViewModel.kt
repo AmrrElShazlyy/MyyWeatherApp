@@ -18,14 +18,13 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel(){
     private var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
     var weatherData : LiveData<WeatherDataModel> = _weatherData
 
-    fun getWeatherDataModelFromNetwork(){
+    fun getWeatherDataModelFromNetwork(lat : String , lon :String , units : String , language : String){
         viewModelScope.launch(Dispatchers.IO) {
 
             //var lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laaat",)
             //val sharedPreferences = getApplication.getSharedPreferences("settings_shared_pref", Context.MODE_PRIVATE)
 
-
-            _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
+            _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,units,language,"minutely"))
             //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
             weatherData = _weatherData
         }

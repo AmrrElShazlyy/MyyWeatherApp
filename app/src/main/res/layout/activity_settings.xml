@@ -21,7 +21,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/underLine">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/autocompleteConstraintFargment"
@@ -64,7 +65,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
                     android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/underLine"
+                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +132,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/underLine"
+                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +206,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/underLine"
+                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -272,7 +273,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/underLine"
+                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"

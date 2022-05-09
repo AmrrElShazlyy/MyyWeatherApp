@@ -22,9 +22,6 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     override suspend fun fetchWeatherDataFromNetwork(lat: Double, lon: Double, units: String, lang: String
                                                      , exclude: String): WeatherDataModel {
-
-
-
         return remoteSource.fetchWeatherDataFromNetwork(lat,lon, units, lang, exclude)
     }
 

@@ -27,6 +27,7 @@ import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {
@@ -54,6 +55,12 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeViewModel: HomeViewModel
     lateinit var homeViewModelFactory: HomeViewModelFactory
 
+    private var homeLat : String = ""
+    private var homeLon : String = ""
+    private var homeUnits : String = ""
+    private var homeLanguage : String = ""
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +70,7 @@ class HomeActivity : AppCompatActivity() {
         initNavDrawer()
         initHourlyRecyclerView()
         initDailyRecyclerView()
+        readFromSharedPref()
         getDataFromviewModel()
 
     }
@@ -139,7 +147,9 @@ class HomeActivity : AppCompatActivity() {
                 ConcreteLocalSource(this)
             ))
         homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
-        homeViewModel.getWeatherDataModelFromNetwork()
+
+        readFromSharedPref()
+        homeViewModel.getWeatherDataModelFromNetwork(homeLat,homeLon,homeUnits,homeLanguage)
         homeViewModel.weatherData.observe(this , Observer {
 
             hourlyAdapter.hourlyList = it.hourly!!
@@ -181,6 +191,14 @@ class HomeActivity : AppCompatActivity() {
 
         // *****************   add when temp get in m/s or mile/hour   *********************
         currentCloudsTv.text = "Wind Speed \n ${weatherDataModel.current?.clouds.toString()} m/s"
+
+    }
+
+    private fun readFromSharedPref(){
+         homeLat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toString()
+         homeLon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toString()
+         homeUnits = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.UNITS_KEY,"noUnits",this).toString()
+         homeLanguage = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
 
     }
 
