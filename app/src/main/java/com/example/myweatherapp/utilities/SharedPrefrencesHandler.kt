@@ -13,9 +13,10 @@ object SharedPrefrencesHandler {
         }.apply()
     }
 
-    fun getSettingsFromSharedPref(key: String ,defaultValue : String, activity: Activity) {
+    fun getSettingsFromSharedPref(key: String ,defaultValue : String, activity: Activity) : String {
         val sharedPreferences = activity?.getSharedPreferences("settings_shared_pref", Context.MODE_PRIVATE)
-        sharedPreferences.getString(key,defaultValue)
+        var retrievedValue = sharedPreferences.getString(key,defaultValue)
+        return retrievedValue.toString()
     }
 
 

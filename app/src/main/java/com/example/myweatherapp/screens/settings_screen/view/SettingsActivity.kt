@@ -70,6 +70,7 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     lateinit var placesClient: PlacesClient
 
+    var myUnitStandard : String = "standard"
     var myUnitMetric : String = "metric"
     var myUnitImperial : String = "imperial"
     var myLanguageEn : String = "en"
@@ -165,15 +166,15 @@ class SettingsActivity : AppCompatActivity() {
                 locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
             when(radioButton.id){
                 R.id.calvinRadioButton -> {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"standard",this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,Constants.myUnitStandard,this)
                     testTv.text = radioButton.text.toString()
                 }
                 R.id.celsiusRadioButton -> {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"metric",this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,Constants.myUnitMetric,this)
                     testTv.text = radioButton.text.toString()
                 }
                 R.id.fahrenheitRadioButton -> {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"imperial",this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,Constants.myUnitImperial,this)
                     testTv.text = radioButton.text.toString()
                 }
             }
@@ -186,11 +187,11 @@ class SettingsActivity : AppCompatActivity() {
             when(radioButton.id){
 
                 R.id.meterSecondRadioButton ->  {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"metric",this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,Constants.myUnitMetric,this)
                     testTv.text = radioButton.text.toString()
                 }
                 R.id.mileHourRadioButton -> {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,"imperial",this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.UNITS_KEY,Constants.myUnitImperial,this)
                     testTv.text = radioButton.text.toString()
                     Toast.makeText(this, "here mile per hour ", Toast.LENGTH_SHORT).show()}
 
@@ -205,11 +206,11 @@ class SettingsActivity : AppCompatActivity() {
             when(radioButton.id){
                 R.id.englishRadioButton -> {
                     testTv.text = radioButton.text.toString()
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,myLanguageEn,this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,Constants.myLanguageEn,this)
                     setAppLanguage(myLanguageEn)
                 }
                 R.id.arabicRadioButton -> {
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,myLanguageAr,this)
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LANGUAGE_KEY,Constants.myLanguageAr,this)
                     setAppLanguage(myLanguageAr)
                     testTv.text = radioButton.text.toString()
                 }
@@ -296,6 +297,7 @@ class SettingsActivity : AppCompatActivity() {
                     var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
                     var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
 
+                    Log.e("***", "getCurrentLocation: latSH = ${latSH.toString()} lonSH - ${lonSH.toString()} ", )
                     // ****************** fe 7aga ghalat rag3a men shared pref ****************
                     testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
                     // ****************** fe 7aga ghalat rag3a men shared pref ****************

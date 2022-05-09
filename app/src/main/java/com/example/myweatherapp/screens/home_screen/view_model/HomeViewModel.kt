@@ -24,7 +24,7 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel(){
             //var lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laaat",)
             //val sharedPreferences = getApplication.getSharedPreferences("settings_shared_pref", Context.MODE_PRIVATE)
 
-            _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,units,language,"minutely"))
+            _weatherData.postValue(repo.fetchWeatherDataFromNetwork(lat.toDouble(),lon.toDouble(),units,language,"minutely"))
             //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
             weatherData = _weatherData
         }

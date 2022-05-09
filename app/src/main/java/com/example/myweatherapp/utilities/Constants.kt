@@ -12,4 +12,10 @@ object Constants {
     const val UNITS_KEY="units_key"
     const val LANGUAGE_KEY="language_key"
 
+    const val myUnitStandard : String = "standard"
+    const val myUnitMetric : String = "metric"
+    const val myUnitImperial : String = "imperial"
+    const val myLanguageEn : String = "en"
+    const val myLanguageAr : String = "ar"
+
 }

@@ -23,6 +23,7 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
     var hourly1 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
 
     var hourlyList : List<Hourly> = arrayListOf()
+    var hourlyUnits : String = ""
 
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -49,7 +50,12 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
         holder.hourlyTextViewTime.text = MyLocalDateTime.getTimeFromHourlyObj(hourlyList[position])
 
         // *****************   add when temp get in C or K or F  *********************
-        holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} 'K"
+
+        when(hourlyUnits){
+            Constants.myUnitStandard -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °K "}
+            Constants.myUnitMetric -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} ℃ "}
+            Constants.myUnitImperial -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °F "}
+        }
 
     }
 
