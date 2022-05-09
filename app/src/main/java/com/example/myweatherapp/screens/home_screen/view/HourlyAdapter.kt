@@ -1,4 +1,4 @@
-package com.example.myweatherapp.home_screen.view
+package com.example.myweatherapp.screens.home_screen.view
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.constants.MyLocalDateTime
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.model.pojo.Hourly
 import com.example.myweatherapp.model.pojo.Weather
 
@@ -23,6 +23,7 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
     var hourly1 = Hourly(22,22.22,22,33,44,33.3, listOf(weather1))
 
     var hourlyList : List<Hourly> = arrayListOf()
+    var hourlyUnits : String = ""
 
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -49,7 +50,12 @@ class HourlyAdapter() :RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
         holder.hourlyTextViewTime.text = MyLocalDateTime.getTimeFromHourlyObj(hourlyList[position])
 
         // *****************   add when temp get in C or K or F  *********************
-        holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} 'K"
+
+        when(hourlyUnits){
+            Constants.myUnitStandard -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °K "}
+            Constants.myUnitMetric -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} ℃ "}
+            Constants.myUnitImperial -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °F "}
+        }
 
     }
 

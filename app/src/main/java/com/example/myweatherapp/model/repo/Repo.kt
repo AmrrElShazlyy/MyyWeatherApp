@@ -7,6 +7,7 @@ import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.RemoteSource
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 
 class Repo private constructor(var context: Context , var remoteSource: RemoteSource , var localSource: LocalSource) : RepoInterface{
 
@@ -19,14 +20,8 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     // from remote source
 
-    override suspend fun fetchWeatherDataFromNetwork(
-        lat: Double,
-        lon: Double,
-        units: String,
-        lang: String,
-        exclude: String
-    ): WeatherDataModel {
-
+    override suspend fun fetchWeatherDataFromNetwork(lat: Double, lon: Double, units: String, lang: String
+                                                     , exclude: String): WeatherDataModel {
         return remoteSource.fetchWeatherDataFromNetwork(lat,lon, units, lang, exclude)
     }
 
@@ -73,4 +68,18 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     override val allStoredLocations: LiveData<List<LocationEntity>>
         get() = localSource.allStoredLocations
+
+
 }
+
+
+
+//        val sharedPreferences = activity?.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.apply(){
+//            putFloat(Constants.LAT_KEY , it.latitude.toFloat())
+//            putFloat(Constants.LON_KEY , it.longitude.toFloat())
+//
+//        }.apply()
+
+

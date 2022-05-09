@@ -7,13 +7,17 @@
     <string name="settings_str">الاعدادات</string>
     <string name="location">الموقع</string>
     <string name="app_name">تطبيق المناخ</string>
-    <string name="temprature">Temprature</string>
-    <string name="gps">GPS</string>
-    <string name="another_location">Another Location</string>
-    <string name="calvin">Calvin</string>
-    <string name="celsius">Celsius</string>
-    <string name="fahrenheit">Fahrenheit</string>
+    <string name="temprature">درجة الحرارة</string>
+    <string name="gps">الموقع الحالي</string>
+    <string name="another_location">موقع اخر</string>
+    <string name="calvin">كلفن</string>
+    <string name="celsius">سلزيس</string>
+    <string name="fahrenheit">فهرنهيت</string>
     <string name="wind_speed">سرعة الرياح</string>
     <string name="meter_per_second">متر / ثانية</string>
     <string name="mile_per_hour">ميل / الساعة</string>
+    <string name="kalvin">كيلفن</string>
+    <string name="language">اللغة</string>
+    <string name="english">الانجليزية</string>
+    <string name="arabic">العربية</string>
 </resources>

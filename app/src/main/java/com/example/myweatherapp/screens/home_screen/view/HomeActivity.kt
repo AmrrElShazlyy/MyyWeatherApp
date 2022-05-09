@@ -1,9 +1,10 @@
-package com.example.myweatherapp.home_screen.view
+package com.example.myweatherapp.screens.home_screen.view
 
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,16 +18,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.constants.MyLocalDateTime
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
-import com.example.myweatherapp.dummy_test_activity.MainActivity
-import com.example.myweatherapp.home_screen.view_model.HomeViewModel
-import com.example.myweatherapp.home_screen.view_model.HomeViewModelFactory
+import com.example.myweatherapp.model.pojo.LocationEntity
+import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
+import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModel
+import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModelFactory
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
-import com.example.myweatherapp.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
+import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {
@@ -54,6 +58,13 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeViewModel: HomeViewModel
     lateinit var homeViewModelFactory: HomeViewModelFactory
 
+    private var homeLat : String = ""
+    private var homeLon : String = ""
+    private var homeUnits : String = ""
+    private var homeLanguage : String = ""
+
+    var isFav : Boolean = false
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
         initNavDrawer()
         initHourlyRecyclerView()
         initDailyRecyclerView()
+        readFromSharedPref()
         getDataFromviewModel()
 
     }
@@ -93,8 +105,8 @@ class HomeActivity : AppCompatActivity() {
             when(it.itemId){
 
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
-                R.id.nav_home_screen -> startActivity(Intent(this , MainActivity::class.java))
-                R.id.nav_fav_screen -> Toast.makeText(this,"fav clicked",Toast.LENGTH_SHORT).show()
+                R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
+                R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
                 R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked",Toast.LENGTH_SHORT).show()
                 R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
 
@@ -139,13 +151,35 @@ class HomeActivity : AppCompatActivity() {
                 ConcreteLocalSource(this)
             ))
         homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
-        homeViewModel.getWeatherDataModelFromNetwork()
+
+        readFromSharedPref()
+        isFav = intent.getBooleanExtra(Constants.FAV_FLAG,false)
+        if (isFav == false) {
+            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+        }else {
+            Log.e("HomeAct**", "getDataFromviewModel: 155",)
+            var locationEntity = LocationEntity()
+            locationEntity =
+                intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
+            var favLat: Double = locationEntity.lat
+            var favLon: Double = locationEntity.lon
+            homeViewModel.getWeatherDataModelFromNetwork(
+                favLat.toString(),
+                favLon.toString(),
+                homeUnits,
+                homeLanguage
+            )
+            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+        }
+
         homeViewModel.weatherData.observe(this , Observer {
 
             hourlyAdapter.hourlyList = it.hourly!!
+            hourlyAdapter.hourlyUnits = homeUnits
             hourlyAdapter.notifyDataSetChanged()
 
             dailyAdapter.dailyList = it.daily!!
+            dailyAdapter.dailyUnits = homeUnits
             dailyAdapter.notifyDataSetChanged()
 
             // ************ inserting in DB (need to change primary key) *************
@@ -169,7 +203,11 @@ class HomeActivity : AppCompatActivity() {
         currentDescrTv.text = weatherDataModel.current?.weather?.get(0)?.description ?: "emptyyy"
 
         // *****************   add when temp get in C or K or F  *********************
-        currentTempTv.text = "${weatherDataModel.current?.temp.toString()} 'K "
+        when(homeUnits){
+            Constants.myUnitStandard -> {currentTempTv.text = "${weatherDataModel.current?.temp.toString()} °K "}
+            Constants.myUnitMetric -> {currentTempTv.text = "${weatherDataModel.current?.temp.toString()} ℃ "}
+            Constants.myUnitImperial -> {currentTempTv.text = "${weatherDataModel.current?.temp.toString()} °F "}
+        }
 
         var currentIcon : String = weatherDataModel.current?.weather?.get(0)?.icon!!
         var currentIconUrl : String = "${Constants.IMG_URL+currentIcon}.png"
@@ -177,10 +215,24 @@ class HomeActivity : AppCompatActivity() {
 
         currentPressureTv.text = "Pressure \n ${weatherDataModel.current?.pressure.toString()} hpa"
         currentHumidityTv.text = "Humidity \n ${weatherDataModel.current?.humidity.toString()} %"
-        currentWindSpeedTv.text = "Clouds \n ${weatherDataModel.current?.windSpeed.toString()} %"
+        currentCloudsTv.text = "Clouds \n ${weatherDataModel.current?.clouds.toString()} %"
+
+        //currentWindSpeedTv.text = "Clouds \n ${weatherDataModel.current?.windSpeed.toString()} %"
 
         // *****************   add when temp get in m/s or mile/hour   *********************
-        currentCloudsTv.text = "Wind Speed \n ${weatherDataModel.current?.clouds.toString()} m/s"
+        when(homeUnits){
+            Constants.myUnitStandard -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} m/s"}
+            Constants.myUnitMetric -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} m/s"}
+            Constants.myUnitImperial -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} mile/hour"}
+        }
+
+    }
+
+    private fun readFromSharedPref(){
+         homeLat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toString()
+         homeLon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toString()
+         homeUnits = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.UNITS_KEY,"noUnits",this).toString()
+         homeLanguage = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
 
     }
 

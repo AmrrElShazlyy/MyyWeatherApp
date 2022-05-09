@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="underLine">#8D8888</color>
     <color name="lightBlue">#ADD8E6</color>
+    <color name="lightGray">#f5f5f5</color>
 </resources>

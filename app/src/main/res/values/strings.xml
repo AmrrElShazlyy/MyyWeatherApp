@@ -17,4 +17,8 @@
     <string name="wind_speed">Wind Speed</string>
     <string name="meter_per_second">Meter/Second</string>
     <string name="mile_per_hour">Mile/Hour</string>
+    <string name="kalvin">Kalvin</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
 </resources>

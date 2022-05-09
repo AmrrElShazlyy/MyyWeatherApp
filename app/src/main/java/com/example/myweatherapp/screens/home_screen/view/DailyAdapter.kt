@@ -1,4 +1,4 @@
-package com.example.myweatherapp.home_screen.view
+package com.example.myweatherapp.screens.home_screen.view
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myweatherapp.R
-import com.example.myweatherapp.constants.Constants
-import com.example.myweatherapp.constants.MyLocalDateTime
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.model.pojo.Daily
 import com.example.myweatherapp.model.pojo.Temp
 import com.example.myweatherapp.model.pojo.Weather
@@ -24,6 +24,7 @@ class DailyAdapter() : RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
     var daily1 = Daily(22,temp1,44,44,33,22.33, listOf(weather1))
 
     var dailyList : List<Daily> = arrayListOf()
+    var dailyUnits : String = ""
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
@@ -58,6 +59,11 @@ class DailyAdapter() : RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
 
         // *****************   add when temp get in C or K or F  *********************
         holder.dailyTextViewMaxMinTemp.text = "$maxTemp / $minTemp 'K "
+        when(dailyUnits){
+            Constants.myUnitStandard -> { holder.dailyTextViewMaxMinTemp.text = "$maxTemp / $minTemp °K "}
+            Constants.myUnitMetric -> { holder.dailyTextViewMaxMinTemp.text = "$maxTemp / $minTemp ℃ "}
+            Constants.myUnitImperial -> { holder.dailyTextViewMaxMinTemp.text = "$maxTemp / $minTemp °F "}
+        }
 
 
 
