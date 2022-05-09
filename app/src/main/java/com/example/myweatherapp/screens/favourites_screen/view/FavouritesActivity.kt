@@ -155,13 +155,10 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
     override fun onItemClickListener(locationEntity: LocationEntity) {
         
         Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
-        Log.e("favAct*", "onItemClickListener:  159", )
         var intentToHome = Intent(this,HomeActivity::class.java)
-        Log.e("favAct*", "onItemClickListener:  161", )
         intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
-        Log.e("favAct*", "onItemClickListener:  163", )
+        intentToHome.putExtra(Constants.FAV_FLAG,true)
         startActivity(intentToHome)
-        Log.e("favAct*", "onItemClickListener:  165", )
 
     }
 

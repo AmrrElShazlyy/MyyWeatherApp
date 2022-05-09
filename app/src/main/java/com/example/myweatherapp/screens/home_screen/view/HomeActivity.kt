@@ -63,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
     private var homeUnits : String = ""
     private var homeLanguage : String = ""
 
+    var isFav : Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,15 +153,25 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
 
         readFromSharedPref()
-        //var locationEntity = intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
-//        if (locationEntity !=null){
-//            var favLat  : Double = locationEntity.lat
-//            var favLon : Double = locationEntity.lon
-//            homeViewModel.getWeatherDataModelFromNetwork(favLat.toString(),favLon.toString(),homeUnits,homeLanguage)
-//        }else{
-            homeViewModel.getWeatherDataModelFromNetwork(homeLat,homeLon,homeUnits,homeLanguage)
-        //}
-        homeViewModel.getWeatherDataModelFromNetwork(homeLat,homeLon,homeUnits,homeLanguage)
+        isFav = intent.getBooleanExtra(Constants.FAV_FLAG,false)
+        if (isFav == false) {
+            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+        }else {
+            Log.e("HomeAct**", "getDataFromviewModel: 155",)
+            var locationEntity = LocationEntity()
+            locationEntity =
+                intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
+            var favLat: Double = locationEntity.lat
+            var favLon: Double = locationEntity.lon
+            homeViewModel.getWeatherDataModelFromNetwork(
+                favLat.toString(),
+                favLon.toString(),
+                homeUnits,
+                homeLanguage
+            )
+            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+        }
+
         homeViewModel.weatherData.observe(this , Observer {
 
             hourlyAdapter.hourlyList = it.hourly!!
