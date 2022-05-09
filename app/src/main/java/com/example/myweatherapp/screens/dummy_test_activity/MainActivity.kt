@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
+import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.e("TAG", "onCreate: git test ", )
         Log.e("***", "onCreate: main activityyyyy", )
-        startActivity(Intent(this@MainActivity , HomeActivity::class.java))
+        startActivity(Intent(this@MainActivity , SettingsActivity::class.java))
 
         /*
 

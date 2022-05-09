@@ -153,9 +153,10 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.gpsRadioButton -> {
                     //testTv.text = radioButton.text.toString()
                     checkLocationPermission()
+                    //fetchLocation()
                 }
                 R.id.mapRadioButton -> {
-                    testTv.text = radioButton.text.toString()
+                    //testTv.text = radioButton.text.toString()
                     autoCompleteConstarintLayout.visibility = View.VISIBLE
                 }
             }
@@ -231,9 +232,11 @@ class SettingsActivity : AppCompatActivity() {
             if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
+            Log.e("SetAct***", "getCurrentLocation: outside 22    234" , )
             checkGPSPermission()
         }else{
             // when permission is denied
+            Log.e("SetAct***", "getCurrentLocation: outside 22    238" , )
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
             return
         }
@@ -284,15 +287,16 @@ class SettingsActivity : AppCompatActivity() {
         fusedLocationProviderClient.lastLocation.addOnCompleteListener{ task ->
             Log.e("***", "getCurrentLocation: inside", )
             val location = task.getResult()
-            Log.e("***", "getCurrentLocation: outside 22", )
+            Log.e("SetAct***", "getCurrentLocation: outside 22    287" , )
             if (location != null){
                 try {
-                    val geocoder = Geocoder(this, Locale.getDefault())
-                    val add = geocoder.getFromLocation(location.latitude , location.longitude , 1)
+                    Log.e("SetAct***", "getCurrentLocation: outside 22    290" , )
                     lat = location.latitude
                     lon = location.longitude
+                    Log.e("SetAct***", "getCurrentLocation: outside 22    293" , )
                     SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
                     SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
+                    Log.e("SetAct***", "getCurrentLocation: outside 22    295" , )
                     Log.e("***", "getCurrentLocation: lat = ${lat.toString()} lon - ${lon.toString()} ", )
 
                     var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
@@ -304,10 +308,51 @@ class SettingsActivity : AppCompatActivity() {
                     // ****************** fe 7aga ghalat rag3a men shared pref ****************
 
                 }catch (e : IOException){
+                    Log.e("SetAct***", "getCurrentLocation: cattttchhhhhh" , )
+
+                    e.printStackTrace()
 
                 }
             }
         }
+    }
+
+    fun fetchLocation() {
+
+        val task = fusedLocationProviderClient.lastLocation
+
+        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED )
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
+            return
+        }
+
+        task.addOnSuccessListener {
+            if (it != null){
+                Log.e("SetAct***", "getCurrentLocation: outside 22    290" , )
+                lat = it.latitude
+                lon = it.longitude
+                Log.e("SetAct***", "getCurrentLocation: outside 22    293" , )
+                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
+                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
+                Log.e("SetAct***", "getCurrentLocation: outside 22    295" , )
+                Log.e("***", "getCurrentLocation: lat = ${lat.toString()} lon - ${lon.toString()} ", )
+
+                var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
+                var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
+
+                Log.e("***", "getCurrentLocation: latSH = ${latSH.toString()} lonSH - ${lonSH.toString()} ", )
+                // ****************** fe 7aga ghalat rag3a men shared pref ****************
+                testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
+                // ****************** fe 7aga ghalat rag3a men shared pref ****************
+
+
+            }
+        }
+
     }
 
     fun initGooglePlaces(activity : Activity){
