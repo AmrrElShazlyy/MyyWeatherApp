@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWeatherApp">
         <activity
-            android:name=".screens.favourites_screen.FavouritesActivity"
+            android:name=".screens.favourites_screen.view.FavouritesActivity"
             android:exported="true" />
         <activity
             android:name=".screens.settings_screen.view.SettingsActivity"

@@ -26,6 +26,7 @@ import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModelFact
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.navigation.NavigationView
@@ -101,8 +102,8 @@ class HomeActivity : AppCompatActivity() {
             when(it.itemId){
 
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
-                R.id.nav_home_screen -> startActivity(Intent(this , MainActivity::class.java))
-                R.id.nav_fav_screen -> Toast.makeText(this,"fav clicked",Toast.LENGTH_SHORT).show()
+                R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
+                R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
                 R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked",Toast.LENGTH_SHORT).show()
                 R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
 
