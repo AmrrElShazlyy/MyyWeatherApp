@@ -44,33 +44,36 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     var lat : Double = 0.0
     var lon : Double = 0.0
+    var locationEntityList : ArrayList<LocationEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favourites)
 
         initUI()
+        initRecyclerView()
         initNavDrawer()
         if (!Places.isInitialized()){
             Places.initialize(applicationContext,Constants.PLACES_API_KEY)
         }
-        initGooglePlaces(this)
+//        initGooglePlaces(this)
         floatingActionButton.setOnClickListener { setFloatingButtonAction() }
 
     }
 
 
     fun initUI(){
-
         floatingActionButton = findViewById(R.id.floatingActionButton)
-
         favAutoCompleteConstraintLayout = findViewById(R.id.favAutocompleteConstraintFargment)
+    }
 
+    fun initRecyclerView(){
         favouritesRecyclerView = findViewById(R.id.favouritesRecyclerView)
         favouritesAdapter = FavouritesAdapter(this)
         favouritesLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         favouritesRecyclerView.layoutManager = favouritesLayoutManager
         favouritesRecyclerView.adapter = favouritesAdapter
+
     }
 
     fun initNavDrawer(){
@@ -107,6 +110,7 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
 
     fun setFloatingButtonAction(){
         Toast.makeText(this,"floaaating" ,Toast.LENGTH_SHORT).show()
+        initGooglePlaces(this)
        favAutoCompleteConstraintLayout.visibility = View.VISIBLE
     }
 
@@ -120,6 +124,7 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
         placesClient = Places.createClient(this)
 
         val autocompleteSupportFragment  = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
         // Specify the types of place data to return.
         autocompleteSupportFragment.setPlaceFields(listOf(
             Place.Field.ID, Place.Field.LAT_LNG,
@@ -137,13 +142,20 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener{
                 Log.e("***", "Place: ${place.latLng} ${place.name}, ${place.id}")
                 Log.e("***", "lat fav : ${lat} lon fav  ${lon}")
 
-            }
+                var locationEntity = LocationEntity(place.name,place.latLng.latitude,place.latLng.longitude)
+                locationEntityList.add(locationEntity)
+                favouritesAdapter.locationEntityListRecycler = locationEntityList
+                favouritesAdapter.notifyDataSetChanged()
 
+
+
+            }
             override fun onError(status: Status) {
                 // TODO: Handle the error.
                 Log.i("***", "An error occurred: $status")
             }
         })
+
     }
 
 }

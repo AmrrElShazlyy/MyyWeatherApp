@@ -14,8 +14,7 @@ import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnClickListener) : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
 
     var locationEntity = LocationEntity("cairoooooo",0.0,0.0)
-    var locationEntityList : List<LocationEntity> = arrayListOf(locationEntity,locationEntity,locationEntity,
-                            locationEntity,locationEntity,locationEntity,locationEntity,locationEntity)
+    var locationEntityListRecycler : ArrayList<LocationEntity> = arrayListOf()
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
@@ -30,13 +29,13 @@ class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnCli
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.favouritesTextViewCity.text = locationEntityList[position].cityName
+        holder.favouritesTextViewCity.text = locationEntityListRecycler[position].cityName
         holder.favouritesConstraintLayout.setOnClickListener {
             Log.e("****", "onBindViewHolder:click on constraaaint ", )
-            favLocationOnClickListener.onItemClickListener(locationEntityList[position])
+            favLocationOnClickListener.onItemClickListener(locationEntityListRecycler[position])
         }
     }
 
-    override fun getItemCount(): Int = locationEntityList.size
+    override fun getItemCount(): Int = locationEntityListRecycler.size
 
 }
