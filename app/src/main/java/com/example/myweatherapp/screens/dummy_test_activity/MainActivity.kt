@@ -1,28 +1,47 @@
 package com.example.myweatherapp.screens.dummy_test_activity
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var tv : TextView
     lateinit var imageView: ImageView
     lateinit var repo : RepoInterface
+
+    lateinit var dialog: Dialog
+    lateinit var gotoSettingsButton : Button
+
+    var startLat : String = ""
+    var startLon : String = ""
+    var startUnits : String = ""
+    var startLang : String = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.e("TAG", "onCreate: git test ", )
-        Log.e("***", "onCreate: main activityyyyy", )
-        startActivity(Intent(this@MainActivity , SettingsActivity::class.java))
+        readFromSharedPref()
+        if (startLat == "" || startLon == "" || startUnits == "" || startLang == "") {
+            openDialog()
+        }else{
+            startActivity(Intent(this,HomeActivity::class.java))
+        }
 
         /*
 
@@ -63,4 +82,45 @@ class MainActivity : AppCompatActivity() {
         */
 
     }
+
+    fun openDialog(){
+
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.startup_dialog_layout)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        gotoSettingsButton = dialog.findViewById(R.id.goToSettingsButton)
+        gotoSettingsButton.setOnClickListener{startActivity(Intent(this,SettingsActivity::class.java))}
+
+        dialog.show()
+    }
+
+    private fun readFromSharedPref(){
+        startLat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toString()
+        startLon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toString()
+        startUnits = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.UNITS_KEY,"noUnits",this).toString()
+        startLang = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
+
+    }
 }
+
+
+
+
+
+/*
+
+
+        skipButton = dialog.findViewById(R.id.dialogSkipButton) ;
+        takeButton = dialog.findViewById(R.id.dialogTakeButton);
+        snoozeButton = dialog.findViewById(R.id.dialogSnoozeButton) ;
+        timeTextView = dialog.findViewById(R.id.dialogTimeTextView) ;
+        drugNameTextView = dialog.findViewById(R.id.dialogDrugNameTextView) ;
+        drugDescrTextView = dialog.findViewById(R.id.dialogDrugDescrTextView) ;
+        drugIconImageView = dialog.findViewById(R.id.dialogDrugIconimageView) ;
+
+        drugNameTextView.setText("Panadol");
+        drugDescrTextView.setText("500mg");
+
+        dialog.show();
+ */
