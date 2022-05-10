@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.model.pojo.AlertLocal
+import com.example.myweatherapp.utilities.convertLongToDateAsString
+import com.example.myweatherapp.utilities.convertLongToTime
 
 class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : RecyclerView.Adapter<AlertsAdapter.ViewHolder>() {
 
@@ -16,8 +18,10 @@ class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : Re
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
+        val alertsTextViewStartDate : TextView = itemView.findViewById(R.id.alertTextViewStartDate)
+        val alertsTextViewEndDate : TextView = itemView.findViewById(R.id.alertTextViewEndDate)
+        val alertsTextViewType : TextView = itemView.findViewById(R.id.alertTextViewType)
         val alertsTextViewTime : TextView = itemView.findViewById(R.id.alertTextViewTime)
-        val alertsTextViewTYpe : TextView = itemView.findViewById(R.id.alertTextViewType)
         val alertsTextViewDelete : TextView = itemView.findViewById(R.id.alertTextViewDelete)
         val hourlyConstraintLayout : ConstraintLayout = itemView.findViewById(R.id.alertRowConstraintLayout)
 
@@ -32,8 +36,10 @@ class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : Re
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.alertsTextViewTime.text = alertLocalRecyclerList[position].alertType
-        holder.alertsTextViewTYpe.text = alertLocalRecyclerList[position].alertType
+        holder.alertsTextViewStartDate.text = convertLongToDateAsString(alertLocalRecyclerList[position].startDate)
+        holder.alertsTextViewEndDate.text = convertLongToDateAsString(alertLocalRecyclerList[position].endDate)
+        holder.alertsTextViewType.text = alertLocalRecyclerList[position].alertType
+        holder.alertsTextViewTime.text = convertLongToTime(alertLocalRecyclerList[position].alertTime)
         holder.alertsTextViewDelete.setOnClickListener{alertOnClickListener.onItemClickListener(alertLocalRecyclerList[position])}
 
     }

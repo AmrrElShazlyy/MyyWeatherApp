@@ -8,6 +8,7 @@ import com.example.myweatherapp.model.pojo.WeatherDataModel
 import org.joda.time.Days
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -74,6 +75,17 @@ fun dateStringToLong(date: String?): Long {
     return milliseconds/1000
 }
 
+fun convertLongToDateAsString(dateInMillis: Long): String {
+    val d = Date(dateInMillis * 1000)
+    val dateFormat: DateFormat = SimpleDateFormat("d MMM, yyyy", Locale.ENGLISH)
+    return dateFormat.format(d)
+}
+
+fun convertLongToTime(time: Long): String {
+    val date = Date(TimeUnit.SECONDS.toMillis(time))
+    val format = SimpleDateFormat("h:mm a", Locale.ENGLISH)
+    return format.format(date)
+}
 
 fun countDaysFromTo(startDate: String, endDate: String): List<String> {
     val dateTimeFormat = DateTimeFormat.forPattern("dd-MM-yyyy")
@@ -95,9 +107,5 @@ fun timeToSeconds(hour: Int, min: Int): Long {
     return (((hour * 60 + min) * 60) - 7200 ).toLong()
 }
 
-fun convertLongToTime(time: Long): String {
-    val date = Date(TimeUnit.SECONDS.toMillis(time))
-    val format = SimpleDateFormat("h:mm a", Locale.ENGLISH)
-    return format.format(date)
-}
+
 

@@ -59,6 +59,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var alertTime : Long = 0
     var alertType = ""
     lateinit var alertDays : List<String>
+    var alertlist: ArrayList<AlertLocal> = arrayListOf()
 
 
     lateinit var toggle: ActionBarDrawerToggle
@@ -75,6 +76,8 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     lateinit var alertRadioButton: RadioButton
     lateinit var notificationRadioButton: RadioButton
     lateinit var dialogSaveButton: Button
+
+    var savingFlag = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -195,8 +198,15 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         }
 
         dialogSaveButton.setOnClickListener{
-            getAllDataToSaveAlert()
-            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+            //if (getAllDataToSaveAlert() == true) {
+                getAllDataToSaveAlert()
+                alertDialog.dismiss()
+                Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
+//            }else{
+//                alertDialog.dismiss()
+//                Toast.makeText(this, "No Alert Is Saved ", Toast.LENGTH_LONG).show()
+//
+//            }
         }
     }
 
@@ -273,13 +283,34 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     }
 
     fun getAllDataToSaveAlert(){
-        alertDays = countDaysFromTo(startDateStr,endDateStr)
-        var alertLocal = AlertLocal(null,lat,lon,startDateLong,endDateLong,alertDays,alertTime,alertType)
-        var list : List<AlertLocal> = arrayListOf(alertLocal,alertLocal,alertLocal)
-        alertsAdapter.alertLocalRecyclerList = list
-        alertsAdapter.notifyDataSetChanged()
-    }
+        Log.e("***", "getAllDataToSaveAlert:  lat = $lat - $lon")
+        Log.e("***", "getAllDataToSaveAlert:  start date = $startDateLong ")
+        Log.e("***", "getAllDataToSaveAlert:  end date = $endDateLong ")
+        Log.e("***", "getAllDataToSaveAlert:  alert time  = $alertTime ")
+        Log.e("***", "getAllDataToSaveAlert:  type = $alertType ")
+        //if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
+        savingFlag = true
+        alertDays = countDaysFromTo(startDateStr, endDateStr)
+        var alertLocal = AlertLocal(
+            null,
+            lat,
+            lon,
+            startDateLong,
+            endDateLong,
+            alertDays,
+            alertTime,
+            alertType
+        )
 
+        alertlist.add(alertLocal)
+        alertsAdapter.alertLocalRecyclerList = alertlist
+        alertsAdapter.notifyDataSetChanged()
+
+//        }else{
+//            return false
+//        }
+
+    }
 
 }
 
