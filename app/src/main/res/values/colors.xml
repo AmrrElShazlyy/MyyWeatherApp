@@ -10,4 +10,7 @@
     <color name="underLine">#8D8888</color>
     <color name="lightBlue">#ADD8E6</color>
     <color name="lightGray">#f5f5f5</color>
+    <color name="darkBlue">#000026</color>
+    <color name="orange">#FF6103</color>
+    <color name="purple">#C8A4D4</color>
 </resources>

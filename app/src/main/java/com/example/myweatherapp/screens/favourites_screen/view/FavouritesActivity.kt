@@ -20,6 +20,7 @@ import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModel
 import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModelFactory
 import com.example.myweatherapp.screens.google_places_screen.googlePlacesActivity
@@ -97,6 +98,16 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
         favouritesRecyclerView.adapter = favouritesAdapter
     }
 
+    override fun onItemClickListener(locationEntity: LocationEntity) {
+
+        Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
+        var intentToHome = Intent(this,HomeActivity::class.java)
+        intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
+        intentToHome.putExtra(Constants.FAV_FLAG,true)
+        startActivity(intentToHome)
+
+    }
+
     fun initNavDrawer(){
 
         val drawerLayout : DrawerLayout = findViewById(R.id.favDrawerLayout)
@@ -113,7 +124,7 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
                 R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
                 R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
-                R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_alerts_screen ->startActivity(Intent(this , AlertsActivity::class.java))
                 R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
 
             }
@@ -152,15 +163,6 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
 
     }
 
-    override fun onItemClickListener(locationEntity: LocationEntity) {
-        
-        Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
-        var intentToHome = Intent(this,HomeActivity::class.java)
-        intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
-        intentToHome.putExtra(Constants.FAV_FLAG,true)
-        startActivity(intentToHome)
-
-    }
 
     fun initGooglePlaces(activity : Activity){
         placesClient = Places.createClient(this)
