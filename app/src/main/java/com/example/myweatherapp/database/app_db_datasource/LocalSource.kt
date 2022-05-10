@@ -1,9 +1,15 @@
 package com.example.myweatherapp.database.app_db_datasource
 
 import androidx.lifecycle.LiveData
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
+import com.example.myweatherapp.model.pojo.AlertLocal
 import com.example.myweatherapp.model.pojo.WeatherDataModel
+import io.reactivex.Single
 
 interface LocalSource {
 
@@ -24,4 +30,11 @@ interface LocalSource {
     fun insertLocationData(locationEntity: LocationEntity)
     fun deleteLocationData(locationEntity: LocationEntity)
     val allStoredLocations : LiveData<List<LocationEntity>>
+
+    // alerts local
+
+    fun insertAlertLocal(alertLocal: AlertLocal)
+    fun deleteAlertLocal(alertLocal: AlertLocal)
+    fun getAllAlertsLocalLiveData(): LiveData<List<AlertLocal>>
+    fun getAllAlertsLocal(): Single<List<AlertLocal>>
 }

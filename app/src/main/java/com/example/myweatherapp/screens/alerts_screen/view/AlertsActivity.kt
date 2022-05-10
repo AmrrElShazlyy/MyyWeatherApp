@@ -13,11 +13,19 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.AlertLocal
+import com.example.myweatherapp.model.repo.Repo
+import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.alerts_screen.view_model.AlertsViewModel
+import com.example.myweatherapp.screens.alerts_screen.view_model.AlertsViewModelFactory
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
+import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModel
+import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModelFactory
 import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
@@ -62,6 +70,9 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var alertlist: ArrayList<AlertLocal> = arrayListOf()
 
 
+    lateinit var alertsViewModelFactory : AlertsViewModelFactory
+    lateinit var alertsViewModel: AlertsViewModel
+
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var floatingActionButton: FloatingActionButton
 
@@ -86,6 +97,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
         readFromSharedPref()
         initUi()
+        initViewModel()
         initNavDrawer()
         initAlertsRecyclerView()
         initAlertDialog()
@@ -98,6 +110,12 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     fun initUi() {
 
         floatingActionButton = findViewById(R.id.alertsFloatingActionButton)
+    }
+
+    fun initViewModel(){
+        alertsViewModelFactory = AlertsViewModelFactory(Repo.getInstance(this, WeatherClient.getInstance(), ConcreteLocalSource(this) ))
+        alertsViewModel = ViewModelProvider(this , alertsViewModelFactory).get(
+            AlertsViewModel::class.java)
     }
 
     fun initNavDrawer(){
@@ -291,17 +309,9 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         //if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
         savingFlag = true
         alertDays = countDaysFromTo(startDateStr, endDateStr)
-        var alertLocal = AlertLocal(
-            null,
-            lat,
-            lon,
-            startDateLong,
-            endDateLong,
-            alertDays,
-            alertTime,
-            alertType
-        )
-
+        var alertLocal = AlertLocal(null, lat, lon, startDateLong, endDateLong,
+            alertDays,alertTime, alertType)
+        alertsViewModel.insertAlert(alertLocal)
         alertlist.add(alertLocal)
         alertsAdapter.alertLocalRecyclerList = alertlist
         alertsAdapter.notifyDataSetChanged()

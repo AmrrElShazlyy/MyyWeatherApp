@@ -3,7 +3,9 @@ package com.example.myweatherapp.model.repo
 import androidx.lifecycle.LiveData
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
+import com.example.myweatherapp.model.pojo.AlertLocal
 import com.example.myweatherapp.model.pojo.WeatherDataModel
+import io.reactivex.Single
 
 interface RepoInterface {
 
@@ -34,11 +36,13 @@ interface RepoInterface {
     fun deleteLocationData(locationEntity: LocationEntity)
     val allStoredLocations : LiveData<List<LocationEntity>>
 
-    // shared pref
+    // alert local
 
-//    fun readLatAndLonFromSharedPref() : Pair<String,String>
-//    fun readUnitsFromSharedPref() : String
-//    fun readLanguageFromSahredPref() : String
+    fun insertAlertLocal(alertLocal: AlertLocal)
+    fun deleteAlertLocal(alertLocal: AlertLocal)
+    fun getAllAlertsLocalLiveData(): LiveData<List<AlertLocal>>
+    fun getAllAlertsLocal(): Single<List<AlertLocal>>
+
 
 
 
