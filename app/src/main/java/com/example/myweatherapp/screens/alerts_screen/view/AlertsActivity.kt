@@ -5,15 +5,20 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
+import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
+import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -36,9 +41,12 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
     lateinit var saveAlertButton: Button
     lateinit var myTextView: TextView
 
-
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var floatingActionButton: FloatingActionButton
+
+    lateinit var alertsRecyclerView: RecyclerView
+    lateinit var alertsAdapter: AlertsAdapter
+    lateinit var alertsLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +54,7 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
 
         initUi()
         initNavDrawer()
+        initAlertsRecyclerView()
         pickDate()
 
     }
@@ -58,7 +67,7 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
 
     fun initNavDrawer(){
 
-        val drawerLayout : DrawerLayout = findViewById(R.id.favDrawerLayout)
+        val drawerLayout : DrawerLayout = findViewById(R.id.alertsDrawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
 
         toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
@@ -78,6 +87,23 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
             }
             true
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun initAlertsRecyclerView(){
+
+        alertsRecyclerView = findViewById(R.id.alertsRecyclerView)
+        alertsAdapter = AlertsAdapter()
+        alertsLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        alertsRecyclerView.layoutManager = alertsLayoutManager
+        alertsRecyclerView.adapter = alertsAdapter
     }
 
     private fun getDateTimeCalender(){
@@ -112,6 +138,24 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
         myTextView.text = "$startDay - $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
