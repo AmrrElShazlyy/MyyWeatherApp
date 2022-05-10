@@ -152,12 +152,12 @@ class SettingsActivity : AppCompatActivity() {
                 locationRadioGroup , i -> var radioButton : RadioButton = findViewById(i)
             when(radioButton.id){
                 R.id.gpsRadioButton -> {
-                    //testTv.text = radioButton.text.toString()
+                    //testTv.text = alertRadioButton.text.toString()
                     checkLocationPermission()
                     //fetchLocation()
                 }
                 R.id.mapRadioButton -> {
-                    //testTv.text = radioButton.text.toString()
+                    //testTv.text = alertRadioButton.text.toString()
                     autoCompleteConstarintLayout.visibility = View.VISIBLE
                 }
             }

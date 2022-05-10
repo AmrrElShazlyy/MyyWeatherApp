@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/alert_details_dialog_layout.xml" value="0.540305553772585" />
         <entry key="app/src/main/res/layout/alert_row_layout.xml" value="0.40022840675710775" />
         <entry key="app/src/main/res/layout/daily_row_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/favourites_row_layout.xml" value="0.1" />

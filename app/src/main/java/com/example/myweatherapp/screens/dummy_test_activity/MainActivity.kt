@@ -43,44 +43,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this,HomeActivity::class.java))
         }
 
-        /*
-
-        tv = findViewById(R.id.testTextView)
-        imageView = findViewById(R.id.testImageView)
-        repo = Repo.getInstance(this,WeatherClient.getInstance(),ConcreteLocalSource(this))
-
-        var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
-        var weatherData : LiveData<WeatherDataModel> = _weatherData
-
-        //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
-
-        lifecycleScope.launch(Dispatchers.IO){
-            _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
-            //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
-
-            weatherData = _weatherData
-            withContext(Dispatchers.Main){
-                weatherData.observe(this@MainActivity, Observer {
-                    //tv.text = it.toString()
-                    tv.text = it.current!!.weather!![0].description
-                    //tv.text = it.current!!.weather!![0].main
-                    //tv.text = it.current?.weather?.get(0)?.description ?: ""
-                    //tv.text = it.current?.weather?.get(0)?.icon
-
-                    // need casting or replace weather entity
-
-                    //var weatherEntity : WeatherEntity = it
-
-                //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
-                    //Glide.with(imageView.context).load(it.current?.weather?.get(0)?.icon).into(imageView)
-
-                })
-            }
-
-        }
-
-        */
-
     }
 
     fun openDialog(){
@@ -106,6 +68,43 @@ class MainActivity : AppCompatActivity() {
 
 
 
+/*
+
+       tv = findViewById(R.id.testTextView)
+       imageView = findViewById(R.id.testImageView)
+       repo = Repo.getInstance(this,WeatherClient.getInstance(),ConcreteLocalSource(this))
+
+       var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
+       var weatherData : LiveData<WeatherDataModel> = _weatherData
+
+       //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
+
+       lifecycleScope.launch(Dispatchers.IO){
+           _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
+           //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
+
+           weatherData = _weatherData
+           withContext(Dispatchers.Main){
+               weatherData.observe(this@MainActivity, Observer {
+                   //tv.text = it.toString()
+                   tv.text = it.current!!.weather!![0].description
+                   //tv.text = it.current!!.weather!![0].main
+                   //tv.text = it.current?.weather?.get(0)?.description ?: ""
+                   //tv.text = it.current?.weather?.get(0)?.icon
+
+                   // need casting or replace weather entity
+
+                   //var weatherEntity : WeatherEntity = it
+
+               //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
+                   //Glide.with(imageView.context).load(it.current?.weather?.get(0)?.icon).into(imageView)
+
+               })
+           }
+
+       }
+
+       */
 
 
 /*

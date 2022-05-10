@@ -20,4 +20,8 @@
     <string name="language">اللغة</string>
     <string name="english">الانجليزية</string>
     <string name="arabic">العربية</string>
+    <string name="save">Save</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="notificatiom">Notification</string>
 </resources>

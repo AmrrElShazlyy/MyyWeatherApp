@@ -1,8 +1,11 @@
 package com.example.myweatherapp.screens.alerts_screen.view
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -36,6 +39,8 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var startHour = 0
     var startMinute = 0
 
+    lateinit var alertDialog: Dialog
+
     lateinit var saveAlertButton: Button
     lateinit var myTextView: TextView
 
@@ -54,6 +59,11 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         initNavDrawer()
         initAlertsRecyclerView()
         pickDate()
+
+        floatingActionButton.setOnClickListener{
+            openDialog()
+            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+        }
 
     }
 
@@ -107,6 +117,18 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     override fun onItemClickListener(alertLocal: AlertLocal) {
         Toast.makeText(this,"interafce click on alert rooow deleted" , Toast.LENGTH_SHORT).show()
 
+    }
+
+    fun openDialog() {
+
+        alertDialog = Dialog(this)
+        alertDialog.setContentView(R.layout.alert_details_dialog_layout)
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //gotoSettingsButton = dialog.findViewById(R.id.goToSettingsButton)
+        //gotoSettingsButton.setOnClickListener{startActivity(Intent(this,SettingsActivity::class.java))}
+
+        alertDialog.show()
     }
 
     private fun getDateTimeCalender(){
