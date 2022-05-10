@@ -5,8 +5,11 @@ import androidx.annotation.RequiresApi
 import com.example.myweatherapp.model.pojo.Daily
 import com.example.myweatherapp.model.pojo.Hourly
 import com.example.myweatherapp.model.pojo.WeatherDataModel
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.ArrayList
 
 class MyLocalDateTime {
 
@@ -50,8 +53,20 @@ class MyLocalDateTime {
                 ZoneOffset.UTC).dayOfWeek.toString()
 
         }
-
-
-
     }
+
+
 }
+
+fun dateStringToLong(date: String?): Long {
+    val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    var milliseconds: Long = 0
+    try {
+        val date = simpleDateFormat.parse(date)
+        milliseconds = date.time
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return milliseconds/1000
+}
+

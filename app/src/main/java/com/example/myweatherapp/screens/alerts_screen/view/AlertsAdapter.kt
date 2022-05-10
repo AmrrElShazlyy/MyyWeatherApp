@@ -32,8 +32,8 @@ class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : Re
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.alertsTextViewTime.text = alertLocalRecyclerList[position].time
-        holder.alertsTextViewTYpe.text = alertLocalRecyclerList[position].type
+        holder.alertsTextViewTime.text = alertLocalRecyclerList[position].alertType
+        holder.alertsTextViewTYpe.text = alertLocalRecyclerList[position].alertType
         holder.alertsTextViewDelete.setOnClickListener{alertOnClickListener.onItemClickListener(alertLocalRecyclerList[position])}
 
     }

@@ -24,9 +24,11 @@ import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
+import com.example.myweatherapp.utilities.dateStringToLong
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
+import kotlin.math.log
 
 class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
 
@@ -48,7 +50,15 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var endHour = 0
     var endMinute = 0
     var endFlag = false
-    var type = ""
+    var alertType = ""
+
+    var lat : Double = 0.0
+    var lon : Double = 0.0
+
+    var startDateStr : String = ""
+    var startDateLong : Long = 0
+    var endDateStr : String = ""
+    var endDateLong : Long = 0
 
 
     lateinit var toggle: ActionBarDrawerToggle
@@ -71,11 +81,12 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alerts)
 
+        readFromSharedPref()
         initUi()
         initNavDrawer()
         initAlertsRecyclerView()
         initAlertDialog()
-        initTypeRadioGroup()
+        initAlertTypeRadioGroup()
         setOnClickListeners()
 
 
@@ -148,16 +159,16 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
     }
 
-    fun initTypeRadioGroup(){
+    fun initAlertTypeRadioGroup(){
         alertTypeRadioGroup.setOnCheckedChangeListener{
                 alertTypeRadioGroup , i -> var radioButton : RadioButton = alertDialog.findViewById(i)
             when(radioButton.id){
                 R.id.alertRadioButton -> {
-                    type = "alert"
+                    alertType = "alert"
                     Log.e("alertsAct", "initTypeRadioGroup: alert", )
                 }
                 R.id.notificationRadioButton -> {
-                    type = "notification"
+                    alertType = "notification"
                     Log.e("alertsAct", "initTypeRadioGroup: notification", )
                 }
 
@@ -204,20 +215,24 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         //}
     }
 
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
+    override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
         if (endFlag == false) {
-            startDay = day
-            startMonth = month + 1
+            startDay = dayOfMonth
+            startMonth = monthOfYear + 1
             startYear = year
+            startDateStr = "$dayOfMonth-${monthOfYear +1}-$year"
+            Log.e("alertsAck", "onDateSet: $startDateStr" )
+            startDateLong = dateStringToLong(startDateStr)
         }else{
-            endDay = day
-            endMonth = month + 1
+            endDay = dayOfMonth
+            endMonth = monthOfYear + 1
             endYear = year
+            endDateStr = "$dayOfMonth-${monthOfYear +1}-$year"
+            endDateLong = dateStringToLong(endDateStr)
         }
 
         getDateTimeCalender()
-
         TimePickerDialog(this,this,hour,minute,true).show()
     }
 
@@ -235,6 +250,27 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
             Log.e("alertsAct", "$endDay - $endMonth , $endYear --- hour : $endHour  min: ${endMinute}" )
         }
+    }
+
+//    private fun getDays(startDate: String, endDate: String): List<String> {
+//        val dtf = DateTimeFormat.forPattern("dd-MM-yyyy")
+//        val start = dtf.parseLocalDate(startDate)
+//        val end = dtf.parseLocalDate(endDate).plusDays(1)
+//        val myDays: MutableList<String> = ArrayList()
+//        val days = Days.daysBetween(LocalDate(start), LocalDate(end)).days.toLong()
+//        var i = 0
+//        while (i < days) {
+//            val current = start.plusDays(i)
+//            val date = current.toDateTimeAtStartOfDay().toString("dd-MM-yyyy")
+//            myDays.add(date)
+//            i++
+//        }
+//        return myDays
+//    }
+
+    private fun readFromSharedPref(){
+        lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toDouble()
+        lon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toDouble()
     }
 
 
