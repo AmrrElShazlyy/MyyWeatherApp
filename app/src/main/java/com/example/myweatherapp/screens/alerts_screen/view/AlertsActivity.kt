@@ -6,15 +6,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
+import com.example.myweatherapp.model.pojo.AlertLocal
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
@@ -24,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 
-class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
+class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
 
     var day = 0
     var month = 0
@@ -100,10 +98,15 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
     fun initAlertsRecyclerView(){
 
         alertsRecyclerView = findViewById(R.id.alertsRecyclerView)
-        alertsAdapter = AlertsAdapter()
+        alertsAdapter = AlertsAdapter(this)
         alertsLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         alertsRecyclerView.layoutManager = alertsLayoutManager
         alertsRecyclerView.adapter = alertsAdapter
+    }
+
+    override fun onItemClickListener(alertLocal: AlertLocal) {
+        Toast.makeText(this,"interafce click on alert rooow deleted" , Toast.LENGTH_SHORT).show()
+
     }
 
     private fun getDateTimeCalender(){
@@ -137,6 +140,8 @@ class AlertsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener 
         startMinute = minute
         myTextView.text = "$startDay - $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
     }
+
+
 }
 
 

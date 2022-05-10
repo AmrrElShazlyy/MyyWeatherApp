@@ -8,12 +8,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.model.pojo.AlertLocal
-import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 
-class AlertsAdapter : RecyclerView.Adapter<AlertsAdapter.ViewHolder>() {
+class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : RecyclerView.Adapter<AlertsAdapter.ViewHolder>() {
 
     var alertLocal = AlertLocal(0,"alarm","1111")
-    var alertLocalList : List<AlertLocal> = arrayListOf(alertLocal,alertLocal,alertLocal)
+    var alertLocalRecyclerList : List<AlertLocal> = arrayListOf(alertLocal,alertLocal,alertLocal)
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
@@ -33,13 +32,13 @@ class AlertsAdapter : RecyclerView.Adapter<AlertsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.alertsTextViewTime.text = alertLocalList[position].time
-        holder.alertsTextViewTYpe.text = alertLocalList[position].type
-
+        holder.alertsTextViewTime.text = alertLocalRecyclerList[position].time
+        holder.alertsTextViewTYpe.text = alertLocalRecyclerList[position].type
+        holder.alertsTextViewDelete.setOnClickListener{alertOnClickListener.onItemClickListener(alertLocalRecyclerList[position])}
 
     }
 
-    override fun getItemCount(): Int = alertLocalList.size
+    override fun getItemCount(): Int = alertLocalRecyclerList.size
 
 
 }
