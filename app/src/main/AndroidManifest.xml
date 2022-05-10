@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWeatherApp">
         <activity
-            android:name="com.example.myweatherapp.screens.google_places_screen.googlePlacesActivity"
+            android:name=".screens.alerts_screen.view.AlertsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".screens.google_places_screen.googlePlacesActivity"
             android:exported="true" />
         <activity
             android:name=".screens.favourites_screen.view.FavouritesActivity"

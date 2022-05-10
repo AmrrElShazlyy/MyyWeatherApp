@@ -32,6 +32,7 @@ import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModel
@@ -130,7 +131,7 @@ class SettingsActivity : AppCompatActivity() {
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
                 R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
                 R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
-                R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked",Toast.LENGTH_SHORT).show()
+                R.id.nav_alerts_screen -> startActivity(Intent(this , AlertsActivity::class.java))
                 R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
 
             }

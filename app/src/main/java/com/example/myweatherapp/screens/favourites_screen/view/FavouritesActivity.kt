@@ -20,6 +20,7 @@ import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.repo.Repo
 import com.example.myweatherapp.network.WeatherClient
+import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModel
 import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModelFactory
 import com.example.myweatherapp.screens.google_places_screen.googlePlacesActivity
@@ -113,7 +114,7 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
                 R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
                 R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
-                R.id.nav_alerts_screen -> Toast.makeText(this,"alerts clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_alerts_screen ->startActivity(Intent(this , AlertsActivity::class.java))
                 R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
 
             }
