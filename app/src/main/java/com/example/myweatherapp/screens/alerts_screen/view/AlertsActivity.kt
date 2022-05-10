@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,6 +22,8 @@ import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.Constants
+import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -39,10 +42,14 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var startHour = 0
     var startMinute = 0
 
-    lateinit var alertDialog: Dialog
+    var endDay = 0
+    var endMonth = 0
+    var endYear = 0
+    var endHour = 0
+    var endMinute = 0
+    var endFlag = false
+    var type = ""
 
-    lateinit var saveAlertButton: Button
-    lateinit var myTextView: TextView
 
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var floatingActionButton: FloatingActionButton
@@ -51,6 +58,15 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     lateinit var alertsAdapter: AlertsAdapter
     lateinit var alertsLayoutManager: LinearLayoutManager
 
+    lateinit var alertDialog: Dialog
+    lateinit var startAlertTimeTextView: TextView
+    lateinit var endAlertTimeTextView: TextView
+    lateinit var alertTypeRadioGroup: RadioGroup
+    lateinit var alertRadioButton: RadioButton
+    lateinit var notificationRadioButton: RadioButton
+    lateinit var dialogSaveButton: Button
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alerts)
@@ -58,18 +74,15 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         initUi()
         initNavDrawer()
         initAlertsRecyclerView()
-        pickDate()
+        initAlertDialog()
+        initTypeRadioGroup()
+        setOnClickListeners()
 
-        floatingActionButton.setOnClickListener{
-            openDialog()
-            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
-        }
 
     }
 
     fun initUi() {
-        saveAlertButton = findViewById(R.id.saveAlertButton)
-        myTextView = findViewById(R.id.mytextView)
+
         floatingActionButton = findViewById(R.id.alertsFloatingActionButton)
     }
 
@@ -119,16 +132,60 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
     }
 
-    fun openDialog() {
+    fun initAlertDialog() {
 
         alertDialog = Dialog(this)
         alertDialog.setContentView(R.layout.alert_details_dialog_layout)
         alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        //gotoSettingsButton = dialog.findViewById(R.id.goToSettingsButton)
-        //gotoSettingsButton.setOnClickListener{startActivity(Intent(this,SettingsActivity::class.java))}
+        startAlertTimeTextView = alertDialog.findViewById(R.id.fromTextViewTime)
+        endAlertTimeTextView = alertDialog.findViewById(R.id.toTextViewTime)
+        alertTypeRadioGroup = alertDialog.findViewById(R.id.alertRadioGroup)
+        alertRadioButton = alertDialog.findViewById(R.id.alertRadioButton)
+        notificationRadioButton = alertDialog.findViewById(R.id.notificationRadioButton)
+        dialogSaveButton = alertDialog.findViewById(R.id.saveAlertDetailsButton)
 
-        alertDialog.show()
+
+    }
+
+    fun initTypeRadioGroup(){
+        alertTypeRadioGroup.setOnCheckedChangeListener{
+                alertTypeRadioGroup , i -> var radioButton : RadioButton = alertDialog.findViewById(i)
+            when(radioButton.id){
+                R.id.alertRadioButton -> {
+                    type = "alert"
+                    Log.e("alertsAct", "initTypeRadioGroup: alert", )
+                }
+                R.id.notificationRadioButton -> {
+                    type = "notification"
+                    Log.e("alertsAct", "initTypeRadioGroup: notification", )
+                }
+
+            }
+        }
+    }
+
+    fun setOnClickListeners(){
+        floatingActionButton.setOnClickListener{
+            alertDialog.show()
+            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+        }
+
+        startAlertTimeTextView.setOnClickListener{
+            endFlag = false
+            pickDate()
+            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+        }
+
+        endAlertTimeTextView.setOnClickListener{
+            endFlag = true
+            pickDate()
+            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+        }
+
+        dialogSaveButton.setOnClickListener{
+            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getDateTimeCalender(){
@@ -141,16 +198,23 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     }
 
     private fun pickDate(){
-        saveAlertButton.setOnClickListener{
+        //saveAlertButton.setOnClickListener{
             getDateTimeCalender()
             DatePickerDialog(this,this,year,month,day).show()
-        }
+        //}
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
-        startDay = day
-        startMonth = month
-        startYear = year
+
+        if (endFlag == false) {
+            startDay = day
+            startMonth = month + 1
+            startYear = year
+        }else{
+            endDay = day
+            endMonth = month + 1
+            endYear = year
+        }
 
         getDateTimeCalender()
 
@@ -158,9 +222,19 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     }
 
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
-        startHour = hour
-        startMinute = minute
-        myTextView.text = "$startDay - $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
+
+        if (endFlag == false) {
+            startHour = hour
+            startMinute = minute
+            startAlertTimeTextView.text = "$startDay , $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
+            Log.e("alertsAct", "$startDay - $startMonth , $startYear --- hour : $startHour  min: ${startMinute}" )
+        }
+        else{
+            endHour = hour
+            endMinute = minute
+            endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
+            Log.e("alertsAct", "$endDay - $endMonth , $endYear --- hour : $endHour  min: ${endMinute}" )
+        }
     }
 
 

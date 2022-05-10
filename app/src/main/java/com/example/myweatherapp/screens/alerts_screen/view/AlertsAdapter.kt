@@ -11,8 +11,8 @@ import com.example.myweatherapp.model.pojo.AlertLocal
 
 class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : RecyclerView.Adapter<AlertsAdapter.ViewHolder>() {
 
-    var alertLocal = AlertLocal(0,"alarm","1111")
-    var alertLocalRecyclerList : List<AlertLocal> = arrayListOf(alertLocal,alertLocal,alertLocal)
+    //var alertLocal = AlertLocal(0,"alarm","1111")
+    var alertLocalRecyclerList : List<AlertLocal> = arrayListOf()
 
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
