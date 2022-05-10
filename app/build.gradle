@@ -80,4 +80,6 @@ dependencies {
     // google places
     implementation 'com.google.android.libraries.places:places:2.6.0'
 
+    implementation 'joda-time:joda-time:2.10.14'
+
 }

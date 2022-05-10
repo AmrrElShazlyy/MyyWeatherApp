@@ -22,9 +22,7 @@ import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
-import com.example.myweatherapp.utilities.Constants
-import com.example.myweatherapp.utilities.SharedPrefrencesHandler
-import com.example.myweatherapp.utilities.dateStringToLong
+import com.example.myweatherapp.utilities.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -50,15 +48,17 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var endHour = 0
     var endMinute = 0
     var endFlag = false
-    var alertType = ""
+
 
     var lat : Double = 0.0
     var lon : Double = 0.0
-
     var startDateStr : String = ""
     var startDateLong : Long = 0
     var endDateStr : String = ""
     var endDateLong : Long = 0
+    var alertTime : Long = 0
+    var alertType = ""
+    lateinit var alertDays : List<String>
 
 
     lateinit var toggle: ActionBarDrawerToggle
@@ -195,6 +195,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         }
 
         dialogSaveButton.setOnClickListener{
+            getAllDataToSaveAlert()
             Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
         }
     }
@@ -204,15 +205,18 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         day = calender.get(Calendar.DAY_OF_MONTH)
         month = calender.get(Calendar.MONTH)
         year = calender.get(Calendar.YEAR)
-        hour = calender.get(Calendar.HOUR)
+        hour = calender.get(Calendar.HOUR_OF_DAY)
         minute = calender.get(Calendar.MINUTE)
     }
 
     private fun pickDate(){
-        //saveAlertButton.setOnClickListener{
-            getDateTimeCalender()
-            DatePickerDialog(this,this,year,month,day).show()
-        //}
+
+        getDateTimeCalender()
+        var datePickerDialog = DatePickerDialog(this,this,year,month,day)
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+        datePickerDialog.show()
+    //  DatePickerDialog(this,this,year,month,day).show()
+
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
@@ -229,7 +233,10 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             endMonth = monthOfYear + 1
             endYear = year
             endDateStr = "$dayOfMonth-${monthOfYear +1}-$year"
+            Log.e("alertsAck", "onDateSet: date str  $endDateStr" )
             endDateLong = dateStringToLong(endDateStr)
+            Log.e("alertsAck", "onDateSet:date long $endDateLong" )
+
         }
 
         getDateTimeCalender()
@@ -241,36 +248,36 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         if (endFlag == false) {
             startHour = hour
             startMinute = minute
-            startAlertTimeTextView.text = "$startDay , $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
-            Log.e("alertsAct", "$startDay - $startMonth , $startYear --- hour : $startHour  min: ${startMinute}" )
+            alertTime = timeToSeconds(hour,minute)
+            var timeToShow = convertLongToTime(alertTime)
+            startAlertTimeTextView.text = "Date : ${startDateStr} , Time : $timeToShow"
+            //startAlertTimeTextView.text = "$startDay , $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
+            Log.e("alertsAct", "Date : ${startDateStr} , Time : $timeToShow" )
         }
         else{
             endHour = hour
             endMinute = minute
-            endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
-            Log.e("alertsAct", "$endDay - $endMonth , $endYear --- hour : $endHour  min: ${endMinute}" )
+            alertTime = timeToSeconds(hour,minute)
+            var timeToShow = convertLongToTime(alertTime)
+            endAlertTimeTextView.text = "Date : ${endDateStr} , Time : $timeToShow"
+            //endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
+            Log.e("alertsAct", "Date : ${endDateStr} , Time : $timeToShow" )
         }
     }
 
-//    private fun getDays(startDate: String, endDate: String): List<String> {
-//        val dtf = DateTimeFormat.forPattern("dd-MM-yyyy")
-//        val start = dtf.parseLocalDate(startDate)
-//        val end = dtf.parseLocalDate(endDate).plusDays(1)
-//        val myDays: MutableList<String> = ArrayList()
-//        val days = Days.daysBetween(LocalDate(start), LocalDate(end)).days.toLong()
-//        var i = 0
-//        while (i < days) {
-//            val current = start.plusDays(i)
-//            val date = current.toDateTimeAtStartOfDay().toString("dd-MM-yyyy")
-//            myDays.add(date)
-//            i++
-//        }
-//        return myDays
-//    }
+
 
     private fun readFromSharedPref(){
         lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toDouble()
         lon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toDouble()
+    }
+
+    fun getAllDataToSaveAlert(){
+        alertDays = countDaysFromTo(startDateStr,endDateStr)
+        var alertLocal = AlertLocal(null,lat,lon,startDateLong,endDateLong,alertDays,alertTime,alertType)
+        var list : List<AlertLocal> = arrayListOf(alertLocal,alertLocal,alertLocal)
+        alertsAdapter.alertLocalRecyclerList = list
+        alertsAdapter.notifyDataSetChanged()
     }
 
 
