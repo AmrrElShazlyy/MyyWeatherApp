@@ -4,11 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -20,9 +23,11 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -48,6 +53,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.util.*
@@ -393,6 +399,30 @@ class SettingsActivity : AppCompatActivity() {
         var refresh = Intent(this,SettingsActivity::class.java)
         startActivity(refresh)
     }
+
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun checkDrawOverlayPermission() {
+//        // Check if we already  have permission to draw over other apps
+//        if (!Settings.canDrawOverlays(requireContext())) {
+//            // if not construct intent to request permission
+//            val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+//            alertDialogBuilder.setTitle("Permission Required")
+//                .setMessage("please allow overlay permission")
+//                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+//                    val intent = Intent(
+//                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + requireContext().packageName)
+//                    )
+//                    // request permission via start activity for result
+//                    startActivityForResult(intent, 1)
+//                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+//                    dialog.dismiss()
+//
+//                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+//                    dialog.dismiss()
+//                }.show()
+//        }
+//    }
 
 }
 

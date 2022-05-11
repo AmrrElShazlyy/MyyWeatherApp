@@ -16,6 +16,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.example.myweatherapp.R
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.AlertLocal
@@ -31,9 +35,11 @@ import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.example.myweatherapp.utilities.*
+import com.example.myweatherapp.work_manager.PeriodicManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.log
 
 class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
@@ -313,6 +319,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         var alertLocal = AlertLocal(null, lat, lon, startDateLong, endDateLong,
             alertDays,alertTime, alertType)
         alertsViewModel.insertAlert(alertLocal)
+        setPeriodWorkManger()
         alertlist.add(alertLocal)
         alertsAdapter.alertLocalRecyclerList = alertlist
         alertsAdapter.notifyDataSetChanged()
@@ -320,6 +327,23 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 //        }else{
 //            return false
 //        }
+
+    }
+
+    private fun setPeriodWorkManger() {
+
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        val periodicWorkRequest = PeriodicWorkRequest.Builder(
+            PeriodicManager::class.java, 24, TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+            "work", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest)
+        Log.e("Create alarm","setPeriodWorkManger")
 
     }
 
@@ -331,6 +355,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             }
         })
     }
+
 
 }
 

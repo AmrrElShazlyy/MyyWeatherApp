@@ -43,6 +43,10 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
         localSource.deleteWeatherData(weatherDataModel)
     }
 
+    override suspend fun getWeatherDataModelObj(): WeatherDataModel {
+        return localSource.getWeatherDataModelObj()
+    }
+
     override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
         get() = localSource.allStoredWeatherDataModel
 

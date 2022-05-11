@@ -22,6 +22,7 @@ interface RepoInterface {
 
     fun insertWeatherData(weatherDataModel: WeatherDataModel)
     fun deleteWeatherData(weatherDataModel: WeatherDataModel)
+    suspend fun getWeatherDataModelObj() : WeatherDataModel
     val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
 
     // alert

@@ -15,6 +15,7 @@ data class Alert(@PrimaryKey(autoGenerate = true)@ColumnInfo(name = "alertId") v
                  @SerializedName("event")  @ColumnInfo(name = "event") var event: String ,
                  @SerializedName("start")  @ColumnInfo(name = "start") var start: Int ,
                  @SerializedName("end")  @ColumnInfo(name = "end") var end: Int ,
-                 @SerializedName("description")  @ColumnInfo(name = "description") var descriptiion :String?  )
+                 @SerializedName("description")  @ColumnInfo(name = "description") var descriptiion :String?,
+                 @SerializedName("tags") var tags: List<String>)
 
 

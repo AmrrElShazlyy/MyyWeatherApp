@@ -38,6 +38,10 @@ class ConcreteLocalSource(context: Context) : LocalSource {
         weatherDao?.deleteWeatherData(weatherDataModel)
     }
 
+    override suspend fun getWeatherDataModelObj(): WeatherDataModel {
+        return weatherDao?.getWeatherDataModelObj()!!
+    }
+
     override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>> = weatherDao?.getWeatherData()!!
 
 //    init {

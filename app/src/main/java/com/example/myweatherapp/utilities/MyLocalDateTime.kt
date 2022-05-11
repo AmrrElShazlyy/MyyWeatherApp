@@ -107,5 +107,11 @@ fun timeToSeconds(hour: Int, min: Int): Long {
     return (((hour * 60 + min) * 60) - 7200 ).toLong()
 }
 
+fun getCurrentDay(): String? {
+    val dateFormat: DateFormat = SimpleDateFormat("dd-MM-yyyy")
+    val date = Date()
+    return dateFormat.format(date)
+}
+
 
 
