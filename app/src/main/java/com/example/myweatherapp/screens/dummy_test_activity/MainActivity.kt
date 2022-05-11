@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this,HomeActivity::class.java))
         }
 
+        //startActivity(Intent(this,SettingsActivity::class.java))
+
     }
 
     fun openDialog(){

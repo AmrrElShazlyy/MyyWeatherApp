@@ -102,6 +102,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         initAlertsRecyclerView()
         initAlertDialog()
         initAlertTypeRadioGroup()
+        getDataFromDb()
         setOnClickListeners()
 
 
@@ -320,6 +321,15 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 //            return false
 //        }
 
+    }
+
+    fun getDataFromDb(){
+        alertsViewModel.getAlertsLocalFromDb().observe(this, androidx.lifecycle.Observer {
+            if (it != null){
+                alertsAdapter.alertLocalRecyclerList = it
+                alertsAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
 }
