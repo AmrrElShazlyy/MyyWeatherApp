@@ -164,6 +164,9 @@ class HomeActivity : AppCompatActivity() {
                 intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
             var favLat: Double = locationEntity.lat
             var favLon: Double = locationEntity.lon
+            Log.e("homeAct**", "onItemClickListener: " + favLat.toString() )
+            Log.e("homeAct**", "onItemClickListener: " + favLon.toString() )
+            Log.e("homeAct**", "onItemClickListener: " + locationEntity.cityName.toString() )
             homeViewModel.getWeatherDataModelFromNetwork(
                 favLat.toString(),
                 favLon.toString(),

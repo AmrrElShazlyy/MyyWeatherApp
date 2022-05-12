@@ -14,7 +14,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/lightBlue"
         app:cardCornerRadius="10dp"
         app:cardElevation="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +34,6 @@
                 android:gravity="center"
                 android:text="start date"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +46,6 @@
                 android:gravity="center"
                 android:text="notification"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/alertTextViewEndDate" />
@@ -63,7 +60,6 @@
                 android:gravity="center"
                 android:text="X"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +75,6 @@
                 android:layout_marginBottom="16dp"
                 android:text="alert time"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +88,6 @@
                 android:layout_marginTop="16dp"
                 android:text="-"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/alertTextViewStartDate"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -106,7 +100,6 @@
                 android:layout_marginTop="16dp"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toTopOf="parent" />

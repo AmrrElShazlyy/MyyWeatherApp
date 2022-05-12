@@ -313,20 +313,19 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         Log.e("***", "getAllDataToSaveAlert:  end date = $endDateLong ")
         Log.e("***", "getAllDataToSaveAlert:  alert time  = $alertTime ")
         Log.e("***", "getAllDataToSaveAlert:  type = $alertType ")
-        //if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
         savingFlag = true
         alertDays = countDaysFromTo(startDateStr, endDateStr)
         var alertLocal = AlertLocal(null, lat, lon, startDateLong, endDateLong,
             alertDays,alertTime, alertType)
+        if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
         alertsViewModel.insertAlert(alertLocal)
         setPeriodWorkManger()
         alertlist.add(alertLocal)
         alertsAdapter.alertLocalRecyclerList = alertlist
         alertsAdapter.notifyDataSetChanged()
-
-//        }else{
-//            return false
-//        }
+        }else{
+            Toast.makeText(this,"there is no alert is saved ",Toast.LENGTH_LONG).show()
+        }
 
     }
 

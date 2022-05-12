@@ -111,6 +111,9 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
         var intentToHome = Intent(this,HomeActivity::class.java)
         intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
         intentToHome.putExtra(Constants.FAV_FLAG,true)
+        Log.e("favAct**", "onItemClickListener: " + locationEntity.lat.toString() )
+        Log.e("favAct**", "onItemClickListener: " + locationEntity.lon.toString() )
+        Log.e("favAct**", "onItemClickListener: " + locationEntity.cityName.toString() )
         startActivity(intentToHome)
 
     }
