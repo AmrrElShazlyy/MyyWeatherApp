@@ -31,7 +31,7 @@ class MyAlertNotificationManager (private val context: Context, private val desc
 
     }
 
-    fun setMyWindowManger() {
+    fun inflatingAlertUi() {
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         alertNotificationView = inflater.inflate(R.layout.alert_notification_layout, null)

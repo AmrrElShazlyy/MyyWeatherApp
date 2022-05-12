@@ -106,6 +106,7 @@ class SettingsActivity : AppCompatActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        checkDrawOverlayPermission()
         initViewModel()
         initUi()
         initNavDrawer()
@@ -470,6 +471,30 @@ class SettingsActivity : AppCompatActivity() {
         startUnits = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.UNITS_KEY,"noUnits",this).toString()
         startLang = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkDrawOverlayPermission() {
+        // Check if we already  have permission to draw over other apps
+        if (!Settings.canDrawOverlays(this)) {
+            // if not construct intent to request permission
+            val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+            alertDialogBuilder.setTitle("Permission Required")
+                .setMessage("please allow overlay permission")
+                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.packageName)
+                    )
+                    // request permission via start activity for result
+                    startActivityForResult(intent, 1)
+                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+                    dialog.dismiss()
+
+                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+                    dialog.dismiss()
+                }.show()
+        }
     }
 
 

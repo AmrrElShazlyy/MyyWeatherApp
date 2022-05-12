@@ -115,7 +115,6 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     }
 
     fun initUi() {
-
         floatingActionButton = findViewById(R.id.alertsFloatingActionButton)
     }
 
@@ -275,7 +274,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         }
 
         getDateTimeCalender()
-        TimePickerDialog(this,this,hour,minute,true).show()
+        TimePickerDialog(this, this, hour, minute, true).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
@@ -292,7 +291,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         else{
             endHour = hour
             endMinute = minute
-            alertTime = timeToSeconds(hour,minute)
+            //alertTime = timeToSeconds(hour,minute)
             var timeToShow = convertLongToTime(alertTime)
             endAlertTimeTextView.text = "Date : ${endDateStr} , Time : $timeToShow"
             //endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
@@ -319,8 +318,10 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             alertDays,alertTime, alertType)
         if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
         alertsViewModel.insertAlert(alertLocal)
+            Log.e("alertAct", "getAllDataToSaveAlert: after insert db", )
         setPeriodWorkManger()
-        alertlist.add(alertLocal)
+            Log.e("alertAct", "getAllDataToSaveAlert: after set periodic call fun ", )
+            alertlist.add(alertLocal)
         alertsAdapter.alertLocalRecyclerList = alertlist
         alertsAdapter.notifyDataSetChanged()
         }else{

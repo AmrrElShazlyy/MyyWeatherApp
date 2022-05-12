@@ -12,7 +12,9 @@ import android.provider.Settings
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.*
+import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
+import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class OneTimeWorkManager(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context,workerParams) {
 
-    private val CHANNEL_ID = 14
+    private val CHANNEL_ID = 11
     private val channel_name = "CHANNEL_NAME"
     private val channel_description = "CHANNEL_DESCRIPTION"
     private var notificationManager: NotificationManager? = null
@@ -32,14 +34,12 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     override suspend fun doWork(): Result {
         val description = inputData.getString("description")!!
         Log.e("MyOneTimeWorkManger","doWork")
-
         notificationChannel()
         makeNotification(description)
-
         if (Settings.canDrawOverlays(context)) {
             GlobalScope.launch(Dispatchers.Main) {
                 myAlertNotificationManager = MyAlertNotificationManager(context, description)
-                myAlertNotificationManager!!.setMyWindowManger()
+                myAlertNotificationManager!!.inflatingAlertUi()
             }
         }
         return Result.success()
@@ -51,7 +51,7 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
         Log.e("MyOneTimeWorkManger","makeNotification")
         lateinit var builder: Notification.Builder
 
-        val intent = Intent(applicationContext, MainActivity::class.java)
+        val intent = Intent(applicationContext, AlertsActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         builder= Notification.Builder(applicationContext, "$CHANNEL_ID")

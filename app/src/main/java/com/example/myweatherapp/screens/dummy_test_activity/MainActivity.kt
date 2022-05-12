@@ -4,12 +4,15 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
@@ -66,32 +69,34 @@ class MainActivity : AppCompatActivity() {
         startLang = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
 
     }
+
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun checkDrawOverlayPermission() {
+//        // Check if we already  have permission to draw over other apps
+//        if (!Settings.canDrawOverlays(this)) {
+//            // if not construct intent to request permission
+//            val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+//            alertDialogBuilder.setTitle("Permission Required")
+//                .setMessage("please allow overlay permission")
+//                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+//                    val intent = Intent(
+//                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + this.packageName)
+//                    )
+//                    // request permission via start activity for result
+//                    startActivityForResult(intent, 1)
+//                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+//                    dialog.dismiss()
+//
+//                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+//                    dialog.dismiss()
+//                }.show()
+//        }
+//    }
+
 }
 
 
 
-/*
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkDrawOverlayPermission() {
-        // Check if we already  have permission to draw over other apps
-        if (!Settings.canDrawOverlays(requireContext())) {
-            // if not construct intent to request permission
-            val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-            alertDialogBuilder.setTitle("Permission Required")
-                .setMessage("please allow overlay permission")
-                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + requireContext().packageName)
-                    )
-                    // request permission via start activity for result
-                    startActivityForResult(intent, 1)
-                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
-                    dialog.dismiss()
 
-                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
-                    dialog.dismiss()
-                }.show()
-        }
-    }
- */
+

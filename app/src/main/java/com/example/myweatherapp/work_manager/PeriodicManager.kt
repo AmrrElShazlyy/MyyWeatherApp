@@ -22,56 +22,56 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
 
     lateinit var list :List<AlertLocal>
     var delay: Long = 0
-    var timeNow: Long = 0
+    var currentTime: Long = 0
     val repo = Repo.getInstance(context, WeatherClient.getInstance(), ConcreteLocalSource(context) )
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override suspend fun doWork(): Result {
-        setAlertsToList()
-        getTimePeriod()
-        getCurrentData()
+        getAlertsFromDb()
+        getCurrentTime()
+        setAlertsData()
 
         return Result.success()
     }
-    private fun setAlertsToList(){
+    private fun getAlertsFromDb(){
 
         GlobalScope.launch(Dispatchers.IO) {
             repo.localSource.getAllAlertsLocal().subscribe { alerts->
                 list =alerts
-                Log.e("mando", "getAllAlertsFlow: ${list.size}" )
+                Log.e("PeriodicManager", "getAllAlertsFlow: ${list.size}" )
             }
         }
 
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private suspend fun getCurrentData() {
+    private suspend fun setAlertsData() {
         // ********* live dataaaaaaaa ***********
         val currentWeather = repo.getWeatherDataModelObj()
         // ********* live dataaaaaaaa ***********
-        Log.e("MyPeriodicManager","getCurrentData")
+        Log.e("PeriodicMan","getCurrentData")
 
         if (list != null) {
-            Log.e("MyPeriodicManager","list not null")
+            Log.e("PeriodicMan","list not null")
 
             for (alert in list) {
                 if (alert.alertDays.stream()
                         .anyMatch { s -> s.contains(getCurrentDay().toString()) }) {
-                    Log.e("MyPeriodicManager", "anyMatch")
+                    Log.e("PeriodicMan", "anyMatch")
 
-                    if (checkPeriod(alert.alertTime)) {
-                        Log.e("MyPeriodicManager", "checkPeriod")
+                    if (handleAlertTime(alert.alertTime)) {
+                        Log.e("PeriodicMan", "checkPeriod")
 
                         if (currentWeather.alert.isNullOrEmpty()) {
-                            Log.e("MyPeriodicManager", "isNullOrEmpty $delay")
-                            setOneTimeWorkManger(
+                            Log.e("PeriodicMan", "isNullOrEmpty $delay")
+                            setOneTimeWorkManager(
                                 delay,
                                 alert.alertLocalId,
                                 currentWeather.current?.weather?.get(0)?.description ?: "noooo descr")
                         }
                         else {
-                            setOneTimeWorkManger(
+                            setOneTimeWorkManager(
                                 delay,
                                 alert.alertLocalId,
                                 currentWeather.alert!![0].tags[0],
@@ -85,23 +85,23 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
 
     }
 
-    private fun checkPeriod(medTime: Long): Boolean {
+    private fun handleAlertTime(alertTime: Long): Boolean {
 
-        delay = medTime - timeNow
-        Log.e("mando", "delay: $delay , $medTime" )
+        delay = alertTime - currentTime
+        Log.e("periodicMan", "delay: $delay , $alertTime" )
         return delay > 0
     }
 
-    private fun getTimePeriod() {
+    private fun getCurrentTime() {
         val calender = Calendar.getInstance()
         val hour = calender[Calendar.HOUR_OF_DAY]
         val minute = calender[Calendar.MINUTE]
-        timeNow = (hour * 60).toLong()
-        timeNow = ((timeNow + minute) * 60 ) - 7200
-        Log.e("mando", "getTimePeriod: $timeNow" )
+        currentTime = (hour * 60).toLong()
+        currentTime = ((currentTime + minute) * 60 ) - 7200
+        Log.e("periodicMan", "getTimePeriod: $currentTime" )
     }
 
-    private fun setOneTimeWorkManger(delay: Long, id: Int?, description: String) {
+    private fun setOneTimeWorkManager(delay: Long, id: Int?, description: String) {
         val data = Data.Builder()
         data.putString("description", description)
         val constraints = Constraints.Builder()
