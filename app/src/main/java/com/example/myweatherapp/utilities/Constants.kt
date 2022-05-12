@@ -11,7 +11,10 @@ object Constants {
     const val LON_KEY="lon_key"
     const val UNITS_KEY="units_key"
     const val LANGUAGE_KEY="language_key"
+    const val LOCATION_OPTION_KEY="location_option"
 
+    const val myLocationGps : String = "gps"
+    const val mylocationMap : String = "map"
     const val myUnitStandard : String = "standard"
     const val myUnitMetric : String = "metric"
     const val myUnitImperial : String = "imperial"

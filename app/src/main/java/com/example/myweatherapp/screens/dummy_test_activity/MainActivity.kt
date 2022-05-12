@@ -71,57 +71,27 @@ class MainActivity : AppCompatActivity() {
 
 
 /*
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkDrawOverlayPermission() {
+        // Check if we already  have permission to draw over other apps
+        if (!Settings.canDrawOverlays(requireContext())) {
+            // if not construct intent to request permission
+            val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            alertDialogBuilder.setTitle("Permission Required")
+                .setMessage("please allow overlay permission")
+                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + requireContext().packageName)
+                    )
+                    // request permission via start activity for result
+                    startActivityForResult(intent, 1)
+                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+                    dialog.dismiss()
 
-       tv = findViewById(R.id.testTextView)
-       imageView = findViewById(R.id.testImageView)
-       repo = Repo.getInstance(this,WeatherClient.getInstance(),ConcreteLocalSource(this))
-
-       var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
-       var weatherData : LiveData<WeatherDataModel> = _weatherData
-
-       //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
-
-       lifecycleScope.launch(Dispatchers.IO){
-           _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
-           //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
-
-           weatherData = _weatherData
-           withContext(Dispatchers.Main){
-               weatherData.observe(this@MainActivity, Observer {
-                   //tv.text = it.toString()
-                   tv.text = it.current!!.weather!![0].description
-                   //tv.text = it.current!!.weather!![0].main
-                   //tv.text = it.current?.weather?.get(0)?.description ?: ""
-                   //tv.text = it.current?.weather?.get(0)?.icon
-
-                   // need casting or replace weather entity
-
-                   //var weatherEntity : WeatherEntity = it
-
-               //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
-                   //Glide.with(imageView.context).load(it.current?.weather?.get(0)?.icon).into(imageView)
-
-               })
-           }
-
-       }
-
-       */
-
-
-/*
-
-
-        skipButton = dialog.findViewById(R.id.dialogSkipButton) ;
-        takeButton = dialog.findViewById(R.id.dialogTakeButton);
-        snoozeButton = dialog.findViewById(R.id.dialogSnoozeButton) ;
-        timeTextView = dialog.findViewById(R.id.dialogTimeTextView) ;
-        drugNameTextView = dialog.findViewById(R.id.dialogDrugNameTextView) ;
-        drugDescrTextView = dialog.findViewById(R.id.dialogDrugDescrTextView) ;
-        drugIconImageView = dialog.findViewById(R.id.dialogDrugIconimageView) ;
-
-        drugNameTextView.setText("Panadol");
-        drugDescrTextView.setText("500mg");
-
-        dialog.show();
+                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+                    dialog.dismiss()
+                }.show()
+        }
+    }
  */

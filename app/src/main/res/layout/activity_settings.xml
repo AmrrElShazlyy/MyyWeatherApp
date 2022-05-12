@@ -22,7 +22,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/underLine">
+                android:background="@drawable/weather_image_one">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/autocompleteConstraintFargment"
@@ -66,8 +66,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +84,6 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/location"
-                            android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +107,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/gps"
-                                android:textColor="@color/white"
                                 android:textStyle="normal|bold" />
 
                             <RadioButton
@@ -118,7 +114,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/another_location"
-                                android:textColor="@color/white"
                                 android:textStyle="bold" />
 
                         </RadioGroup>
@@ -136,8 +131,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -210,8 +203,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/lightBlue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -277,10 +268,10 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/cardview_light_background"
-                    android:backgroundTint="@color/lightBlue"
+                    android:layout_marginBottom="8dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/settingsWindCardView">
