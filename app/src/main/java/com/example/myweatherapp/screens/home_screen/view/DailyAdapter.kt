@@ -65,9 +65,6 @@ class DailyAdapter() : RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
             Constants.myUnitImperial -> { holder.dailyTextViewMaxMinTemp.text = "$maxTemp / $minTemp °F "}
         }
 
-
-
-
     }
 
     override fun getItemCount(): Int = dailyList.size

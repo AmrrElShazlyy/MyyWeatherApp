@@ -1,6 +1,5 @@
 package com.example.myweatherapp.screens.home_screen.view_model
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweatherapp.model.repo.RepoInterface
