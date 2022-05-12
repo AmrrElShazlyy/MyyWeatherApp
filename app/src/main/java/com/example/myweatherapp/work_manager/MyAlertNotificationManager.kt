@@ -21,7 +21,7 @@ class MyAlertNotificationManager (private val context: Context, private val desc
     lateinit var dismissButton: Button
 
 
-    private fun initUI(view : View) {
+    private fun initUI() {
 
         notificationDescriptionTextView = alertNotificationView.findViewById(R.id.alertNotificationTextView)
         dismissButton = alertNotificationView.findViewById(R.id.alertNotificationDismissButton)
@@ -39,7 +39,7 @@ class MyAlertNotificationManager (private val context: Context, private val desc
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         alertNotificationView = inflater.inflate(R.layout.alert_notification_layout, null)
-        initUI(alertNotificationView)
+        initUI()
 
         val LAYOUT_FLAG: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY

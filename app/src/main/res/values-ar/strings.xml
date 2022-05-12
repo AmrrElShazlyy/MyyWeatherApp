@@ -20,9 +20,9 @@
     <string name="language">اللغة</string>
     <string name="english">الانجليزية</string>
     <string name="arabic">العربية</string>
-    <string name="save">Save</string>
-    <string name="from">From</string>
-    <string name="to">To</string>
+    <string name="save">حفظ</string>
+    <string name="from">البداية</string>
+    <string name="to">النهاية</string>
     <string name="notificatiom">اشعار</string>
     <string name="dismis">رفض</string>
     <string name="alerts">التنبيهات</string>
