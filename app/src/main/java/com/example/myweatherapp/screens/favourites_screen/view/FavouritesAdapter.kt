@@ -19,6 +19,7 @@ class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnCli
     inner class ViewHolder(private val itemView : View) : RecyclerView.ViewHolder(itemView){
 
         val favouritesTextViewCity : TextView = itemView.findViewById(R.id.favouritesTextViewCity)
+        val favouritesTextViewDelete : TextView = itemView.findViewById(R.id.favouritesTextViewDelete)
         val favouritesConstraintLayout : ConstraintLayout = itemView.findViewById(R.id.favouritesRowConstraintLayout)
 
     }
@@ -30,6 +31,9 @@ class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnCli
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.favouritesTextViewCity.text = locationEntityListRecycler[position].cityName
+        holder.favouritesTextViewDelete.setOnClickListener{
+            favLocationOnClickListener.deleteLocationFromDb(locationEntityListRecycler[position])
+        }
         holder.favouritesConstraintLayout.setOnClickListener {
             Log.e("****", "onBindViewHolder:click on constraaaint ", )
             favLocationOnClickListener.onItemClickListener(locationEntityListRecycler[position])

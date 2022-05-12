@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_add__new_24.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/activity_alerts.xml" value="0.23148148148148148" />
-        <entry key="app/src/main/res/layout/activity_favourites.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_favourites.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_google_places.xml" value="0.24114583333333334" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.42594296228150874" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -14,7 +14,7 @@
         <entry key="app/src/main/res/layout/alert_notification_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/alert_row_layout.xml" value="0.30339805825242716" />
         <entry key="app/src/main/res/layout/daily_row_layout.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/favourites_row_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/favourites_row_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/hourly_row_layout.xml" value="0.24114583333333334" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/startup_dialog_layout.xml" value="0.23148148148148148" />

@@ -98,6 +98,13 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
         favouritesRecyclerView.adapter = favouritesAdapter
     }
 
+    override fun deleteLocationFromDb(locationEntity: LocationEntity) {
+        locationEntityList.remove(locationEntity)
+        favouritesAdapter.locationEntityListRecycler = locationEntityList
+        favouritesAdapter.notifyDataSetChanged()
+        favouritesViewModel.deleteLocationEntityFromDb(locationEntity)
+    }
+
     override fun onItemClickListener(locationEntity: LocationEntity) {
 
         Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
