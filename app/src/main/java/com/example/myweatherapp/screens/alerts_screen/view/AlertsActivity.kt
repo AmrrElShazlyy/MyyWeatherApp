@@ -42,7 +42,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.log
 
-class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
+class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
+    DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     var day = 0
     var month = 0
@@ -64,19 +65,19 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     var endFlag = false
 
 
-    var lat : Double = 0.0
-    var lon : Double = 0.0
-    var startDateStr : String = ""
-    var startDateLong : Long = 0
-    var endDateStr : String = ""
-    var endDateLong : Long = 0
-    var alertTime : Long = 0
+    var lat: Double = 0.0
+    var lon: Double = 0.0
+    var startDateStr: String = ""
+    var startDateLong: Long = 0
+    var endDateStr: String = ""
+    var endDateLong: Long = 0
+    var alertTime: Long = 0
     var alertType = ""
-    lateinit var alertDays : List<String>
+    lateinit var alertDays: List<String>
     var alertlist: ArrayList<AlertLocal> = arrayListOf()
 
 
-    lateinit var alertsViewModelFactory : AlertsViewModelFactory
+    lateinit var alertsViewModelFactory: AlertsViewModelFactory
     lateinit var alertsViewModel: AlertsViewModel
 
     lateinit var toggle: ActionBarDrawerToggle
@@ -118,30 +119,42 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         floatingActionButton = findViewById(R.id.alertsFloatingActionButton)
     }
 
-    fun initViewModel(){
-        alertsViewModelFactory = AlertsViewModelFactory(Repo.getInstance(this, WeatherClient.getInstance(), ConcreteLocalSource(this) ))
-        alertsViewModel = ViewModelProvider(this , alertsViewModelFactory).get(
-            AlertsViewModel::class.java)
+    fun initViewModel() {
+        alertsViewModelFactory = AlertsViewModelFactory(
+            Repo.getInstance(
+                this,
+                WeatherClient.getInstance(),
+                ConcreteLocalSource(this)
+            )
+        )
+        alertsViewModel = ViewModelProvider(this, alertsViewModelFactory).get(
+            AlertsViewModel::class.java
+        )
     }
 
-    fun initNavDrawer(){
+    fun initNavDrawer() {
 
-        val drawerLayout : DrawerLayout = findViewById(R.id.alertsDrawerLayout)
-        val navView : NavigationView = findViewById(R.id.nav_view)
+        val drawerLayout: DrawerLayout = findViewById(R.id.alertsDrawerLayout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
 
-        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         navView.setNavigationItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
 
                 //Toast.makeText(this,"home clicked",Toast.LENGTH_SHORT).show()
-                R.id.nav_home_screen -> startActivity(Intent(this , HomeActivity::class.java))
-                R.id.nav_fav_screen -> startActivity(Intent(this , FavouritesActivity::class.java))
-                R.id.nav_alerts_screen ->startActivity(Intent(this , AlertsActivity::class.java))
-                R.id.nav_settings_screen -> startActivity(Intent(this , SettingsActivity::class.java))
+                R.id.nav_home_screen -> startActivity(Intent(this, HomeActivity::class.java))
+                R.id.nav_fav_screen -> startActivity(Intent(this, FavouritesActivity::class.java))
+                R.id.nav_alerts_screen -> startActivity(Intent(this, AlertsActivity::class.java))
+                R.id.nav_settings_screen -> startActivity(
+                    Intent(
+                        this,
+                        SettingsActivity::class.java
+                    )
+                )
 
             }
             true
@@ -150,23 +163,23 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun initAlertsRecyclerView(){
+    fun initAlertsRecyclerView() {
 
         alertsRecyclerView = findViewById(R.id.alertsRecyclerView)
         alertsAdapter = AlertsAdapter(this)
-        alertsLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        alertsLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         alertsRecyclerView.layoutManager = alertsLayoutManager
         alertsRecyclerView.adapter = alertsAdapter
     }
 
     override fun onItemClickListener(alertLocal: AlertLocal) {
-        Toast.makeText(this,"interafce click on alert rooow deleted" , Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "interafce click on alert rooow deleted", Toast.LENGTH_SHORT).show()
 
         alertlist.add(alertLocal)
         alertsViewModel.deleteAlert(alertLocal)
@@ -191,46 +204,46 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
     }
 
-    fun initAlertTypeRadioGroup(){
-        alertTypeRadioGroup.setOnCheckedChangeListener{
-                alertTypeRadioGroup , i -> var radioButton : RadioButton = alertDialog.findViewById(i)
-            when(radioButton.id){
+    fun initAlertTypeRadioGroup() {
+        alertTypeRadioGroup.setOnCheckedChangeListener { alertTypeRadioGroup, i ->
+            var radioButton: RadioButton = alertDialog.findViewById(i)
+            when (radioButton.id) {
                 R.id.alertRadioButton -> {
                     alertType = "alert"
-                    Log.e("alertsAct", "initTypeRadioGroup: alert", )
+                    Log.e("alertsAct", "initTypeRadioGroup: alert")
                 }
                 R.id.notificationRadioButton -> {
                     alertType = "notification"
-                    Log.e("alertsAct", "initTypeRadioGroup: notification", )
+                    Log.e("alertsAct", "initTypeRadioGroup: notification")
                 }
 
             }
         }
     }
 
-    fun setOnClickListeners(){
-        floatingActionButton.setOnClickListener{
+    fun setOnClickListeners() {
+        floatingActionButton.setOnClickListener {
             alertDialog.show()
-            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
         }
 
-        startAlertTimeTextView.setOnClickListener{
+        startAlertTimeTextView.setOnClickListener {
             endFlag = false
             pickDate()
-            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
         }
 
-        endAlertTimeTextView.setOnClickListener{
+        endAlertTimeTextView.setOnClickListener {
             endFlag = true
             pickDate()
-            Toast.makeText(this,"FAB clicked",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
         }
 
-        dialogSaveButton.setOnClickListener{
+        dialogSaveButton.setOnClickListener {
             //if (getAllDataToSaveAlert() == true) {
-                getAllDataToSaveAlert()
-                alertDialog.dismiss()
-                Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
+            getAllDataToSaveAlert()
+            alertDialog.dismiss()
+            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show()
 //            }else{
 //                alertDialog.dismiss()
 //                Toast.makeText(this, "No Alert Is Saved ", Toast.LENGTH_LONG).show()
@@ -239,7 +252,7 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         }
     }
 
-    private fun getDateTimeCalender(){
+    private fun getDateTimeCalender() {
         val calender = Calendar.getInstance()
         day = calender.get(Calendar.DAY_OF_MONTH)
         month = calender.get(Calendar.MONTH)
@@ -248,13 +261,13 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         minute = calender.get(Calendar.MINUTE)
     }
 
-    private fun pickDate(){
+    private fun pickDate() {
 
         getDateTimeCalender()
-        var datePickerDialog = DatePickerDialog(this,this,year,month,day)
+        var datePickerDialog = DatePickerDialog(this, this, year, month, day)
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         datePickerDialog.show()
-    //  DatePickerDialog(this,this,year,month,day).show()
+        //  DatePickerDialog(this,this,year,month,day).show()
 
     }
 
@@ -264,17 +277,17 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             startDay = dayOfMonth
             startMonth = monthOfYear + 1
             startYear = year
-            startDateStr = "$dayOfMonth-${monthOfYear +1}-$year"
-            Log.e("alertsAck", "onDateSet: $startDateStr" )
+            startDateStr = "$dayOfMonth-${monthOfYear + 1}-$year"
+            Log.e("alertsAck", "onDateSet: $startDateStr")
             startDateLong = dateStringToLong(startDateStr)
-        }else{
+        } else {
             endDay = dayOfMonth
             endMonth = monthOfYear + 1
             endYear = year
-            endDateStr = "$dayOfMonth-${monthOfYear +1}-$year"
-            Log.e("alertsAck", "onDateSet: date str  $endDateStr" )
+            endDateStr = "$dayOfMonth-${monthOfYear + 1}-$year"
+            Log.e("alertsAck", "onDateSet: date str  $endDateStr")
             endDateLong = dateStringToLong(endDateStr)
-            Log.e("alertsAck", "onDateSet:date long $endDateLong" )
+            Log.e("alertsAck", "onDateSet:date long $endDateLong")
 
         }
 
@@ -287,50 +300,52 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
         if (endFlag == false) {
             startHour = hour
             startMinute = minute
-            alertTime = timeToSeconds(hour,minute)
+            alertTime = timeToSeconds(hour, minute)
             var timeToShow = convertLongToTime(alertTime)
             startAlertTimeTextView.text = "Date : ${startDateStr} , Time : $timeToShow"
             //startAlertTimeTextView.text = "$startDay , $startMonth , $startYear --- hour : $startHour  min: ${startMinute}"
-            Log.e("alertsAct", "Date : ${startDateStr} , Time : $timeToShow" )
-        }
-        else{
+            Log.e("alertsAct", "Date : ${startDateStr} , Time : $timeToShow")
+        } else {
             endHour = hour
             endMinute = minute
             //alertTime = timeToSeconds(hour,minute)
             var timeToShow = convertLongToTime(alertTime)
             endAlertTimeTextView.text = "Date : ${endDateStr} , Time : $timeToShow"
             //endAlertTimeTextView.text = "$endDay , $endMonth , $endYear --- hour : $endHour  min: ${endMinute}"
-            Log.e("alertsAct", "Date : ${endDateStr} , Time : $timeToShow" )
+            Log.e("alertsAct", "Date : ${endDateStr} , Time : $timeToShow")
         }
     }
 
 
-
-    private fun readFromSharedPref(){
-        lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"noLat",this).toDouble()
-        lon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"noLon",this).toDouble()
+    private fun readFromSharedPref() {
+        lat = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY, "noLat", this)
+            .toDouble()
+        lon = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY, "noLon", this)
+            .toDouble()
     }
 
-    fun getAllDataToSaveAlert(){
+    fun getAllDataToSaveAlert() {
         Log.e("***", "getAllDataToSaveAlert:  lat = $lat - $lon")
         Log.e("***", "getAllDataToSaveAlert:  start date = $startDateLong ")
         Log.e("***", "getAllDataToSaveAlert:  end date = $endDateLong ")
         Log.e("***", "getAllDataToSaveAlert:  alert time  = $alertTime ")
         Log.e("***", "getAllDataToSaveAlert:  type = $alertType ")
         savingFlag = true
-        alertDays = countDaysFromTo(startDateStr, endDateStr)
-        var alertLocal = AlertLocal(null, lat, lon, startDateLong, endDateLong,
-            alertDays,alertTime, alertType)
-        if (lat != null && lon != null && startDateLong != null && endDateLong != null && alertTime !=null && alertType != null) {
-        alertsViewModel.insertAlert(alertLocal)
-            Log.e("alertAct", "getAllDataToSaveAlert: after insert db", )
-        setPeriodWorkManger()
-            Log.e("alertAct", "getAllDataToSaveAlert: after set periodic call fun ", )
+        if (startDateLong != 0L && endDateLong != 0L && alertTime != 0L && alertType != "") {
+            alertDays = countDaysFromTo(startDateStr, endDateStr)
+            var alertLocal = AlertLocal(
+                null, lat, lon, startDateLong, endDateLong,
+                alertDays, alertTime, alertType
+            )
+            alertsViewModel.insertAlert(alertLocal)
+            Log.e("alertAct", "getAllDataToSaveAlert: after insert db")
+            setPeriodWorkManger()
+            Log.e("alertAct", "getAllDataToSaveAlert: after set periodic call fun ")
             alertlist.add(alertLocal)
-        alertsAdapter.alertLocalRecyclerList = alertlist
-        alertsAdapter.notifyDataSetChanged()
-        }else{
-            Toast.makeText(this,"there is no alert is saved ",Toast.LENGTH_LONG).show()
+            alertsAdapter.alertLocalRecyclerList = alertlist
+            alertsAdapter.notifyDataSetChanged()
+        } else {
+            Toast.makeText(this, "there is no alert is saved ", Toast.LENGTH_LONG).show()
         }
 
     }
@@ -342,19 +357,21 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
             .build()
 
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
-            PeriodicManager::class.java, 24, TimeUnit.HOURS)
+            PeriodicManager::class.java, 24, TimeUnit.HOURS
+        )
             .setConstraints(constraints)
             .build()
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
-            "work", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest)
-        Log.e("Create alarm","setPeriodWorkManger")
+            "work", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
+        )
+        Log.e("Create alarm", "setPeriodWorkManger")
 
     }
 
-    fun getDataFromDb(){
+    fun getDataFromDb() {
         alertsViewModel.getAlertsLocalFromDb().observe(this, androidx.lifecycle.Observer {
-            if (it != null){
+            if (it != null) {
                 alertsAdapter.alertLocalRecyclerList = it
                 alertsAdapter.notifyDataSetChanged()
             }
@@ -363,25 +380,6 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

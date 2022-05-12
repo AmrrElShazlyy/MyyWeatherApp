@@ -39,14 +39,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        readFromSharedPref()
-//        if (startLat == "" || startLon == "" || startUnits == "" || startLang == "") {
-//            openDialog()
-//        }else{
-//            startActivity(Intent(this,HomeActivity::class.java))
-//        }
+        readFromSharedPref()
+        if (startLat.equals("noLat") ) {
+            openDialog()
+        }else{
+            startActivity(Intent(this,HomeActivity::class.java))
 
-        startActivity(Intent(this,SettingsActivity::class.java))
+        }
+
+        //startActivity(Intent(this,SettingsActivity::class.java))
 
     }
 

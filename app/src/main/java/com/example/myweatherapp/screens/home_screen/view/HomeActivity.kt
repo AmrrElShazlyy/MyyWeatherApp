@@ -31,6 +31,7 @@ import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.CheckNetwork
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.navigation.NavigationView
 
