@@ -23,6 +23,7 @@
     <string name="save">Save</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="notificatiom">Notification</string>
-    <string name="dismis">Dismis</string>
+    <string name="notificatiom">اشعار</string>
+    <string name="dismis">رفض</string>
+    <string name="alerts">التنبيهات</string>
 </resources>

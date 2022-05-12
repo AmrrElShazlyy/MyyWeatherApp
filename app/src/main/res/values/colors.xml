@@ -13,4 +13,5 @@
     <color name="darkBlue">#000026</color>
     <color name="orange">#FF6103</color>
     <color name="purple">#C8A4D4</color>
+    <color name="grayTransparent">#40000000</color>
 </resources>

@@ -168,6 +168,11 @@ class AlertsActivity : AppCompatActivity() , AlertOnClickListener,DatePickerDial
     override fun onItemClickListener(alertLocal: AlertLocal) {
         Toast.makeText(this,"interafce click on alert rooow deleted" , Toast.LENGTH_SHORT).show()
 
+        alertlist.add(alertLocal)
+        alertsViewModel.deleteAlert(alertLocal)
+        alertsAdapter.alertLocalRecyclerList = alertlist
+        alertsAdapter.notifyDataSetChanged()
+
     }
 
     fun initAlertDialog() {

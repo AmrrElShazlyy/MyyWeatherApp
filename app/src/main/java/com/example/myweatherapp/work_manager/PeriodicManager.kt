@@ -20,7 +20,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     CoroutineWorker(context, workerParams) {
 
 
-    lateinit var list :List<AlertLocal>
+    var list :List<AlertLocal> = arrayListOf()
     var delay: Long = 0
     var currentTime: Long = 0
     val repo = Repo.getInstance(context, WeatherClient.getInstance(), ConcreteLocalSource(context) )
