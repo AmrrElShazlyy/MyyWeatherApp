@@ -79,45 +79,14 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     }
 
 
-    /*
-    @RequiresApi(Build.VERSION_CODES.O)
-private fun makeNotification(description: String, icon: String){
-    Log.e("MyOneTimeWorkManger","makeNotification")
-    lateinit var builder: Notification.Builder
-
-    val intent = Intent(applicationContext, MainActivity::class.java)
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    val bitmap = BitmapFactory.decodeResource(context.resources, getIcon(icon))
-
-    builder=Notification.Builder(applicationContext, "$CHANNEL_ID")
-        .setSmallIcon(getIcon(icon))
-        .setContentText(description)
-        .setContentTitle("Weather Alarm")
-        .setLargeIcon(bitmap)
-        .setPriority(Notification.PRIORITY_DEFAULT)
-        .setStyle(
-            Notification.BigTextStyle()
-                .bigText(description)
-        )
-        .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-        .setLights(Color.RED, 3000, 3000)
-        //.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.notif_ring))
-        .setAutoCancel(true)
-    notificationManager?.notify(1234, builder.build())
-
-}
-     */
 
     private fun notificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("$CHANNEL_ID", channel_name, NotificationManager.IMPORTANCE_DEFAULT)
-//            val sound =
-//                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.notif_ring)
             val attributes = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .build()
             channel.enableVibration(true)
-            //channel.setSound(sound, attributes)
             channel.description = channel_description
             notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)
