@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import com.example.myweatherapp.database.app_db_datasource.LocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.model.pojo.Alert
+import com.example.myweatherapp.model.pojo.AlertLocal
 import com.example.myweatherapp.model.pojo.WeatherDataModel
 import com.example.myweatherapp.network.RemoteSource
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
+import io.reactivex.Single
 
 class Repo private constructor(var context: Context , var remoteSource: RemoteSource , var localSource: LocalSource) : RepoInterface{
 
@@ -41,6 +43,10 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
         localSource.deleteWeatherData(weatherDataModel)
     }
 
+    override suspend fun getWeatherDataModelObj(): WeatherDataModel {
+        return localSource.getWeatherDataModelObj()
+    }
+
     override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>>
         get() = localSource.allStoredWeatherDataModel
 
@@ -68,6 +74,22 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
     override val allStoredLocations: LiveData<List<LocationEntity>>
         get() = localSource.allStoredLocations
+
+    override fun insertAlertLocal(alertLocal: AlertLocal) {
+        localSource.insertAlertLocal(alertLocal)
+    }
+
+    override fun deleteAlertLocal(alertLocal: AlertLocal) {
+        localSource.deleteAlertLocal(alertLocal)
+    }
+
+    override fun getAllAlertsLocalLiveData(): LiveData<List<AlertLocal>> {
+        return localSource.getAllAlertsLocalLiveData()
+    }
+
+    override fun getAllAlertsLocal(): Single<List<AlertLocal>> {
+        return localSource.getAllAlertsLocal()
+    }
 
 
 }

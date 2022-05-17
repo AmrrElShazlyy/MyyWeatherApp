@@ -20,6 +20,12 @@ class FavouritesViewModel (private val repo: RepoInterface) : ViewModel() {
         }
     }
 
+    fun deleteLocationEntityFromDb(locationEntity: LocationEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteLocationData(locationEntity)
+        }
+    }
+
     fun getLocationsListFromDb(): LiveData<List<LocationEntity>> {
         return repo.allStoredLocations
     }
@@ -29,14 +35,5 @@ class FavouritesViewModel (private val repo: RepoInterface) : ViewModel() {
 
 
 
-/*
-
-    fun getMoviesFromNetwork(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _moviesList.postValue(_repo.fetchAllMoviesFromNetwork())
-            moviesList = _moviesList
-        }
-    }
- */
 
 

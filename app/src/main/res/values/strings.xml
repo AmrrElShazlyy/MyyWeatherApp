@@ -25,4 +25,6 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="notificatiom">Notification</string>
+    <string name="dismis">Dismis</string>
+    <string name="alerts">Alerts</string>
 </resources>

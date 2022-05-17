@@ -4,5 +4,6 @@ import com.example.myweatherapp.model.pojo.LocationEntity
 
 interface FavLocationOnClickListener {
 
+    fun deleteLocationFromDb(locationEntity: LocationEntity)
     fun onItemClickListener(locationEntity: LocationEntity)
 }

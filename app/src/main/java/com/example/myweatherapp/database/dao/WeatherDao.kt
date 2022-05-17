@@ -16,4 +16,6 @@ interface WeatherDao {
     @Query("select * from weatherEntity")
     fun getWeatherData() : LiveData<List<WeatherDataModel>>
 
+    @Query("select * from weatherEntity where id = 0")
+    fun getWeatherDataModelObj() : WeatherDataModel
 }

@@ -4,11 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -20,9 +23,11 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -48,6 +53,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.util.*
@@ -60,8 +66,23 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var tempRadioGroup: RadioGroup
     lateinit var windRadioGroup: RadioGroup
     lateinit var languageRadioGroup : RadioGroup
+
+    lateinit var celsiusRadioButton: RadioButton
+    lateinit var kalvinRadioButton: RadioButton
+    lateinit var fahrenheitRadioButton: RadioButton
+    lateinit var gpsRadioButton: RadioButton
+    lateinit var mapRadioButton: RadioButton
+    lateinit var mileHourRadioButton: RadioButton
+    lateinit var meterSecondRadioButton: RadioButton
+    lateinit var arRadioButton: RadioButton
+    lateinit var enRadioButton: RadioButton
+
+
     lateinit var autoCompleteConstarintLayout: ConstraintLayout
     lateinit var testTv : TextView
+    var startUnits : String = ""
+    var startLang : String = ""
+    var startLocation : String =""
     var lat : Double = 0.0
     var lon : Double = 0.0
 
@@ -85,6 +106,7 @@ class SettingsActivity : AppCompatActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        checkDrawOverlayPermission()
         initViewModel()
         initUi()
         initNavDrawer()
@@ -112,7 +134,55 @@ class SettingsActivity : AppCompatActivity() {
         languageRadioGroup = findViewById(R.id.settingsLanguageRadioGroup)
         autoCompleteConstarintLayout = findViewById(R.id.autocompleteConstraintFargment)
 
+       initRadioButtons()
+
         testTv = findViewById(R.id.settingsTestTextView)
+    }
+
+    fun initRadioButtons(){
+        celsiusRadioButton = findViewById(R.id.celsiusRadioButton)
+        kalvinRadioButton = findViewById(R.id.calvinRadioButton)
+        fahrenheitRadioButton = findViewById(R.id.fahrenheitRadioButton)
+        gpsRadioButton  =findViewById(R.id.gpsRadioButton)
+        mapRadioButton = findViewById(R.id.mapRadioButton)
+        meterSecondRadioButton = findViewById(R.id.meterSecondRadioButton)
+        mileHourRadioButton = findViewById(R.id.mileHourRadioButton)
+        arRadioButton = findViewById(R.id.arabicRadioButton)
+        enRadioButton = findViewById(R.id.englishRadioButton)
+
+        readFromSharedPref()
+
+        when(startLocation){
+            Constants.myLocationGps -> {
+                gpsRadioButton.isChecked = true
+            }
+            Constants.mylocationMap -> {
+                mapRadioButton.isChecked = true
+            }
+        }
+
+        when(startUnits){
+            Constants.myUnitStandard -> {
+                kalvinRadioButton.isChecked = true
+                meterSecondRadioButton.isChecked = true
+            }
+            Constants.myUnitMetric -> {
+                celsiusRadioButton.isChecked = true
+                meterSecondRadioButton.isChecked = true
+            }
+            Constants.myUnitImperial -> {
+                fahrenheitRadioButton.isChecked = true
+                mileHourRadioButton.isChecked = true
+            }
+        }
+        when(startLang){
+            Constants.myLanguageAr -> {
+                arRadioButton.isChecked = true
+            }
+            Constants.myLanguageEn -> {
+                enRadioButton.isChecked = true
+            }
+        }
     }
 
     fun initNavDrawer(){
@@ -153,11 +223,13 @@ class SettingsActivity : AppCompatActivity() {
             when(radioButton.id){
                 R.id.gpsRadioButton -> {
                     //testTv.text = alertRadioButton.text.toString()
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LOCATION_OPTION_KEY,Constants.myLocationGps,this)
                     checkLocationPermission()
                     //fetchLocation()
                 }
                 R.id.mapRadioButton -> {
                     //testTv.text = alertRadioButton.text.toString()
+                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LOCATION_OPTION_KEY,Constants.mylocationMap,this)
                     autoCompleteConstarintLayout.visibility = View.VISIBLE
                 }
             }
@@ -393,6 +465,41 @@ class SettingsActivity : AppCompatActivity() {
         var refresh = Intent(this,SettingsActivity::class.java)
         startActivity(refresh)
     }
+
+    private fun readFromSharedPref(){
+        startLocation = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LOCATION_OPTION_KEY,"noUnits",this).toString()
+        startUnits = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.UNITS_KEY,"noUnits",this).toString()
+        startLang = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkDrawOverlayPermission() {
+        // Check if we already  have permission to draw over other apps
+        if (!Settings.canDrawOverlays(this)) {
+            // if not construct intent to request permission
+            val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+            alertDialogBuilder.setTitle("Permission Required")
+                .setMessage("please allow overlay permission")
+                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.packageName)
+                    )
+                    // request permission via start activity for result
+                    startActivityForResult(intent, 1)
+                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+                    dialog.dismiss()
+
+                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+                    dialog.dismiss()
+                }.show()
+        }
+    }
+
+
+
+
 
 }
 

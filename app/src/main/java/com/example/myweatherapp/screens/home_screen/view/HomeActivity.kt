@@ -31,6 +31,7 @@ import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
+import com.example.myweatherapp.utilities.CheckNetwork
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
 import com.google.android.material.navigation.NavigationView
 
@@ -164,6 +165,9 @@ class HomeActivity : AppCompatActivity() {
                 intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
             var favLat: Double = locationEntity.lat
             var favLon: Double = locationEntity.lon
+            Log.e("homeAct**", "onItemClickListener: " + favLat.toString() )
+            Log.e("homeAct**", "onItemClickListener: " + favLon.toString() )
+            Log.e("homeAct**", "onItemClickListener: " + locationEntity.cityName.toString() )
             homeViewModel.getWeatherDataModelFromNetwork(
                 favLat.toString(),
                 favLon.toString(),
@@ -184,7 +188,7 @@ class HomeActivity : AppCompatActivity() {
             dailyAdapter.notifyDataSetChanged()
 
             // ************ inserting in DB (need to change primary key) *************
-            //homeViewModel.insertWeatherDataModelIntoDB(it)
+            homeViewModel.insertWeatherDataModelIntoDB(it)
             // ************************************************************
 
             // setting current data in UI
@@ -214,17 +218,17 @@ class HomeActivity : AppCompatActivity() {
         var currentIconUrl : String = "${Constants.IMG_URL+currentIcon}.png"
         Glide.with(currentIconIv.context).load(currentIconUrl).into(currentIconIv)
 
-        currentPressureTv.text = "Pressure \n ${weatherDataModel.current?.pressure.toString()} hpa"
-        currentHumidityTv.text = "Humidity \n ${weatherDataModel.current?.humidity.toString()} %"
-        currentCloudsTv.text = "Clouds \n ${weatherDataModel.current?.clouds.toString()} %"
+        currentPressureTv.text = "Pressure: ${weatherDataModel.current?.pressure.toString()} hpa"
+        currentHumidityTv.text = "Humidity: ${weatherDataModel.current?.humidity.toString()} %"
+        currentCloudsTv.text = "Clouds: ${weatherDataModel.current?.clouds.toString()} %"
 
         //currentWindSpeedTv.text = "Clouds \n ${weatherDataModel.current?.windSpeed.toString()} %"
 
         // *****************   add when temp get in m/s or mile/hour   *********************
         when(homeUnits){
-            Constants.myUnitStandard -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} m/s"}
-            Constants.myUnitMetric -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} m/s"}
-            Constants.myUnitImperial -> {currentWindSpeedTv.text = "Wind Speed \n ${weatherDataModel.current?.windSpeed.toString()} mile/hour"}
+            Constants.myUnitStandard -> {currentWindSpeedTv.text = "Wind Speed: ${weatherDataModel.current?.windSpeed.toString()} m/s"}
+            Constants.myUnitMetric -> {currentWindSpeedTv.text = "Wind Speed: ${weatherDataModel.current?.windSpeed.toString()} m/s"}
+            Constants.myUnitImperial -> {currentWindSpeedTv.text = "Wind Speed: ${weatherDataModel.current?.windSpeed.toString()} mile/hour"}
         }
 
     }

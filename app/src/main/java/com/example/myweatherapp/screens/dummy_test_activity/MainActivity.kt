@@ -4,12 +4,15 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
@@ -37,11 +40,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         readFromSharedPref()
-        if (startLat == "" || startLon == "" || startUnits == "" || startLang == "") {
+        if (startLat.equals("noLat") ) {
             openDialog()
         }else{
             startActivity(Intent(this,HomeActivity::class.java))
+
         }
+
+        //startActivity(Intent(this,SettingsActivity::class.java))
 
     }
 
@@ -64,62 +70,34 @@ class MainActivity : AppCompatActivity() {
         startLang = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LANGUAGE_KEY,"noLanguage",this).toString()
 
     }
+
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun checkDrawOverlayPermission() {
+//        // Check if we already  have permission to draw over other apps
+//        if (!Settings.canDrawOverlays(this)) {
+//            // if not construct intent to request permission
+//            val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+//            alertDialogBuilder.setTitle("Permission Required")
+//                .setMessage("please allow overlay permission")
+//                .setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+//                    val intent = Intent(
+//                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + this.packageName)
+//                    )
+//                    // request permission via start activity for result
+//                    startActivityForResult(intent, 1)
+//                    //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+//                    dialog.dismiss()
+//
+//                }.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+//                    dialog.dismiss()
+//                }.show()
+//        }
+//    }
+
 }
 
 
 
-/*
-
-       tv = findViewById(R.id.testTextView)
-       imageView = findViewById(R.id.testImageView)
-       repo = Repo.getInstance(this,WeatherClient.getInstance(),ConcreteLocalSource(this))
-
-       var _weatherData : MutableLiveData<WeatherDataModel> = MutableLiveData<WeatherDataModel>()
-       var weatherData : LiveData<WeatherDataModel> = _weatherData
-
-       //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&appid=245934b547c45abbf4ee8472827ed844
-
-       lifecycleScope.launch(Dispatchers.IO){
-           _weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.04,"minutely"))
-           //_weatherData.postValue(repo.fetchWeatherDataFromNetwork(33.44,94.0,"metric","ar","minutely,hourly"))
-
-           weatherData = _weatherData
-           withContext(Dispatchers.Main){
-               weatherData.observe(this@MainActivity, Observer {
-                   //tv.text = it.toString()
-                   tv.text = it.current!!.weather!![0].description
-                   //tv.text = it.current!!.weather!![0].main
-                   //tv.text = it.current?.weather?.get(0)?.description ?: ""
-                   //tv.text = it.current?.weather?.get(0)?.icon
-
-                   // need casting or replace weather entity
-
-                   //var weatherEntity : WeatherEntity = it
-
-               //Glide.with(holder.movieImageView.context).load(movieList[position].image).into(holder.movieImageView)
-                   //Glide.with(imageView.context).load(it.current?.weather?.get(0)?.icon).into(imageView)
-
-               })
-           }
-
-       }
-
-       */
 
 
-/*
-
-
-        skipButton = dialog.findViewById(R.id.dialogSkipButton) ;
-        takeButton = dialog.findViewById(R.id.dialogTakeButton);
-        snoozeButton = dialog.findViewById(R.id.dialogSnoozeButton) ;
-        timeTextView = dialog.findViewById(R.id.dialogTimeTextView) ;
-        drugNameTextView = dialog.findViewById(R.id.dialogDrugNameTextView) ;
-        drugDescrTextView = dialog.findViewById(R.id.dialogDrugDescrTextView) ;
-        drugIconImageView = dialog.findViewById(R.id.dialogDrugIconimageView) ;
-
-        drugNameTextView.setText("Panadol");
-        drugDescrTextView.setText("500mg");
-
-        dialog.show();
- */
