@@ -24,6 +24,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     var timeDifferenceDelay: Long = 0
     var currentTime: Long = 0
 
+
     @RequiresApi(Build.VERSION_CODES.N)
     override suspend fun doWork(): Result {
         getAlertsFromDb()

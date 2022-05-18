@@ -29,8 +29,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     private var notificationManager: NotificationManager? = null
     var myAlertNotificationManager : MyAlertNotificationManager? = null
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val description = inputData.getString("description")!!
@@ -44,7 +42,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
         }
         return Result.success()
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun makeNotification(description: String){
