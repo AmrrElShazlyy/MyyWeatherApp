@@ -128,7 +128,7 @@ class SettingsActivity : AppCompatActivity() {
        initRadioButtons()
 
         testTv = findViewById(R.id.settingsTestTextView)
-        //testTv.visibility = View.GONE
+        testTv.visibility = View.GONE
     }
 
     fun initRadioButtons(){
