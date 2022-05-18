@@ -28,7 +28,6 @@ class MyAlertNotificationManager (private val context: Context, private val desc
 
         notificationDescriptionTextView.text = description
         dismissButton.setOnClickListener {
-            Log.e("MyAlertManager", " dismiss ", )
             dismissAlert()
         }
 
@@ -64,7 +63,6 @@ class MyAlertNotificationManager (private val context: Context, private val desc
             alertNotificationView!!.invalidate()
             (alertNotificationView!!.parent as ViewGroup).removeAllViews()
         } catch (e: Exception) {
-            Log.d("Error", e.toString())
         }
     }
 

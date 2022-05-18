@@ -347,20 +347,13 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
 
     private fun setPeriodicWorkManager() {
 
-        val constraints = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .build()
-
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
             PeriodicManager::class.java, 24, TimeUnit.HOURS
-        )
-            .setConstraints(constraints)
-            .build()
+        ).build()
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             "work", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         )
-        Log.e("ALertsActivity", "setPeriodWorkManger")
 
     }
 
@@ -375,38 +368,3 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
 
 
 }
-
-
-/*
- fun getTime() {
-        myCalendar = Calendar.getInstance()
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            myCalendar.set(Calendar.HOUR_OF_DAY, hour)
-            myCalendar.set(Calendar.MINUTE, minute)
-            timeStr = SimpleDateFormat("HH:mm").format(myCalendar.getTime())
-        }
-        TimePickerDialog(this, timeSetListener, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), true).show()
-    }
-
-
-    fun getNewDate() {
-        myCalendar = Calendar.getInstance()
-        date =
-            OnDateSetListener { datePicker, year, month, day ->
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, month)
-                myCalendar.set(Calendar.DAY_OF_MONTH, day)
-                mydate = Date(year, month, day)
-                updateLabel()
-            }
-
-        DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show()
-    }
-
-    private fun updateLabel() {
-        val myFormat = "MM/dd/yy"
-        val dateFormat = SimpleDateFormat(myFormat, Locale.UK)
-        dateStr = dateFormat.format(myCalendar.getTime())
-        myTextView.text = " date : $dateStr  time : ${timeStr}"
-    }
- */

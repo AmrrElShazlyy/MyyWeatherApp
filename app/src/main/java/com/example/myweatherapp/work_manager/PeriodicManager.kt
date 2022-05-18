@@ -49,21 +49,13 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private suspend fun setAlertsData() {
 
         val currentWeather = repo.getWeatherDataModelObj()
-        Log.e("PeriodicMan","getCurrentData")
-
         if (list != null) {
-            Log.e("PeriodicMan","list not null")
-
             for (alert in list) {
                 if (alert.alertDays.stream()
                         .anyMatch { s -> s.contains(getCurrentDay().toString()) }) {
-                    Log.e("PeriodicMan", "anyMatch")
-
                     if (handleAlertTime(alert.alertTime)) {
-                        Log.e("PeriodicMan", "checkPeriod")
-
+                        Log.e("PeriodicMan", "getting time of the alert ")
                         if (currentWeather.alert.isNullOrEmpty()) {
-                            Log.e("PeriodicMan", "isNullOrEmpty $delay")
                             setOneTimeWorkManager(
                                 delay,
                                 alert.alertLocalId,
@@ -87,7 +79,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private fun handleAlertTime(alertTime: Long): Boolean {
 
         delay = alertTime - currentTime
-        Log.e("periodicManager", "delay: $delay , $alertTime" )
+        Log.e("periodicManager", "diff bet. time now and alert time : $delay , $alertTime" )
         return delay > 0
     }
 
@@ -97,18 +89,13 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
         val minute = calender[Calendar.MINUTE]
         currentTime = (hour * 60).toLong()
         currentTime = ((currentTime + minute) * 60 ) - 7200
-        Log.e("periodicManager", "getTimePeriod: $currentTime" )
     }
 
     private fun setOneTimeWorkManager(delay: Long, id: Int?, description: String) {
         val data = Data.Builder()
         data.putString("description", description)
-        val constraints = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .build()
         val oneTimeWorkRequest = OneTimeWorkRequest.Builder(OneTimeWorkManager::class.java)
             .setInitialDelay(delay, TimeUnit.SECONDS)
-            .setConstraints(constraints)
             .setInputData(data.build())
             .build()
 
