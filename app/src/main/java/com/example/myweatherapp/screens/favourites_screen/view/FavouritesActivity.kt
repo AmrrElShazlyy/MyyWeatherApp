@@ -76,7 +76,13 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
         }
         getLocationsListFromDb()
 //        initGooglePlaces(this)
-        floatingActionButton.setOnClickListener { setFloatingButtonAction() }
+        floatingActionButton.setOnClickListener {
+            if (isNetworkAvailable(this)) {
+                setFloatingButtonAction()
+            }else{
+                Toast.makeText(this, "you must be connected to network", Toast.LENGTH_LONG).show()
+            }
+        }
 
     }
 
