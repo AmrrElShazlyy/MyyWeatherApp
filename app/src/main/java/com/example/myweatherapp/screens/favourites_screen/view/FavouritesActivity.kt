@@ -31,6 +31,7 @@ import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewM
 import com.example.myweatherapp.screens.settings_screen.view_model.SettingsViewModelFactory
 import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
+import com.example.myweatherapp.utilities.isNetworkAvailable
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -96,6 +97,8 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
         favouritesLayoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         favouritesRecyclerView.layoutManager = favouritesLayoutManager
         favouritesRecyclerView.adapter = favouritesAdapter
+
+
     }
 
     override fun deleteLocationFromDb(locationEntity: LocationEntity) {
@@ -107,14 +110,19 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
 
     override fun onItemClickListener(locationEntity: LocationEntity) {
 
-        Toast.makeText(this,"interafce click on rooow" ,Toast.LENGTH_SHORT).show()
-        var intentToHome = Intent(this,HomeActivity::class.java)
-        intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY , locationEntity)
-        intentToHome.putExtra(Constants.FAV_FLAG,true)
-        Log.e("favAct**", "onItemClickListener: " + locationEntity.lat.toString() )
-        Log.e("favAct**", "onItemClickListener: " + locationEntity.lon.toString() )
-        Log.e("favAct**", "onItemClickListener: " + locationEntity.cityName.toString() )
-        startActivity(intentToHome)
+        if (isNetworkAvailable(this)) {
+            Toast.makeText(this, "interafce click on rooow", Toast.LENGTH_SHORT).show()
+            var intentToHome = Intent(this, HomeActivity::class.java)
+            intentToHome.putExtra(Constants.INTENT_FROM_FAV_KEY, locationEntity)
+            intentToHome.putExtra(Constants.FAV_FLAG, true)
+            Log.e("favAct**", "onItemClickListener: " + locationEntity.lat.toString())
+            Log.e("favAct**", "onItemClickListener: " + locationEntity.lon.toString())
+            Log.e("favAct**", "onItemClickListener: " + locationEntity.cityName.toString())
+            startActivity(intentToHome)
+        }else{
+            Toast.makeText(this, "you must be connected to network", Toast.LENGTH_LONG).show()
+
+        }
 
     }
 
@@ -224,14 +232,3 @@ class FavouritesActivity : AppCompatActivity() , FavLocationOnClickListener ,Ser
 
 
 }
-
-/*
- private fun getMoviesFromDb(){
-        favMovieViewModel.getStoredMovies().observe(this , Observer {
-            if (it != null){
-                favMoviesAdapter.favMovieList = it
-                favMoviesAdapter.notifyDataSetChanged()
-            }
-        })
-    }
- */

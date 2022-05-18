@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,7 +21,6 @@ import com.example.myweatherapp.utilities.Constants
 import com.example.myweatherapp.utilities.MyLocalDateTime
 import com.example.myweatherapp.database.app_db_datasource.ConcreteLocalSource
 import com.example.myweatherapp.model.pojo.LocationEntity
-import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
 import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModel
 import com.example.myweatherapp.screens.home_screen.view_model.HomeViewModelFactory
 import com.example.myweatherapp.model.pojo.WeatherDataModel
@@ -31,8 +29,8 @@ import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
-import com.example.myweatherapp.utilities.CheckNetwork
 import com.example.myweatherapp.utilities.SharedPrefrencesHandler
+import com.example.myweatherapp.utilities.isNetworkAvailable
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {
@@ -154,47 +152,70 @@ class HomeActivity : AppCompatActivity() {
             ))
         homeViewModel = ViewModelProvider(this , homeViewModelFactory).get(HomeViewModel::class.java)
 
-        readFromSharedPref()
-        isFav = intent.getBooleanExtra(Constants.FAV_FLAG,false)
-        if (isFav == false) {
-            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
-        }else {
-            Log.e("HomeAct**", "getDataFromviewModel: 155",)
-            var locationEntity = LocationEntity()
-            locationEntity =
-                intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
-            var favLat: Double = locationEntity.lat
-            var favLon: Double = locationEntity.lon
-            Log.e("homeAct**", "onItemClickListener: " + favLat.toString() )
-            Log.e("homeAct**", "onItemClickListener: " + favLon.toString() )
-            Log.e("homeAct**", "onItemClickListener: " + locationEntity.cityName.toString() )
-            homeViewModel.getWeatherDataModelFromNetwork(
-                favLat.toString(),
-                favLon.toString(),
-                homeUnits,
-                homeLanguage
-            )
-            homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+        if (isNetworkAvailable(this)) {
+            readFromSharedPref()
+            isFav = intent.getBooleanExtra(Constants.FAV_FLAG, false)
+            if (isFav == false) {
+                homeViewModel.getWeatherDataModelFromNetwork(
+                    homeLat,
+                    homeLon,
+                    homeUnits,
+                    homeLanguage
+                )
+            } else {
+                Log.e("HomeAct**", "getDataFromviewModel: 155",)
+                var locationEntity = LocationEntity()
+                locationEntity =
+                    intent.getSerializableExtra(Constants.INTENT_FROM_FAV_KEY) as LocationEntity
+                var favLat: Double = locationEntity.lat
+                var favLon: Double = locationEntity.lon
+                Log.e("homeAct**", "onItemClickListener: " + favLat.toString())
+                Log.e("homeAct**", "onItemClickListener: " + favLon.toString())
+                Log.e("homeAct**", "onItemClickListener: " + locationEntity.cityName.toString())
+                homeViewModel.getWeatherDataModelFromNetwork(
+                    favLat.toString(),
+                    favLon.toString(),
+                    homeUnits,
+                    homeLanguage
+                )
+                //homeViewModel.getWeatherDataModelFromNetwork(homeLat, homeLon, homeUnits, homeLanguage)
+            }
+
+
+            homeViewModel.weatherData.observe(this, Observer {
+
+                hourlyAdapter.hourlyList = it.hourly!!
+                hourlyAdapter.hourlyUnits = homeUnits
+                hourlyAdapter.notifyDataSetChanged()
+
+                dailyAdapter.dailyList = it.daily!!
+                dailyAdapter.dailyUnits = homeUnits
+                dailyAdapter.notifyDataSetChanged()
+
+                // ************ inserting in DB (need to change primary key) *************
+                homeViewModel.insertWeatherDataModelIntoDB(it)
+                // ************************************************************
+
+                // setting current data in UI
+                setCurrentDataInUi(it)
+
+            })
+        }else{
+
+            homeViewModel.getWeatherDataModelFromDb().observe(this, Observer {
+                hourlyAdapter.hourlyList = it[0].hourly!!
+                hourlyAdapter.hourlyUnits = homeUnits
+                hourlyAdapter.notifyDataSetChanged()
+
+                dailyAdapter.dailyList = it[0].daily!!
+                dailyAdapter.dailyUnits = homeUnits
+                dailyAdapter.notifyDataSetChanged()
+
+                // setting current data in UI
+                setCurrentDataInUi(it[0])
+            })
+            Log.e("homeActivity", "getDataFromviewModel:  get weather from db", )
         }
-
-        homeViewModel.weatherData.observe(this , Observer {
-
-            hourlyAdapter.hourlyList = it.hourly!!
-            hourlyAdapter.hourlyUnits = homeUnits
-            hourlyAdapter.notifyDataSetChanged()
-
-            dailyAdapter.dailyList = it.daily!!
-            dailyAdapter.dailyUnits = homeUnits
-            dailyAdapter.notifyDataSetChanged()
-
-            // ************ inserting in DB (need to change primary key) *************
-            homeViewModel.insertWeatherDataModelIntoDB(it)
-            // ************************************************************
-
-            // setting current data in UI
-            setCurrentDataInUi(it)
-
-        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

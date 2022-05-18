@@ -28,8 +28,8 @@ class MyAlertNotificationManager (private val context: Context, private val desc
 
         notificationDescriptionTextView.text = description
         dismissButton.setOnClickListener {
-            Log.e("alertmanager", "initUI: dismiss ", )
-            close()
+            Log.e("MyAlertManager", " dismiss ", )
+            dismissAlert()
         }
 
     }
@@ -48,14 +48,15 @@ class MyAlertNotificationManager (private val context: Context, private val desc
         }
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val width = (context.resources.displayMetrics.widthPixels * 0.85).toInt()
-        val params = WindowManager.LayoutParams(width, WindowManager.LayoutParams.WRAP_CONTENT, LAYOUT_FLAG,
+        val layoutParams = WindowManager.LayoutParams(width, WindowManager.LayoutParams.WRAP_CONTENT, LAYOUT_FLAG,
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
             PixelFormat.TRANSLUCENT)
-        windowManager!!.addView(alertNotificationView, params)
+        windowManager!!.addView(alertNotificationView, layoutParams)
+
     }
 
 
-    private fun close() {
+    private fun dismissAlert() {
         try {
             (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(
                 alertNotificationView

@@ -36,7 +36,7 @@
             android:name=".screens.home_screen.view.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".screens.dummy_test_activity.MainActivity"
+            android:name=".screens.main_activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

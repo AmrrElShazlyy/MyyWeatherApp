@@ -39,7 +39,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
         GlobalScope.launch(Dispatchers.IO) {
             repo.localSource.getAllAlertsLocal().subscribe { alerts->
                 list =alerts
-                Log.e("PeriodicManager", "getAllAlertsFlow: ${list.size}" )
+                Log.e("PeriodicManager", "getAllAlertsFromDb: ${list.size}" )
             }
         }
 
@@ -47,9 +47,8 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun setAlertsData() {
-        // ********* live dataaaaaaaa ***********
+
         val currentWeather = repo.getWeatherDataModelObj()
-        // ********* live dataaaaaaaa ***********
         Log.e("PeriodicMan","getCurrentData")
 
         if (list != null) {
@@ -88,7 +87,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private fun handleAlertTime(alertTime: Long): Boolean {
 
         delay = alertTime - currentTime
-        Log.e("periodicMan", "delay: $delay , $alertTime" )
+        Log.e("periodicManager", "delay: $delay , $alertTime" )
         return delay > 0
     }
 
@@ -98,7 +97,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
         val minute = calender[Calendar.MINUTE]
         currentTime = (hour * 60).toLong()
         currentTime = ((currentTime + minute) * 60 ) - 7200
-        Log.e("periodicMan", "getTimePeriod: $currentTime" )
+        Log.e("periodicManager", "getTimePeriod: $currentTime" )
     }
 
     private fun setOneTimeWorkManager(delay: Long, id: Int?, description: String) {

@@ -14,17 +14,11 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.*
 import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
-import com.example.myweatherapp.screens.dummy_test_activity.MainActivity
-import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.R
-
-import android.graphics.drawable.BitmapDrawable
-
-
 
 
 class OneTimeWorkManager(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context,workerParams) {
@@ -55,7 +49,7 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun makeNotification(description: String){
-        Log.e("MyOneTimeWorkManger","makeNotification")
+
         lateinit var builder: Notification.Builder
 
         val intent = Intent(applicationContext, AlertsActivity::class.java)
@@ -72,9 +66,11 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
             )
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setLights(Color.RED, 3000, 3000)
-            //.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.notif_ring))
             .setAutoCancel(true)
         notificationManager?.notify(1234, builder.build())
+
+        Log.e("MyOneTimeWorkManger","Notification must appeared")
+
 
     }
 

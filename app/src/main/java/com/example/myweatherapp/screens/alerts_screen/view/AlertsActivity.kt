@@ -28,11 +28,7 @@ import com.example.myweatherapp.network.WeatherClient
 import com.example.myweatherapp.screens.alerts_screen.view_model.AlertsViewModel
 import com.example.myweatherapp.screens.alerts_screen.view_model.AlertsViewModelFactory
 import com.example.myweatherapp.screens.favourites_screen.view.FavouritesActivity
-import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModel
-import com.example.myweatherapp.screens.favourites_screen.view_model.FavouritesViewModelFactory
-import com.example.myweatherapp.screens.home_screen.view.DailyAdapter
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
-import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
 import com.example.myweatherapp.screens.settings_screen.view.SettingsActivity
 import com.example.myweatherapp.utilities.*
 import com.example.myweatherapp.work_manager.PeriodicManager
@@ -40,7 +36,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -339,7 +334,7 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
             )
             alertsViewModel.insertAlert(alertLocal)
             Log.e("alertAct", "getAllDataToSaveAlert: after insert db")
-            setPeriodWorkManger()
+            setPeriodicWorkManager()
             Log.e("alertAct", "getAllDataToSaveAlert: after set periodic call fun ")
             alertlist.add(alertLocal)
             alertsAdapter.alertLocalRecyclerList = alertlist
@@ -350,7 +345,7 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
 
     }
 
-    private fun setPeriodWorkManger() {
+    private fun setPeriodicWorkManager() {
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
@@ -365,7 +360,7 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             "work", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         )
-        Log.e("Create alarm", "setPeriodWorkManger")
+        Log.e("ALertsActivity", "setPeriodWorkManger")
 
     }
 

@@ -94,14 +94,3 @@ class Repo private constructor(var context: Context , var remoteSource: RemoteSo
 
 }
 
-
-
-//        val sharedPreferences = activity?.getSharedPreferences("sharedpref",Context.MODE_PRIVATE)
-//        val editor = sharedPreferences.edit()
-//        editor.apply(){
-//            putFloat(Constants.LAT_KEY , it.latitude.toFloat())
-//            putFloat(Constants.LON_KEY , it.longitude.toFloat())
-//
-//        }.apply()
-
-

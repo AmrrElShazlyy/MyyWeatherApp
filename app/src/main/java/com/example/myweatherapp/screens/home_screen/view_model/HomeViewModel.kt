@@ -37,5 +37,12 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel(){
         }
     }
 
+    fun getWeatherDataModelFromDb() : LiveData<List<WeatherDataModel>>{
+
+        return repo.allStoredWeatherDataModel
+
+
+    }
+
 }
 
