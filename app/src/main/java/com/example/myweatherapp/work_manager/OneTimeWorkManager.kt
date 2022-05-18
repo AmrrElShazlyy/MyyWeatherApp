@@ -70,9 +70,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     private fun notificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("$CHANNEL_ID", channel_name, NotificationManager.IMPORTANCE_DEFAULT)
-            val attributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .build()
             channel.enableVibration(true)
             channel.description = channel_description
             notificationManager = context.getSystemService(NotificationManager::class.java)
