@@ -34,7 +34,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val description = inputData.getString("description")!!
-        Log.e("MyOneTimeWorkManger","doWork")
         notificationChannel()
         makeNotification(description)
         if (Settings.canDrawOverlays(context)) {
@@ -51,11 +50,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     private fun makeNotification(description: String){
 
         lateinit var builder: Notification.Builder
-
-        //val intent = Intent(applicationContext, AlertsActivity::class.java)
-        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        //val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_dialog_alert)
-
         builder= Notification.Builder(applicationContext, "$CHANNEL_ID")
             .setContentText(description)
             .setContentTitle("Weather Alarm").setSmallIcon(R.drawable.ic_dialog_alert)
@@ -68,9 +62,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
             .setLights(Color.RED, 3000, 3000)
             .setAutoCancel(true)
         notificationManager?.notify(1234, builder.build())
-
-        Log.e("MyOneTimeWorkManger","Notification must appeared")
-
 
     }
 
@@ -86,8 +77,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
             channel.description = channel_description
             notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)
-            Log.e("MyOneTimeWorkManger","notificationChannel")
-
         }
     }
 
