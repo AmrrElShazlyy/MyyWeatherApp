@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.model.pojo.LocationEntity
 import com.example.myweatherapp.screens.home_screen.view.HourlyAdapter
+import com.example.myweatherapp.utilities.isNetworkAvailable
 
 class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnClickListener) : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
 
@@ -34,6 +35,7 @@ class FavouritesAdapter(private val favLocationOnClickListener: FavLocationOnCli
         holder.favouritesTextViewDelete.setOnClickListener{
             favLocationOnClickListener.deleteLocationFromDb(locationEntityListRecycler[position])
         }
+
         holder.favouritesConstraintLayout.setOnClickListener {
             Log.e("****", "onBindViewHolder:click on constraaaint ", )
             favLocationOnClickListener.onItemClickListener(locationEntityListRecycler[position])

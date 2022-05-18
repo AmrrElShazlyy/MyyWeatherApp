@@ -15,17 +15,5 @@ data class AlertLocal (@PrimaryKey(autoGenerate = true)@ColumnInfo(name = "alert
                        var alertTime : Long,
                        var alertType : String) {
 
-//    constructor(lat: Double, lon: Double, startDate: Long, endDate: Long,
-//                alertDays: List<String>, alertTime: Long, alertType: String) : this(0)
-
 }
 
-
-
-
-/*
-@ColumnInfo(name = "type") var type: String,
-                       @ColumnInfo(name = "time") var time: String,
-                       @ColumnInfo(name = "time") var startDate: String,
-                       @ColumnInfo(name = "time") var endDate: String
- */

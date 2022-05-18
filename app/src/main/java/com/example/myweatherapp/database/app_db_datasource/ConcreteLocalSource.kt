@@ -44,14 +44,6 @@ class ConcreteLocalSource(context: Context) : LocalSource {
 
     override val allStoredWeatherDataModel: LiveData<List<WeatherDataModel>> = weatherDao?.getWeatherData()!!
 
-//    init {
-//        val dataBase = AppDataBase.getInstance(context)
-//        weatherDao = dataBase?.weatherDao()
-//        allStoredWeatherDataModel = weatherDao?.getWeatherData()!!
-//
-//    }
-
-
     // alert
 
     override fun insertAlert(alert: Alert) {
@@ -64,12 +56,8 @@ class ConcreteLocalSource(context: Context) : LocalSource {
 
     override val allStoredWeatherAlerts: LiveData<List<Alert>> = alertDao?.getAllAlerts()!!
 
-//    init {
-//        val dataBase = AppDataBase.getInstance(context)
-//        alertDao = dataBase?.alertDao()
-//        allStoredWeatherAlerts = alertDao?.getAllAlerts()!!
-//
-//    }
+
+    // Location
 
 
     override fun insertLocationData(locationEntity: LocationEntity) {
@@ -82,12 +70,8 @@ class ConcreteLocalSource(context: Context) : LocalSource {
 
     override val allStoredLocations: LiveData<List<LocationEntity>> = locationDao?.getAllLocationData()!!
 
-//    init {
-//        val dataBase = AppDataBase.getInstance(context)
-//        locationDao = dataBase?.locationDao()
-//        allStoredLocations = locationDao?.getAllLocationData()!!
-//
-//    }
+
+    // alert local
 
     override fun insertAlertLocal(alertLocal: AlertLocal) {
         alertsLocalDao?.insertAlertLocal(alertLocal)

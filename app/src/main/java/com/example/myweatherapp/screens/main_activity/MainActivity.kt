@@ -1,18 +1,14 @@
-package com.example.myweatherapp.screens.dummy_test_activity
+package com.example.myweatherapp.screens.main_activity
 
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.example.myweatherapp.R
 import com.example.myweatherapp.screens.home_screen.view.HomeActivity
 import com.example.myweatherapp.model.repo.RepoInterface
