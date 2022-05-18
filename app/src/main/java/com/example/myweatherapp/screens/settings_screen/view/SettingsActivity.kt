@@ -217,7 +217,7 @@ class SettingsActivity : AppCompatActivity() {
                     //testTv.text = alertRadioButton.text.toString()
                     SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LOCATION_OPTION_KEY,Constants.myLocationGps,this)
                     checkLocationPermission()
-                    //fetchLocation()
+                    autoCompleteConstarintLayout.visibility = View.GONE
                 }
                 R.id.mapRadioButton -> {
                     //testTv.text = alertRadioButton.text.toString()
@@ -374,78 +374,9 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         Log.e("***", "getCurrentLocation: outside", )
-        /*
-        fusedLocationProviderClient.lastLocation.addOnCompleteListener{ task ->
-            Log.e("***", "getCurrentLocation: inside", )
-            val location = task.getResult()
-            Log.e("SetAct***", "getCurrentLocation: outside 22    287" , )
-            if (location != null){
-                try {
-                    Log.e("SetAct***", "getCurrentLocation: outside 22    290" , )
-                    lat = location.latitude
-                    lon = location.longitude
-                    Log.e("SetAct***", "getCurrentLocation: outside 22    293" , )
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
-                    SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
-                    Log.e("SetAct***", "getCurrentLocation: outside 22    295" , )
-                    Log.e("***", "getCurrentLocation: lat = ${lat.toString()} lon - ${lon.toString()} ", )
-
-                    var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
-                    var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
-
-                    Log.e("***", "getCurrentLocation: latSH = ${latSH.toString()} lonSH - ${lonSH.toString()} ", )
-                    // ****************** fe 7aga ghalat rag3a men shared pref ****************
-                    testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
-                    // ****************** fe 7aga ghalat rag3a men shared pref ****************
-
-                }catch (e : IOException){
-                    Log.e("SetAct***", "getCurrentLocation: cattttchhhhhh" , )
-
-                    e.printStackTrace()
-
-                }
-            }
-        }
-        */
-    }
-
-    fun fetchLocation() {
-
-        val task = fusedLocationProviderClient.lastLocation
-
-        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED )
-        {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,),101)
-            return
-        }
-
-        task.addOnSuccessListener {
-            if (it != null){
-                Log.e("SetAct***", "getCurrentLocation: outside 22    290" , )
-                lat = it.latitude
-                lon = it.longitude
-                Log.e("SetAct***", "getCurrentLocation: outside 22    293" , )
-                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LAT_KEY,lat.toString(),this)
-                SharedPrefrencesHandler.saveSettingsInSharedPref(Constants.LON_KEY,lon.toString(),this)
-                Log.e("SetAct***", "getCurrentLocation: outside 22    295" , )
-                Log.e("***", "getCurrentLocation: lat = ${lat.toString()} lon - ${lon.toString()} ", )
-
-                var latSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LAT_KEY,"laattt" ,this)
-                var lonSH = SharedPrefrencesHandler.getSettingsFromSharedPref(Constants.LON_KEY,"loonnn" ,this)
-
-                Log.e("***", "getCurrentLocation: latSH = ${latSH.toString()} lonSH - ${lonSH.toString()} ", )
-                // ****************** fe 7aga ghalat rag3a men shared pref ****************
-                testTv.text = "lat = ${latSH.toString()} lon = ${lonSH.toString()}"
-                // ****************** fe 7aga ghalat rag3a men shared pref ****************
-
-
-            }
-        }
 
     }
+
 
     fun initGooglePlaces(activity : Activity){
         placesClient = Places.createClient(this)
