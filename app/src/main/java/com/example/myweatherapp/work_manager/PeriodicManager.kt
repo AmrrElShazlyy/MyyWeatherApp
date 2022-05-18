@@ -19,11 +19,10 @@ import java.util.concurrent.TimeUnit
 class PeriodicManager (private val context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
-
-    var list :List<AlertLocal> = arrayListOf()
-    var delay: Long = 0
-    var currentTime: Long = 0
     val repo = Repo.getInstance(context, WeatherClient.getInstance(), ConcreteLocalSource(context) )
+    var alertsLocalList :List<AlertLocal> = arrayListOf()
+    var timeDifferenceDelay: Long = 0
+    var currentTime: Long = 0
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -38,8 +37,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
 
         GlobalScope.launch(Dispatchers.IO) {
             repo.localSource.getAllAlertsLocal().subscribe { alerts->
-                list =alerts
-                Log.e("PeriodicManager", "getAllAlertsFromDb: ${list.size}" )
+                alertsLocalList =alerts
             }
         }
 
@@ -49,21 +47,21 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private suspend fun setAlertsData() {
 
         val currentWeather = repo.getWeatherDataModelObj()
-        if (list != null) {
-            for (alert in list) {
+        if (alertsLocalList != null) {
+            for (alert in alertsLocalList) {
                 if (alert.alertDays.stream()
                         .anyMatch { s -> s.contains(getCurrentDay().toString()) }) {
                     if (handleAlertTime(alert.alertTime)) {
                         Log.e("PeriodicMan", "getting time of the alert ")
                         if (currentWeather.alert.isNullOrEmpty()) {
                             setOneTimeWorkManager(
-                                delay,
+                                timeDifferenceDelay,
                                 alert.alertLocalId,
                                 currentWeather.current?.weather?.get(0)?.description ?: "noooo descr")
                         }
                         else {
                             setOneTimeWorkManager(
-                                delay,
+                                timeDifferenceDelay,
                                 alert.alertLocalId,
                                 currentWeather.alert!![0].tags[0],
 
@@ -78,9 +76,9 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
 
     private fun handleAlertTime(alertTime: Long): Boolean {
 
-        delay = alertTime - currentTime
-        Log.e("periodicManager", "diff bet. time now and alert time : $delay , $alertTime" )
-        return delay > 0
+        timeDifferenceDelay = alertTime - currentTime
+        Log.e("periodicManager", "diff bet. time now and alert time : $timeDifferenceDelay , $alertTime" )
+        return timeDifferenceDelay > 0
     }
 
     private fun getCurrentTime() {

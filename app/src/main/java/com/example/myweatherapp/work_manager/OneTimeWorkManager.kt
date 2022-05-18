@@ -29,8 +29,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     private var notificationManager: NotificationManager? = null
     var myAlertNotificationManager : MyAlertNotificationManager? = null
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val description = inputData.getString("description")!!
@@ -44,7 +42,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
         }
         return Result.success()
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun makeNotification(description: String){
@@ -70,9 +67,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     private fun notificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("$CHANNEL_ID", channel_name, NotificationManager.IMPORTANCE_DEFAULT)
-            val attributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .build()
             channel.enableVibration(true)
             channel.description = channel_description
             notificationManager = context.getSystemService(NotificationManager::class.java)
