@@ -347,14 +347,16 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
 
     private fun setPeriodicWorkManager() {
 
-        val constraints = Constraints.Builder()
+        /*val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
             .build()
+
+         */
 
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
             PeriodicManager::class.java, 24, TimeUnit.HOURS
         )
-            .setConstraints(constraints)
+            //.setConstraints(constraints)
             .build()
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(

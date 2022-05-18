@@ -52,9 +52,9 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
 
         lateinit var builder: Notification.Builder
 
-        val intent = Intent(applicationContext, AlertsActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_dialog_alert)
+        //val intent = Intent(applicationContext, AlertsActivity::class.java)
+        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        //val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_dialog_alert)
 
         builder= Notification.Builder(applicationContext, "$CHANNEL_ID")
             .setContentText(description)

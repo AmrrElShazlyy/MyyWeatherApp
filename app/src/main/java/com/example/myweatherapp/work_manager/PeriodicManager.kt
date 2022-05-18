@@ -103,12 +103,12 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private fun setOneTimeWorkManager(delay: Long, id: Int?, description: String) {
         val data = Data.Builder()
         data.putString("description", description)
-        val constraints = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .build()
+//        val constraints = Constraints.Builder()
+//            .setRequiresBatteryNotLow(true)
+//            .build()
         val oneTimeWorkRequest = OneTimeWorkRequest.Builder(OneTimeWorkManager::class.java)
             .setInitialDelay(delay, TimeUnit.SECONDS)
-            .setConstraints(constraints)
+            //.setConstraints(constraints)
             .setInputData(data.build())
             .build()
 
