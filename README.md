@@ -2,7 +2,7 @@
 _______________________________________________________________________________________
 
 	•	Wwather App implemented by kotlin.
-	•	Tit present current weather  information including temprature, wind speed, clouds.
+	•	it present current weather  information including temprature, wind speed, clouds.
 	•	it also show some information about for the next 48 hours and also the next 7 days 
 	
 
