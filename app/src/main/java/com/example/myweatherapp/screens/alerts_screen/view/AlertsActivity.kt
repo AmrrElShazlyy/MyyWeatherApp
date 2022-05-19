@@ -176,7 +176,7 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
     override fun onItemClickListener(alertLocal: AlertLocal) {
         Toast.makeText(this, "interafce click on alert rooow deleted", Toast.LENGTH_SHORT).show()
 
-        alertlist.add(alertLocal)
+        //alertlist.add(alertLocal)
         alertsViewModel.deleteAlert(alertLocal)
         alertsAdapter.alertLocalRecyclerList = alertlist
         alertsAdapter.notifyDataSetChanged()
@@ -320,11 +320,7 @@ class AlertsActivity : AppCompatActivity(), AlertOnClickListener,
     }
 
     fun getAllDataToSaveAlert() {
-        Log.e("***", "getAllDataToSaveAlert:  lat = $lat - $lon")
-        Log.e("***", "getAllDataToSaveAlert:  start date = $startDateLong ")
-        Log.e("***", "getAllDataToSaveAlert:  end date = $endDateLong ")
-        Log.e("***", "getAllDataToSaveAlert:  alert time  = $alertTime ")
-        Log.e("***", "getAllDataToSaveAlert:  type = $alertType ")
+
         savingFlag = true
         if (startDateLong != 0L && endDateLong != 0L && alertTime != 0L && alertType != "") {
             alertDays = countDaysFromTo(startDateStr, endDateStr)

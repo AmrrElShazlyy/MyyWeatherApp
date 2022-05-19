@@ -49,34 +49,3 @@ class AlertsAdapter(private val alertOnClickListener: AlertOnClickListener) : Re
 
 }
 
-
-
-/*
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.hourly_row_layout , parent , false)
-        return ViewHolder((view))
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        var hourlyIcon : String = hourlyList[position].weather?.get(0)?.icon!!
-        var hourlyIconUrl : String = "${Constants.IMG_URL+hourlyIcon}.png"
-        Glide.with(holder.hourlyImageViewIcon.context).load(hourlyIconUrl).into(holder.hourlyImageViewIcon)
-
-        holder.hourlyTextViewTime.text = MyLocalDateTime.getTimeFromHourlyObj(hourlyList[position])
-
-        // *****************   add when temp get in C or K or F  *********************
-
-        when(hourlyUnits){
-            Constants.myUnitStandard -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °K "}
-            Constants.myUnitMetric -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} ℃ "}
-            Constants.myUnitImperial -> { holder.hourlyTextViewTemp.text = "${(hourlyList[position].temp).toString()} °F "}
-        }
-
-    }
-
-    override fun getItemCount(): Int = hourlyList.size
- */

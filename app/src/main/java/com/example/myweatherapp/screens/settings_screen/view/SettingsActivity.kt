@@ -388,7 +388,6 @@ class SettingsActivity : AppCompatActivity() {
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
                 val latLng : LatLng = place.latLng
                 lat = latLng.latitude
                 lon = latLng.longitude
@@ -398,7 +397,6 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             override fun onError(status: Status) {
-                // TODO: Handle the error.
                 Log.i("***", "An error occurred: $status")
             }
         })

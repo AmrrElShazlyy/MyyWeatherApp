@@ -4,16 +4,11 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.media.AudioAttributes
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.*
-import com.example.myweatherapp.screens.alerts_screen.view.AlertsActivity
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,8 +27,8 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val description = inputData.getString("description")!!
-        notificationChannel()
-        makeNotification(description)
+        initNotificationChannel()
+        initNotification(description)
         if (Settings.canDrawOverlays(context)) {
             GlobalScope.launch(Dispatchers.Main) {
                 myAlertNotificationManager = MyAlertNotificationManager(context, description)
@@ -44,7 +39,7 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun makeNotification(description: String){
+    private fun initNotification(description: String){
 
         lateinit var builder: Notification.Builder
         builder= Notification.Builder(applicationContext, "$CHANNEL_ID")
@@ -55,8 +50,6 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
                 Notification.BigTextStyle()
                     .bigText(description)
             )
-            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-            .setLights(Color.RED, 3000, 3000)
             .setAutoCancel(true)
         notificationManager?.notify(1234, builder.build())
 
@@ -64,10 +57,10 @@ class OneTimeWorkManager(private val context: Context, workerParams: WorkerParam
 
 
 
-    private fun notificationChannel() {
+    private fun initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("$CHANNEL_ID", channel_name, NotificationManager.IMPORTANCE_DEFAULT)
-            channel.enableVibration(true)
+            channel
             channel.description = channel_description
             notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)

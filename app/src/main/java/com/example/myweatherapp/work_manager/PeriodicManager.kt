@@ -36,7 +36,7 @@ class PeriodicManager (private val context: Context, workerParams: WorkerParamet
     private fun getAlertsFromDb(){
 
         GlobalScope.launch(Dispatchers.IO) {
-            repo.localSource.getAllAlertsLocal().subscribe { alerts->
+            repo.getAllAlertsLocal().subscribe { alerts->
                 alertsLocalList =alerts
             }
         }
