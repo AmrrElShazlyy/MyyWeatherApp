@@ -91,16 +91,16 @@ fun countDaysFromTo(startDate: String, endDate: String): List<String> {
     val dateTimeFormat = DateTimeFormat.forPattern("dd-MM-yyyy")
     val start = dateTimeFormat.parseLocalDate(startDate)
     val end = dateTimeFormat.parseLocalDate(endDate).plusDays(1)
-    val myDays: MutableList<String> = ArrayList()
+    val daysCount: MutableList<String> = ArrayList()
     val days = Days.daysBetween(LocalDate(start), LocalDate(end)).days.toLong()
     var i = 0
     while (i < days) {
         val current = start.plusDays(i)
         val date = current.toDateTimeAtStartOfDay().toString("dd-MM-yyyy")
-        myDays.add(date)
+        daysCount.add(date)
         i++
     }
-    return myDays
+    return daysCount
 }
 
 fun timeToSeconds(hour: Int, min: Int): Long {
